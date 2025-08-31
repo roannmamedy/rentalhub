@@ -1,0 +1,3316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<meta name="description" content="Dreamsrent - Bootstrap Admin Template">
+	<meta name="keywords" content="admin, estimates, bootstrap, business, html5, responsive, Projects">
+	<meta name="author" content="Dreams technologies - Bootstrap Admin Template">
+	<meta name="robots" content="noindex, nofollow">
+	<title>Dreamsrent - Admin Template</title>
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+
+	<!-- Apple Touch Icon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+
+	<!-- Theme Settings Js -->
+	<script src="assets/js/theme-script.js"></script>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+	<!-- Tabler Icon CSS -->
+	<link rel="stylesheet" href="assets/plugins/tabler-icons/tabler-icons.min.css">
+
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+	<link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+
+	<!-- Feathericon CSS -->
+	<link rel="stylesheet" href="assets/css/feather.css">
+
+	<!-- Select2 CSS -->
+	<link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
+
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body>
+
+	<!-- Main Wrapper -->
+	<div class="main-wrapper">
+
+		<!-- Header -->
+		<div class="header">
+			<div class="main-header">
+			
+				<div class="header-left">
+					<a href="index.html" class="logo">
+						<img src="assets/img/logo.svg" alt="Logo">
+					</a>
+					<a href="index.html" class="dark-logo">
+						<img src="assets/img/logo-white.svg" alt="Logo">
+					</a>
+				</div>
+
+				<a id="mobile_btn" class="mobile_btn" href="#sidebar">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+
+				<div class="header-user">
+					<div class="nav user-menu nav-list">
+	
+						<div class="me-auto d-flex align-items-center" id="header-search">					
+							<a id="toggle_btn" href="javascript:void(0);">
+								<i class="ti ti-menu-deep"></i>
+							</a>		
+							<div class="add-dropdown">
+								<a href="add-reservation.html" class="btn btn-dark d-inline-flex align-items-center">
+									<i class="ti ti-plus me-1"></i>New Reservation
+								</a>
+							</div>			
+						</div>
+	
+						<div class="d-flex align-items-center header-icons">	
+
+							<!-- Flag -->
+							<div class="nav-item dropdown has-arrow flag-nav nav-item-box">
+								<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);"
+									role="button">
+									<img src="assets/img/flags/gb.svg" alt="Language" class="img-fluid">
+								</a>
+								<ul class="dropdown-menu p-2">
+									<li>
+										<a href="javascript:void(0);" class="dropdown-item">
+											<img src="assets/img/flags/gb.svg" alt="" height="16">English
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0);" class="dropdown-item">
+											<img src="assets/img/flags/sa.svg" alt="" height="16">Arabic
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0);" class="dropdown-item">
+											<img src="assets/img/flags/de.svg" alt="" height="16">German
+										</a>
+									</li>
+								</ul>
+							</div>
+							<!-- /Flag -->
+
+							<div class="theme-item">
+								<a href="javascript:void(0);" id="dark-mode-toggle" class="theme-toggle btn btn-menubar">
+									<i class="ti ti-moon"></i>
+								</a>
+								<a href="javascript:void(0);" id="light-mode-toggle" class="theme-toggle btn btn-menubar">
+									<i class="ti ti-sun-high"></i>
+								</a>
+							</div>
+							
+							<div class="notification_item">
+								<a href="javascript:void(0);" class="btn btn-menubar position-relative" id="notification_popup" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+									<i class="ti ti-bell"></i>
+									<span class="badge bg-violet rounded-pill"></span>
+								</a>
+								<div class="dropdown-menu dropdown-menu-end notification-dropdown">
+									<div class="topnav-dropdown-header pb-0">
+										<h5 class="notification-title">Notifications</h5>
+										<ul class="nav nav-tabs nav-tabs-bottom">
+											<li class="nav-item"><a class="nav-link active" href="#active-notification" data-bs-toggle="tab">Active<span class="badge badge-xs rounded-pill bg-danger ms-2">5</span></a></li>
+											<li class="nav-item"><a class="nav-link" href="#unread-notification" data-bs-toggle="tab">Unread</a></li>
+											<li class="nav-item"><a class="nav-link" href="#archieve-notification" data-bs-toggle="tab">Archieve</a></li>
+										</ul>
+									</div>
+									<div class="noti-content">
+										<div class="tab-content">
+											<div class="tab-pane fade show active" id="active-notification">
+												<div class="notification-list">
+													<div class="d-flex align-items-center">
+														<a href="javascript:void(0);" class="avatar avatar-lg offline me-2 flex-shrink-0">
+															<img src="assets/img/profiles/avatar-02.jpg" alt="Profile" class="rounded-circle">
+														</a>
+														<div class="flex-grow-1">
+															<p class="mb-1"><a href="javascript:void(0);"><span class="text-gray-9">Jerry Manas</span> Added New Task Creating <span class="text-gray-9">Login Pages</span></a></p>
+															<span class="fs-12 noti-time"><i class="ti ti-clock me-1"></i>4 Min Ago</span>
+														</div>
+													</div>
+												</div>
+												<div class="notification-list">
+													<div class="d-flex align-items-center">
+														<a href="javascript:void(0);" class="avatar avatar-lg offline me-2 flex-shrink-0">
+															<img src="assets/img/profiles/avatar-05.jpg" alt="Profile" class="rounded-circle">
+														</a>
+														<div class="flex-grow-1">
+															<p class="mb-1"><a href="javascript:void(0);"><span class="text-gray-9">Robert Fox </span> Was Marked as Late Login <span class="text-danger">09:55 AM</span></a></p>
+															<span class="fs-12 noti-time"><i class="ti ti-clock me-1"></i>5 Min Ago</span>
+														</div>
+													</div>
+												</div>
+												<div class="notification-list">
+													<div class="d-flex align-items-center">
+														<a href="javascript:void(0);" class="avatar avatar-lg me-2 flex-shrink-0">
+															<img src="assets/img/profiles/avatar-04.jpg" alt="Profile" class="rounded-circle">
+														</a>
+														<div class="flex-grow-1">
+															<p class="mb-1"><a href="javascript:void(0);"><span class="text-gray-9">Jenny Wilson </span> Completed <span class="text-gray-9">Created New Component</span></a></p>
+															<div class="d-flex align-items-center">
+																<span class="fs-12 noti-time"><i class="ti ti-clock me-1"></i>15 Min Ago</span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="notification-list">
+													<div class="d-flex align-items-center">
+														<a href="javascript:void(0);" class="avatar avatar-lg me-2 flex-shrink-0">
+															<img src="assets/img/profiles/avatar-02.jpg" alt="Profile" class="rounded-circle">
+														</a>
+														<div class="flex-grow-1">
+															<p class="mb-1"><a href="javascript:void(0);"><span class="text-gray-9">Jacob Johnson </span> Added Manual Time <span class="text-gray-9">2 Hrs</span></a></p>
+															<div class="d-flex align-items-center">
+																<span class="fs-12 noti-time"><i class="ti ti-clock me-1"></i>20 Min Ago</span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="notification-list">
+													<div class="d-flex align-items-center">
+														<a href="javascript:void(0);" class="avatar avatar-lg me-2 flex-shrink-0">
+															<img src="assets/img/profiles/avatar-01.jpg" alt="Profile" class="rounded-circle">
+														</a>
+														<div class="flex-grow-1">
+															<p class="mb-1"><a href="javascript:void(0);"><span class="text-gray-9">Annete Black </span> Completed <span class="text-gray-9">Improved Workflow React</span></a></p>
+															<div class="d-flex align-items-center">
+																<span class="fs-12 noti-time"><i class="ti ti-clock me-1"></i>22 Min Ago</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="tab-pane fade" id="unread-notification">
+												<div class="notification-list">
+													<a href="javascript:void(0);">
+														<div class="d-flex align-items-center">
+															<span class="avatar avatar-lg offline me-2 flex-shrink-0">
+																<img src="assets/img/profiles/avatar-02.jpg" alt="Profile" class="rounded-circle">
+															</span>
+															<div class="flex-grow-1">
+																<p class="mb-1"><span class="text-gray-9">Jerry Manas</span> Added New Task Creating <span class="text-gray-9">Login Pages</span></p>
+																<span class="fs-12 noti-time"><i class="ti ti-clock me-1"></i>4 Min Ago</span>
+															</div>
+														</div>
+													</a>
+												</div>
+												<div class="notification-list">
+													<a href="javascript:void(0);">
+														<div class="d-flex align-items-center">
+															<span class="avatar avatar-lg offline me-2 flex-shrink-0">
+																<img src="assets/img/profiles/avatar-05.jpg" alt="Profile" class="rounded-circle">
+															</span>
+															<div class="flex-grow-1">
+																<p class="mb-1"><span class="text-gray-9">Robert Fox </span> Was Marked as Late Login <span class="text-danger">09:55 AM</span></p>
+																<span class="fs-12 noti-time"><i class="ti ti-clock me-1"></i>5 Min Ago</span>
+															</div>
+														</div>
+													</a>
+												</div>
+												<div class="notification-list">
+													<a href="javascript:void(0);">
+														<div class="d-flex align-items-center">
+															<span class="avatar avatar-lg offline me-2 flex-shrink-0">
+																<img src="assets/img/profiles/avatar-06.jpg" alt="Profile" class="rounded-circle">
+															</span>
+															<div class="flex-grow-1">
+																<p class="mb-1"><span class="text-gray-9">Robert Fox </span> Created New Component</p>
+																<span class="fs-12 noti-time"><i class="ti ti-clock me-1"></i>5 Min Ago</span>
+															</div>
+														</div>
+													</a>
+												</div>
+											</div>
+											<div class="tab-pane fade" id="archieve-notification">
+												<div class="d-flex justify-content-center align-items-center p-3">
+													<div class="text-center ">
+														<img src="assets/img/icons/nodata.svg" class="mb-2" alt="nodata">
+														<p class="text-gray-5">No Data Available</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="d-flex align-items-center justify-content-between topnav-dropdown-footer">
+										<div class="d-flex align-items-center">
+											<a href="javascript:void(0);" class="link-primary text-decoration-underline me-3">Mark all as Read</a>
+											<a href="javascript:void(0);" class="link-danger text-decoration-underline">Clear All</a>
+										</div>
+										<a href="javascript:void(0);" class="btn btn-primary btn-sm d-inline-flex align-items-center">View All Notifications<i class="ti ti-chevron-right ms-1"></i></a>
+									</div>
+								</div>
+							</div>
+							<div>
+								<a href="income-report.html" class="btn btn-menubar">
+									<i class="ti ti-chart-bar"></i>
+								</a>
+							</div>
+							<div class="dropdown">
+								<a href="javascript:void(0);" class="btn btn-menubar" data-bs-toggle="dropdown"  data-bs-auto-close="outside">
+									<i class="ti ti-grid-dots"></i>
+								</a>
+								<div class="dropdown-menu p-3">
+									<ul>
+										<li>
+											<a href="add-car.html" class="dropdown-item d-inline-flex align-items-center">
+												<i class="ti ti-car me-2"></i>Car
+											</a>
+										</li>
+										<li>
+											<a href="add-quotations.html" class="dropdown-item d-inline-flex align-items-center">
+												<i class="ti ti-file-symlink me-2"></i>Quotation
+											</a>
+										</li>
+										<li>
+											<a href="pricing.html" class="dropdown-item d-inline-flex align-items-center">
+												<i class="ti ti-file-dollar me-2"></i>Seasonal Pricing
+											</a>
+										</li>
+										<li>
+											<a href="extra-services.html" class="dropdown-item d-inline-flex align-items-center">
+												<i class="ti ti-script-plus me-2"></i>Extra Service
+											</a>
+										</li>
+										<li>
+											<a href="inspections.html" class="dropdown-item d-inline-flex align-items-center">
+												<i class="ti ti-dice-6 me-2"></i>Inspection
+											</a>
+										</li>
+										<li>
+											<a href="maintenance.html" class="dropdown-item d-inline-flex align-items-center">
+												<i class="ti ti-color-filter me-2"></i>Maintenance
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="dropdown profile-dropdown">
+								<a href="javascript:void(0);" class="d-flex align-items-center" data-bs-toggle="dropdown"  data-bs-auto-close="outside">
+									<span class="avatar avatar-sm">
+										<img src="assets/img/profiles/avatar-05.jpg" alt="Img" class="img-fluid rounded-circle">
+									</span>
+								</a>
+								<div class="dropdown-menu">
+									<div class="profileset d-flex align-items-center">
+										<span class="user-img me-2">
+											<img src="assets/img/profiles/avatar-05.jpg" alt="">
+										</span>
+										<div>
+											<h6 class="fw-semibold mb-1">Andrew Simmonds</h6>
+											<p class="fs-13">andrew@example.com</p>
+										</div>
+									</div>
+									<a class="dropdown-item d-flex align-items-center" href="profile-setting.html">
+										<i class="ti ti-user-edit me-2"></i>Edit Profile
+									</a>
+									<a class="dropdown-item d-flex align-items-center" href="payments.html">
+										<i class="ti ti-credit-card me-2"></i>Payments
+									</a>
+									<div class="dropdown-divider my-2"></div>
+									<div class="dropdown-item">
+										<div class="form-check form-switch  form-check-reverse  d-flex align-items-center justify-content-between">
+											<label class="form-check-label" for="notify">
+												<i class="ti ti-bell me-2"></i>Notificaions</label>
+											<input class="form-check-input" type="checkbox" role="switch" id="notify" checked>
+										</div>
+									</div>
+									<a class="dropdown-item d-flex align-items-center" href="security-setting.html">
+										<i class="ti ti-exchange me-2"></i>Change Password
+									</a>
+									<a class="dropdown-item d-flex align-items-center" href="profile-setting.html">
+										<i class="ti ti-settings me-2"></i>Settings
+									</a>
+									<div class="dropdown-divider my-2"></div>
+									<a class="dropdown-item logout d-flex align-items-center justify-content-between" href="login.html">
+										<span><i class="ti ti-logout me-2"></i>Logout Account</span> <i class="ti ti-chevron-right"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Mobile Menu -->
+				<div class="dropdown mobile-user-menu">
+					<a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="fa fa-ellipsis-v"></i>
+					</a>
+					<div class="dropdown-menu dropdown-menu-end">
+						<a class="dropdown-item" href="profile.html">My Profile</a>
+						<a class="dropdown-item" href="profile-setting.html">Settings</a>
+						<a class="dropdown-item" href="login.html">Logout</a>
+					</div>
+				</div>
+				<!-- /Mobile Menu -->
+
+			</div>
+
+		</div>
+		<!-- /Header -->
+
+		<!-- Sidebar -->
+		<div class="sidebar" id="sidebar">
+			<!-- Logo -->
+			<div class="sidebar-logo">
+				<a href="index.html" class="logo logo-normal">
+					<img src="assets/img/logo.svg" alt="Logo">
+				</a>
+				<a href="index.html" class="logo-small">
+					<img src="assets/img/logo-small.svg" alt="Logo">
+				</a>
+				<a href="index.html" class="dark-logo">
+					<img src="assets/img/logo-white.svg" alt="Logo">
+				</a>
+			</div>
+			<!-- /Logo -->
+			<div class="sidebar-inner slimscroll">
+				<div id="sidebar-menu" class="sidebar-menu">
+					
+					<div class="form-group">
+						<!-- Search -->
+						<div class="input-group input-group-flat d-inline-flex">
+							<span class="input-icon-addon">
+								<i class="ti ti-search"></i>
+							  </span>
+							<input type="text" class="form-control" placeholder="Search">
+							<span class="group-text">
+								<i class="ti ti-command"></i>
+							</span>
+						</div>
+						<!-- /Search -->
+					</div>
+					<ul>
+						<li class="menu-title"><span>Main</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="index.html">
+										<i class="ti ti-layout-dashboard"></i><span>Dashboard</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>Bookings</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="reservations.html">
+										<i class="ti ti-files"></i><span>Reservations</span><span class="track-icon"></span>
+									</a>
+								</li>
+								<li>
+									<a href="calendar.html">
+										<i class="ti ti-calendar-bolt"></i><span>Calendar</span>
+									</a>
+								</li>
+								<li>
+									<a href="quotations.html">
+										<i class="ti ti-file-symlink"></i><span>Quotations</span>
+									</a>
+								</li>
+								<li>
+									<a href="enquiries.html">
+										<i class="ti ti-mail"></i><span>Enquiries</span>
+									</a>
+								</li>
+							</ul>							
+						</li>
+						<li class="menu-title"><span>Manage</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="customers.html">
+										<i class="ti ti-users-group"></i><span>Customers</span>
+									</a>
+								</li>
+								<li>
+									<a href="drivers.html">
+										<i class="ti ti-user-bolt"></i><span>Drivers</span>
+									</a>
+								</li>
+								<li>
+									<a href="locations.html">
+										<i class="ti ti-map-pin"></i><span>Locations</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>RENTALS</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="cars.html">
+										<i class="ti ti-car"></i><span>Cars</span>
+									</a>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-device-camera-phone"></i><span>Car Attributes</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li><a href="brands.html">Brands</a></li>
+										<li><a href="types.html">Types</a></li>
+										<li><a href="models.html">Models</a></li>
+										<li><a href="transmissions.html">Transmissions</a></li>
+										<li><a href="fuel.html">Fuels</a></li>
+										<li><a href="color.html">Colors</a></li>
+										<li><a href="steering.html">Steering</a></li>
+										<li><a href="seats.html">Seats</a></li>
+										<li><a href="cylinders.html">Cylinders</a></li>
+										<li><a href="doors.html">Doors</a></li>
+										<li><a href="features.html">Features</a></li>
+										<li><a href="safety-features.html">Safty Features</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="extra-services.html">
+										<i class="ti ti-script-plus"></i><span>Extra Service</span>
+									</a>
+								</li>
+								<li>
+									<a href="pricing.html">
+										<i class="ti ti-file-dollar"></i><span>Seasonal Pricing</span>
+									</a>
+								</li>
+								<li>
+									<a href="inspections.html">
+										<i class="ti ti-dice-6"></i><span>Inspections</span>
+									</a>
+								</li>
+								<li>
+									<a href="tracking.html">
+										<i class="ti ti-map-pin-pin"></i><span>Tracking</span>
+									</a>
+								</li>
+								<li>
+									<a href="maintenance.html">
+										<i class="ti ti-color-filter"></i><span>Maintenance</span>
+									</a>
+								</li>
+								<li>
+									<a href="reviews.html">
+										<i class="ti ti-star"></i><span>Reviews</span>
+									</a>
+								</li>
+							</ul>
+						</li>	
+						<li class="menu-title"><span>FINANCE & ACCOUNTS</span></li>					
+						<li>
+							<ul>
+								<li>
+									<a href="invoices.html">
+										<i class="ti ti-file-invoice"></i><span>Invoices</span>
+									</a>
+								</li>
+								<li>
+									<a href="payments.html">
+										<i class="ti ti-credit-card"></i><span>Payments</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>OTHERS</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="chat.html">
+										<i class="ti ti-message"></i><span>Messages</span><span class="count">5</span>
+									</a>
+								</li>
+								<li>
+									<a href="coupons.html">
+										<i class="ti ti-discount-2"></i><span>Coupons</span>
+									</a>
+								</li>
+								<li>
+									<a href="newsletters.html">
+										<i class="ti ti-file-horizontal"></i><span>Newsletters</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>CMS</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="pages.html" >
+										<i class="ti ti-file-invoice"></i><span>Pages</span>
+									</a>
+								</li>
+								<li>
+									<a href="menu-management.html" >
+										<i class="ti ti-menu-2"></i><span>Menu Management</span>
+									</a>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-device-desktop-analytics"></i><span>Blogs</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li><a href="blogs.html">All Blogs</a></li>
+										<li><a href="blog-categories.html">Categories</a></li>
+										<li><a href="blog-comments.html">Comments</a></li>
+										<li><a href="blog-tags.html">Blog Tags</a></li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-map"></i><span>Locations</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li><a href="countries.html">Countries</a></li>
+										<li><a href="state.html">States</a></li>
+										<li><a href="city.html">Cities</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="testimonials.html">
+										<i class="ti ti-brand-hipchat"></i><span>Testimonials</span>
+									</a>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-question-mark"></i><span>FAQ’s</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li><a href="faq.html">FAQ's</a></li>
+										<li><a href="faq-category.html">FAQ Category</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>SUPPORT</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="contact-messages.html" >
+										<i class="ti ti-messages"></i><span>Contact Messages</span>
+									</a>
+								</li>
+								<li>
+									<a href="announcements.html">
+										<i class="ti ti-speakerphone"></i><span>Announcements</span>
+									</a>
+								</li>
+								<li>
+									<a href="tickets.html">
+										<i class="ti ti-ticket"></i><span>Tickets</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>USER MANAGEMENT</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="users.html" >
+										<i class="ti ti-user-circle"></i><span>Users</span>
+									</a>
+								</li>
+								<li>
+									<a href="roles-permissions.html">
+										<i class="ti ti-user-shield"></i><span>Roles & Permissions</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>REPORTS</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="income-report.html" >
+										<i class="ti ti-chart-histogram"></i><span>Income vs Expense</span>
+									</a>
+								</li>
+								<li>
+									<a href="earnings-report.html">
+										<i class="ti ti-chart-line"></i><span>Earnings</span>
+									</a>
+								</li>
+								<li>
+									<a href="rental-report.html">
+										<i class="ti ti-chart-infographic"></i><span>Rentals</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>AUTHENTICATION</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="login.html" >
+										<i class="ti ti-login"></i><span>Login</span>
+									</a>
+								</li>
+								<li>
+									<a href="forgot-password.html">
+										<i class="ti ti-help-triangle"></i><span>Forgot Password</span>
+									</a>
+								</li>
+								<li>
+									<a href="otp.html">
+										<i class="ti ti-mail-exclamation"></i><span>Email Verification</span>
+									</a>
+								</li>
+								<li>
+									<a href="reset-password.html">
+										<i class="ti ti-restore"></i><span>Reset Password</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>SETTINGS & CONFIGURATION</span></li>
+						<li>
+							<ul>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-user-cog"></i><span>Account Settings</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li>
+											<a href="profile-setting.html">Profile</a>
+										</li>
+										<li>
+											<a href="security-setting.html">Security</a>
+										</li>
+										<li>
+											<a href="notifications-setting.html">Notifications</a>
+										</li>
+										<li>
+											<a href="integrations-settings.html">Integrations</a>
+										</li>
+										<li>
+											<a href="tracker-setting.html">Tracker</a>
+										</li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-world-cog"></i><span>Website Settings</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li>
+											<a href="company-setting.html">Company Settings</a>
+										</li>
+										<li>
+											<a href="localization-setting.html">Localization</a>
+										</li>
+										<li>
+											<a href="prefixes.html">Prefixes</a>
+										</li>
+										<li>
+											<a href="seo-setup.html">SEO Setup</a>
+										</li>
+										<li>
+											<a href="language-setting.html">Language</a>
+										</li>
+										<li>
+											<a href="maintenance-mode.html">Maintenance Mode</a>
+										</li>
+										<li>
+											<a href="login-setting.html">Login & Register</a>
+										</li>
+										<li>
+											<a href="ai-configuration.html">AI Configuration</a>
+										</li>
+										<li>
+											<a href="plugin-managers.html">Plugin Managers</a>
+										</li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-clock-cog"></i><span>Rental Settings</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li>
+											<a href="rental-setting.html">Rental</a>
+										</li>
+										<li>
+											<a href="insurance-setting.html">Insurance</a>
+										</li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-device-mobile-cog"></i><span>App Settings</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li>
+											<a href="invoice-setting.html">Invoice Settings</a>
+										</li>
+										<li>
+											<a href="invoice-template.html">Invoice Templates</a>
+										</li>
+										<li>
+											<a href="signatures-setting.html">Signatures</a>
+										</li>
+										<li>
+											<a href="custom-fields.html">Custom Fields</a>
+										</li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-device-desktop-cog"></i><span>System Settings</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li>
+											<a href="email-setting.html">Email Settings</a>
+										</li>
+										<li>
+											<a href="email-templates.html">Email Templates</a>
+										</li>
+										<li>
+											<a href="sms-gateways.html">SMS Gateways</a>
+										</li>
+										<li>
+											<a href="gdpr-cookies.html">GDPR Cookies</a>
+										</li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-settings-dollar"></i><span>Finance Settings</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li>
+											<a href="payment-methods.html">Payment Methods</a>
+										</li>
+										<li>
+											<a href="bank-accounts.html">Bank Accounts</a>
+										</li>
+										<li>
+											<a href="tax-rates.html">Tax Rates</a>
+										</li>
+										<li>
+											<a href="currencies.html">Currencies</a>
+										</li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-settings-2"></i><span>Other Settings</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li>
+											<a href="sitemap.html">Sitemap</a>
+										</li>
+										<li>
+											<a href="clear-cache.html">Clear Cache</a>
+										</li>
+										<li>
+											<a href="storage.html">Storage</a>
+										</li>
+										<li>
+											<a href="cronjob.html">Cronjob</a>
+										</li>
+										<li>
+											<a href="system-backup.html">System Backup</a>
+										</li>
+										<li>
+											<a href="database-backup.html">Database Backup</a>
+										</li>
+										<li>
+											<a href="system-update.html">System Update</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>UI Interface</span></li>
+						<li>
+							<ul>
+								<li class="submenu">
+									<a href="javascript:void(0);" class="active subdrop">
+										<i class="ti ti-hierarchy"></i><span>Base UI</span><span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li><a href="ui-alerts.html">Alerts</a></li>
+										<li><a href="ui-accordion.html">Accordion</a></li>
+										<li><a href="ui-avatar.html">Avatar</a></li>
+										<li><a href="ui-badges.html">Badges</a></li>
+										<li><a href="ui-borders.html">Border</a></li>
+										<li><a href="ui-buttons.html">Buttons</a></li>
+										<li><a href="ui-buttons-group.html">Button Group</a></li>
+										<li><a href="ui-breadcrumb.html">Breadcrumb</a></li>
+										<li><a href="ui-cards.html">Card</a></li>
+										<li><a href="ui-carousel.html">Carousel</a></li>
+										<li><a href="ui-colors.html">Colors</a></li>
+										<li><a href="ui-dropdowns.html">Dropdowns</a></li>
+										<li><a href="ui-grid.html">Grid</a></li>
+										<li><a href="ui-images.html">Images</a></li>
+										<li><a href="ui-lightbox.html">Lightbox</a></li>
+										<li><a href="ui-media.html">Media</a></li>
+										<li><a href="ui-modals.html">Modals</a></li>
+										<li><a href="ui-offcanvas.html">Offcanvas</a></li>
+										<li><a href="ui-pagination.html">Pagination</a></li>
+										<li><a href="ui-popovers.html">Popovers</a></li>
+										<li><a href="ui-progress.html">Progress</a></li>
+										<li><a href="ui-placeholders.html">Placeholders</a></li>
+										<li><a href="ui-spinner.html">Spinner</a></li>
+										<li><a href="ui-sweetalerts.html">Sweet Alerts</a></li>
+										<li><a href="ui-nav-tabs.html" class="active">Tabs</a></li>
+										<li><a href="ui-toasts.html">Toasts</a></li>
+										<li><a href="ui-tooltips.html">Tooltips</a></li>
+										<li><a href="ui-typography.html">Typography</a></li>
+										<li><a href="ui-video.html">Video</a></li>
+										<li><a href="ui-sortable.html">Sortable</a></li>
+										<li><a href="ui-swiperjs.html">Swiperjs</a></li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-whirl"></i><span>Advanced UI</span><span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li><a href="ui-ribbon.html">Ribbon</a></li>
+										<li><a href="ui-clipboard.html">Clipboard</a></li>
+										<li><a href="ui-drag-drop.html">Drag & Drop</a></li>
+										<li><a href="ui-rangeslider.html">Range Slider</a></li>
+										<li><a href="ui-rating.html">Rating</a></li>
+										<li><a href="ui-text-editor.html">Text Editor</a></li>
+										<li><a href="ui-counter.html">Counter</a></li>
+										<li><a href="ui-scrollbar.html">Scrollbar</a></li>
+										<li><a href="ui-stickynote.html">Sticky Note</a></li>
+										<li><a href="ui-timeline.html">Timeline</a></li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-forms"></i><span>Forms</span><span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li class="submenu submenu-two">
+											<a href="javascript:void(0);">Form Elements<span class="menu-arrow inside-submenu"></span></a>
+											<ul>
+												<li><a href="form-basic-inputs.html">Basic Inputs</a></li>
+												<li><a href="form-checkbox-radios.html">Checkbox & Radios</a></li>
+												<li><a href="form-input-groups.html">Input Groups</a></li>
+												<li><a href="form-grid-gutters.html">Grid & Gutters</a></li>
+												<li><a href="form-select.html">Form Select</a></li>
+												<li><a href="form-mask.html">Input Masks</a></li>
+												<li><a href="form-fileupload.html">File Uploads</a></li>
+											</ul>
+										</li>
+										<li class="submenu submenu-two">
+											<a href="javascript:void(0);">Layouts<span class="menu-arrow inside-submenu"></span></a>
+											<ul>
+												<li><a href="form-horizontal.html">Horizontal Form</a></li>
+												<li><a href="form-vertical.html">Vertical Form</a></li>
+												<li><a href="form-floating-labels.html">Floating Labels</a></li>
+											</ul>
+										</li>
+										<li><a href="form-validation.html">Form Validation</a></li>
+										<li><a href="form-select2.html">Select2</a></li>
+										<li><a href="form-wizard.html">Form Wizard</a></li>
+										<li><a href="form-pickers.html">Form Picker</a></li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-table"></i><span>Tables</span><span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li><a href="tables-basic.html">Basic Tables </a></li>
+										<li><a href="data-tables.html">Data Table </a></li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-chart-pie-3"></i>
+										<span>Charts</span><span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li><a href="chart-apex.html">Apex Charts</a></li>
+										<li><a href="chart-c3.html">Chart C3</a></li>
+										<li><a href="chart-js.html">Chart Js</a></li>
+										<li><a href="chart-morris.html">Morris Charts</a></li>
+										<li><a href="chart-flot.html">Flot Charts</a></li>
+										<li><a href="chart-peity.html">Peity Charts</a></li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-icons"></i>
+										<span>Icons</span><span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
+										<li><a href="icon-tabler.html">Tabler Icons</a></li>
+										<li><a href="icon-bootstrap.html">Bootstrap Icons</a></li>
+										<li><a href="icon-remix.html">Remix Icons</a></li>
+										<li><a href="icon-feather.html">Feather Icons</a></li>
+										<li><a href="icon-ionic.html">Ionic Icons</a></li>
+										<li><a href="icon-material.html">Material Icons</a></li>
+										<li><a href="icon-pe7.html">Pe7 Icons</a></li>
+										<li><a href="icon-simpleline.html">Simpleline Icons</a></li>
+										<li><a href="icon-themify.html">Themify Icons</a></li>
+										<li><a href="icon-weather.html">Weather Icons</a></li>
+										<li><a href="icon-typicon.html">Typicon Icons</a></li>
+										<li><a href="icon-flag.html">Flag Icons</a></li>
+									</ul>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-map-2"></i>
+										<span>Maps</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li>
+											<a href="maps-vector.html">Vector</a>
+										</li>
+										<li>
+											<a href="maps-leaflet.html">Leaflet</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li class="menu-title"><span>Extras</span></li>
+						<li>
+							<ul>
+								<li>
+									<a href="javascript:void(0);"><i class="ti ti-file-shredder"></i><span>Documentation</span></a>
+								</li>
+								<li>
+									<a href="javascript:void(0);"><i class="ti ti-exchange"></i><span>Changelog</span></a>
+								</li>
+								<li class="submenu">
+									<a href="javascript:void(0);">
+										<i class="ti ti-menu-2"></i><span>Multi Level</span>
+										<span class="menu-arrow"></span>
+									</a>
+									<ul>
+										<li><a href="javascript:void(0);">Multilevel 1</a></li>
+										<li class="submenu submenu-two">
+											<a href="javascript:void(0);">Multilevel 2<span
+													class="menu-arrow inside-submenu"></span></a>
+											<ul>
+												<li><a href="javascript:void(0);">Multilevel 2.1</a></li>
+												<li class="submenu submenu-two submenu-three">
+													<a href="javascript:void(0);">Multilevel 2.2<span
+															class="menu-arrow inside-submenu inside-submenu-two"></span></a>
+													<ul>
+														<li><a href="javascript:void(0);">Multilevel 2.2.1</a></li>
+														<li><a href="javascript:void(0);">Multilevel 2.2.2</a></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li><a href="javascript:void(0);">Multilevel 3</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Sidebar -->
+
+		<!-- Page Wrapper -->
+		<div class="page-wrapper">
+			<div class="content pb-0 me-4">
+				<div class="page-header">
+					<div class="page-title">
+						<h3>Nav & Tabs</h3>
+					</div>
+				</div>
+
+				<!-- Line Tabs -->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5 class="card-title">Top line tabs</h5>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs nav-tabs-top mb-3">
+									<li class="nav-item"><a class="nav-link active" href="#top-tab1"
+											data-bs-toggle="tab">Home</a></li>
+									<li class="nav-item"><a class="nav-link" href="#top-tab2"
+											data-bs-toggle="tab">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="#top-tab3"
+											data-bs-toggle="tab">Messages</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active" id="top-tab1">
+										Tab content 1
+									</div>
+									<div class="tab-pane" id="top-tab2">
+										Tab content 2
+									</div>
+									<div class="tab-pane" id="top-tab3">
+										Tab content 3
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5 class="card-title">Top line justified</h5>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs nav-tabs-top nav-justified mb-3">
+									<li class="nav-item"><a class="nav-link active" href="#top-justified-tab1"
+											data-bs-toggle="tab">Home</a></li>
+									<li class="nav-item"><a class="nav-link" href="#top-justified-tab2"
+											data-bs-toggle="tab">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="#top-justified-tab3"
+											data-bs-toggle="tab">Messages</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active" id="top-justified-tab1">
+										Tab content 1
+									</div>
+									<div class="tab-pane" id="top-justified-tab2">
+										Tab content 2
+									</div>
+
+									<div class="tab-pane" id="top-justified-tab3">
+										Tab content 3
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Line Tabs -->
+
+				<!-- Bottom Line Tabs -->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5 class="card-title">Bottom line tabs</h5>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs nav-tabs-bottom mb-3">
+									<li class="nav-item"><a class="nav-link active" href="#bottom-tab1"
+											data-bs-toggle="tab">Home</a></li>
+									<li class="nav-item"><a class="nav-link" href="#bottom-tab2"
+											data-bs-toggle="tab">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="#bottom-tab3"
+											data-bs-toggle="tab">Messages</a></li>
+								</ul>
+
+								<div class="tab-content">
+									<div class="tab-pane show active" id="bottom-tab1">
+										Tab content 1
+									</div>
+									<div class="tab-pane" id="bottom-tab2">
+										Tab content 2
+									</div>
+									<div class="tab-pane" id="bottom-tab3">
+										Tab content 3
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5 class="card-title">Bottom line justified</h5>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs nav-tabs-bottom nav-justified mb-3">
+									<li class="nav-item"><a class="nav-link active" href="#bottom-justified-tab1"
+											data-bs-toggle="tab">Home</a></li>
+									<li class="nav-item"><a class="nav-link" href="#bottom-justified-tab2"
+											data-bs-toggle="tab">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="#bottom-justified-tab3"
+											data-bs-toggle="tab">Messages</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active" id="bottom-justified-tab1">
+										Tab content 1
+									</div>
+									<div class="tab-pane" id="bottom-justified-tab2">
+										Tab content 2
+									</div>
+									<div class="tab-pane" id="bottom-justified-tab3">
+										Tab content 3
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Bottom Line Tabs -->
+
+				<!-- Solid Tabs -->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5 class="card-title">Solid tabs</h5>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs nav-tabs-solid mb-3">
+									<li class="nav-item"><a class="nav-link active" href="#solid-tab1"
+											data-bs-toggle="tab">Home</a></li>
+									<li class="nav-item"><a class="nav-link" href="#solid-tab2"
+											data-bs-toggle="tab">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="#solid-tab3"
+											data-bs-toggle="tab">Messages</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active" id="solid-tab1">
+										Tab content 1
+									</div>
+									<div class="tab-pane" id="solid-tab2">
+										Tab content 2
+									</div>
+									<div class="tab-pane" id="solid-tab3">
+										Tab content 3
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5 class="card-title">Solid justified</h5>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs nav-tabs-solid nav-justified mb-3">
+									<li class="nav-item"><a class="nav-link active" href="#solid-justified-tab1"
+											data-bs-toggle="tab">Home</a></li>
+									<li class="nav-item"><a class="nav-link" href="#solid-justified-tab2"
+											data-bs-toggle="tab">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="#solid-justified-tab3"
+											data-bs-toggle="tab">Messages</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active" id="solid-justified-tab1">
+										Tab content 1
+									</div>
+									<div class="tab-pane" id="solid-justified-tab2">
+										Tab content 2
+									</div>
+									<div class="tab-pane" id="solid-justified-tab3">
+										Tab content 3
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Solid Tabs -->
+
+				<!-- Solid Rounded -->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5 class="card-title">Solid Rounded</h5>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded mb-3">
+									<li class="nav-item"><a class="nav-link active" href="#solid-rounded-tab1"
+											data-bs-toggle="tab">Home</a></li>
+									<li class="nav-item"><a class="nav-link" href="#solid-rounded-tab2"
+											data-bs-toggle="tab">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="#solid-rounded-tab3"
+											data-bs-toggle="tab">Messages</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active" id="solid-rounded-tab1">
+										Tab content 1
+									</div>
+									<div class="tab-pane" id="solid-rounded-tab2">
+										Tab content 2
+									</div>
+									<div class="tab-pane" id="solid-rounded-tab3">
+										Tab content 3
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5 class="card-title">Rounded justified</h5>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified mb-3">
+									<li class="nav-item"><a class="nav-link active" href="#solid-rounded-justified-tab1"
+											data-bs-toggle="tab">Home</a></li>
+									<li class="nav-item"><a class="nav-link" href="#solid-rounded-justified-tab2"
+											data-bs-toggle="tab">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="#solid-rounded-justified-tab3"
+											data-bs-toggle="tab">Messages</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active" id="solid-rounded-justified-tab1">
+										Tab content 1
+									</div>
+									<div class="tab-pane" id="solid-rounded-justified-tab2">
+										Tab content 2
+									</div>
+									<div class="tab-pane" id="solid-rounded-justified-tab3">
+										Tab content 3
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Solid Rounded -->
+
+				<!-- Tabs -->
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Static Tabs
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs border-bottom-0">
+									<li class="nav-item">
+										<a class="nav-link active" aria-current="page"
+											href="javascript:void(0);">Active</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="javascript:void(0);">Link</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="javascript:void(0);">Link</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link disabled">Disabled</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Static Pills
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-pills">
+									<li class="nav-item">
+										<a class="nav-link active" aria-current="page"
+											href="javascript:void(0);">Active</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="javascript:void(0);">Link</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="javascript:void(0);">Link</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link disabled">Disabled</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Tabs -->
+
+				<!-- Default Nav Tabs -->
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Default Nav Tabs
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs mb-3 border-bottom-0" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" data-bs-toggle="tab" role="tab" href="#home1"
+											aria-selected="true">Home</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" href="#about1"
+											aria-selected="false">About</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" href="#service1"
+											aria-selected="false">Services</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" href="#license1"
+											aria-selected="false">License</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active text-muted" id="home1" role="tabpanel">
+										<b>Lorem Ipsum is simply dummy</b> text of the printing and typesetting
+										industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+										1500s, when an unknown printer took a galley of type and scrambled it to make a
+										type specimen book. It has survived not only five centuries.
+									</div>
+									<div class="tab-pane text-muted" id="about1" role="tabpanel">
+										Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
+										in a piece of classical Latin literature from 45 BC, <b>Making it over 2000
+											years old</b>. Richard McClintock, a Latin professor at Hampden-Sydney
+										College in Virginia, looked up one of the more obscure Latin words, consectetur.
+									</div>
+									<div class="tab-pane text-muted" id="service1" role="tabpanel">
+										There are many variations of passages of <b>Lorem Ipsum available</b>, but the
+										majority have suffered alteration in some form, by injected humour, or
+										randomised words which don't look even slightly believable. If you are going to
+										use a passage of Lorem Ipsum, you need to be sure there isn't anything.
+									</div>
+									<div class="tab-pane text-muted" id="license1" role="tabpanel">
+										It is a long established fact that a reader will be distracted by the
+										<b><i>Readable content</i></b> of a page when looking at its layout. The point
+										of using Lorem Ipsum is that it has a more-or-less normal distribution of
+										letters, as opposed to using 'Content here, content here', making it look like
+										readable English.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Justified Nav Tabs
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs mb-3 nav-justified nav-style-1 d-sm-flex d-block"
+									role="tablist">
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" href="#home1-justified"
+											aria-selected="false">Home</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" href="#about1-justified"
+											aria-selected="false">About</a>
+									</li>
+									<li class="nav-item active">
+										<a class="nav-link active" data-bs-toggle="tab" role="tab"
+											href="#service1-justified" aria-selected="true">Services</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" href="#license1-justified"
+											aria-selected="false">License</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane text-muted" id="home1-justified" role="tabpanel">
+										Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
+										in a piece of classical Latin literature from 45 BC, <b>Making it over 2000
+											years old</b>. Richard McClintock, a Latin professor at Hampden-Sydney
+										College in Virginia, looked up one of the more obscure Latin words, consectetur.
+									</div>
+									<div class="tab-pane text-muted" id="about1-justified" role="tabpanel">
+										<b>Lorem Ipsum is simply dummy</b> text of the printing and typesetting
+										industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+										1500s, when an unknown printer took a galley of type and scrambled it to make a
+										type specimen book. It has survived not only five centuries.
+									</div>
+									<div class="tab-pane show active text-muted" id="service1-justified"
+										role="tabpanel">
+										There are many variations of passages of <b>Lorem Ipsum available</b>, but the
+										majority have suffered alteration in some form, by injected humour, or
+										randomised words which don't look even slightly believable. If you are going to
+										use a passage of Lorem Ipsum, you need to be sure there isn't anything.
+									</div>
+									<div class="tab-pane text-muted" id="license1-justified" role="tabpanel">
+										It is a long established fact that a reader will be distracted by the
+										<b><i>Readable content</i></b> of a page when looking at its layout. The point
+										of using Lorem Ipsum is that it has a more-or-less normal distribution of
+										letters, as opposed to using 'Content here, content here', making it look like
+										readable English.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Default Nav Tabs -->
+
+				<!-- Tabs -->
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Basic Pill Tabs With Links
+								</div>
+							</div>
+							<div class="card-body">
+								<nav class="nav nav-style-1 nav-pills mb-3" role="tablist">
+									<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+										href="#nav-products" aria-selected="false">Products</a>
+									<a class="nav-link active" data-bs-toggle="tab" role="tab" href="#nav-cart"
+										aria-selected="true">Cart <span
+											class="badge bg-secondary ms-1 rounded-pill">32</span></a>
+									<a class="nav-link" data-bs-toggle="tab" role="tab" href="#nav-orders"
+										aria-selected="false">Orders <span
+											class="badge bg-success ms-1 rounded-pill">4</span></a>
+									<a class="nav-link" data-bs-toggle="tab" role="tab" href="#nav-offers"
+										aria-selected="false">Offers</a>
+								</nav>
+								<div class="tab-content">
+									<div class="tab-pane text-muted" id="nav-products" role="tabpanel">
+										How travel coupons make you a better lover. Why cultural solutions are the new
+										black. Why mom was right about travel insurances. How family trip ideas can help
+										you predict the future. <b>How carnival cruises make you a better lover</b>. Why
+										you'll never succeed at daily deals. 11 ways cheapest flights can find you the
+										love of your life. The complete beginner's guide to mission trips. If you read
+										one article about cultural notes read this one. Why you shouldn't eat vacation
+										package in bed.
+									</div>
+									<div class="tab-pane show active text-muted" id="nav-cart" role="tabpanel">
+										How hotel deals can help you live a better life. <b>How celebrity cruises</b>
+										aren't as bad as you think. How cultural solutions can help you predict the
+										future. How to cheat at dog friendly hotels and get away with it. 17 problems
+										with summer activities. How to cheat at travel agents and get away with it. How
+										not knowing family trip ideas makes you a rookie. What everyone is saying about
+										daily deals. How twitter can teach you about carnival cruises. How to start
+										using cultural solutions.
+									</div>
+									<div class="tab-pane text-muted" id="nav-orders" role="tabpanel">
+										Unbelievable healthy snack success stories. 12 facts about safe food handling
+										tips that will impress your friends. Restaurant weeks by the numbers. Will
+										mexican food ever rule the world? The 10 best thai restaurant youtube videos.
+										How restaurant weeks can make you sick. The complete beginner's guide to cooking
+										healthy food. Unbelievable food stamp success stories. How whole foods markets
+										are making the world a better place. 16 things that won't happen in dish
+										reviews.
+									</div>
+									<div class="tab-pane text-muted" id="nav-offers" role="tabpanel">
+										Why delicious magazines are killing you. Why our world would end if restaurants
+										disappeared. Why restaurants are on crack about restaurants. How restaurants are
+										making the world a better place. 8 great articles about minute meals. Why our
+										world would end if healthy snacks disappeared. Why the world would end without
+										mexican food. The evolution of chef uniforms. How not knowing food processors
+										makes you a rookie. Why whole foods markets beat peanut butter on pancakes.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Justified Pill Tabs With Links
+								</div>
+							</div>
+							<div class="card-body">
+								<nav class="nav nav-style-6 nav-pills mb-3 nav-justified d-sm-flex d-block"
+									role="tablist">
+									<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+										href="#nav-products-justified" aria-selected="false">Products</a>
+									<a class="nav-link active" data-bs-toggle="tab" role="tab"
+										href="#nav-cart-justified" aria-selected="true">Cart <span
+											class="badge bg-info-transparent ms-1">Full</span></a>
+									<a class="nav-link" data-bs-toggle="tab" role="tab" href="#nav-orders-justified"
+										aria-selected="false">Orders </a>
+									<a class="nav-link" data-bs-toggle="tab" role="tab" href="#nav-offers-justified"
+										aria-selected="false">Offers <span
+											class="badge bg-warning-transparent ms-1">7</span></a>
+								</nav>
+								<div class="tab-content">
+									<div class="tab-pane text-muted" id="nav-products-justified" role="tabpanel">
+										How hotel deals can help you live a better life. <b>How celebrity cruises</b>
+										aren't as bad as you think. How cultural solutions can help you predict the
+										future. How to cheat at dog friendly hotels and get away with it. 17 problems
+										with summer activities. How to cheat at travel agents and get away with it. How
+										not knowing family trip ideas makes you a rookie. What everyone is saying about
+										daily deals. How twitter can teach you about carnival cruises. How to start
+										using cultural solutions.
+									</div>
+									<div class="tab-pane show active text-muted" id="nav-cart-justified"
+										role="tabpanel">
+										How travel coupons make you a better lover. Why cultural solutions are the new
+										black. Why mom was right about travel insurances. How family trip ideas can help
+										you predict the future. <b>How carnival cruises make you a better lover</b>. Why
+										you'll never succeed at daily deals. 11 ways cheapest flights can find you the
+										love of your life. The complete beginner's guide to mission trips. If you read
+										one article about cultural notes read this one. Why you shouldn't eat vacation
+										package in bed.
+									</div>
+									<div class="tab-pane text-muted" id="nav-orders-justified" role="tabpanel">
+										Unbelievable healthy snack success stories. 12 facts about safe food handling
+										tips that will impress your friends. Restaurant weeks by the numbers. Will
+										mexican food ever rule the world? The 10 best thai restaurant youtube videos.
+										How restaurant weeks can make you sick. The complete beginner's guide to cooking
+										healthy food. Unbelievable food stamp success stories. How whole foods markets
+										are making the world a better place. 16 things that won't happen in dish
+										reviews.
+									</div>
+									<div class="tab-pane text-muted" id="nav-offers-justified" role="tabpanel">
+										Why delicious magazines are killing you. Why our world would end if restaurants
+										disappeared. Why restaurants are on crack about restaurants. How restaurants are
+										making the world a better place. 8 great articles about minute meals. Why our
+										world would end if healthy snacks disappeared. Why the world would end without
+										mexican food. The evolution of chef uniforms. How not knowing food processors
+										makes you a rookie. Why whole foods markets beat peanut butter on pancakes.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Tabs -->
+
+				<!-- Vertical Alignment -->
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Vertical alignment with lists
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row">
+									<div class="col-xl-3">
+										<ul class="nav nav-tabs flex-column nav-style-4" role="tablist">
+											<li class="nav-item">
+												<a class="nav-link active" data-bs-toggle="tab" role="tab"
+													aria-current="page" href="#home-vertical"
+													aria-selected="true">Home</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+													href="#about-vertical" aria-selected="true">About</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+													href="#services-vertical" aria-selected="true">Services</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+													href="#contacts-vertical" aria-selected="true">Contacts</a>
+											</li>
+										</ul>
+									</div>
+									<div class="col-xl-9">
+										<div class="tab-content">
+											<div class="tab-pane show active text-muted" id="home-vertical"
+												role="tabpanel">
+												How hotel deals can help you live a better life. <b>How celebrity
+													cruises</b> aren't as bad as you think. How cultural solutions
+												can help you predict the future. How to cheat at dog friendly hotels
+												and get away with it. 17 problems with summer activities. How to
+												cheat at travel agents and get away with it. How not knowing family
+												trip ideas makes you a rookie. What everyone is saying about daily
+												deals.
+											</div>
+											<div class="tab-pane text-muted" id="about-vertical" role="tabpanel">
+												How travel coupons make you a better lover. Why cultural solutions
+												are the new black. Why mom was right about travel insurances. How
+												family trip ideas can help you predict the future. <b>How carnival
+													cruises make you a better lover</b>. Why you'll never succeed at
+												daily deals. 11 ways cheapest flights can find you the love of your
+												life. The complete beginner's guide to mission trips.
+											</div>
+											<div class="tab-pane text-muted" id="services-vertical" role="tabpanel">
+												Unbelievable healthy snack success stories. 12 facts about safe food
+												handling tips that will impress your friends. Restaurant weeks by
+												the numbers. Will mexican food ever rule the world? The 10 best thai
+												restaurant youtube videos. How restaurant weeks can make you sick.
+												The complete beginner's guide to cooking healthy food. Unbelievable
+												food stamp success stories.
+											</div>
+											<div class="tab-pane text-muted" id="contacts-vertical" role="tabpanel">
+												Why delicious magazines are killing you. Why our world would end if
+												restaurants disappeared. Why restaurants are on crack about
+												restaurants. How restaurants are making the world a better place. 8
+												great articles about minute meals. Why our world would end if
+												healthy snacks disappeared. Why the world would end without mexican
+												food. The evolution of chef uniforms.
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Vertical alignment with links
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row">
+									<div class="col-xl-3">
+										<nav class="nav nav-tabs flex-column nav-style-5" role="tablist">
+											<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+												href="#home-vertical-link" aria-selected="false"><i
+													class="fa-solid fa-house me-2 align-middle d-inline-block"></i>Home</a>
+											<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+												href="#about-vertical-link" aria-selected="false"><i
+													class="fa-solid fa-box-archive me-2 align-middle d-inline-block"></i>About</a>
+											<a class="nav-link active" data-bs-toggle="tab" role="tab"
+												aria-current="page" href="#services-vertical-link"
+												aria-selected="true"><i
+													class="fa-solid fa-building-columns me-2 align-middle d-inline-block"></i>Services</a>
+											<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+												href="#contacts-vertical-link" aria-selected="false"><i
+													class="fa-regular fa-address-book me-2 align-middle d-inline-block"></i>Contacts</a>
+										</nav>
+									</div>
+									<div class="col-xl-9">
+										<div class="tab-content">
+											<div class="tab-pane text-muted" id="home-vertical-link" role="tabpanel">
+												How hotel deals can help you live a better life. <b>How celebrity
+													cruises</b> aren't as bad as you think. How cultural solutions
+												can help you predict the future. How to cheat at dog friendly hotels
+												and get away with it. 17 problems with summer activities. How to
+												cheat at travel agents and get away with it. How not knowing family
+												trip ideas makes you a rookie. What everyone is saying about daily
+												deals.
+											</div>
+											<div class="tab-pane text-muted" id="about-vertical-link" role="tabpanel">
+												How travel coupons make you a better lover. Why cultural solutions
+												are the new black. Why mom was right about travel insurances. How
+												family trip ideas can help you predict the future. <b>How carnival
+													cruises make you a better lover</b>. Why you'll never succeed at
+												daily deals. 11 ways cheapest flights can find you the love of your
+												life. The complete beginner's guide to mission trips.
+											</div>
+											<div class="tab-pane show active text-muted" id="services-vertical-link"
+												role="tabpanel">
+												Unbelievable healthy snack success stories. 12 facts about safe food
+												handling tips that will impress your friends. Restaurant weeks by
+												the numbers. <b><i>Will mexican food ever rule the world? The 10 best
+														thai
+														restaurant youtube videos</i></b>. How restaurant weeks can make
+												you sick.
+												The complete beginner's guide to cooking healthy food. Unbelievable
+												food stamp success stories.
+											</div>
+											<div class="tab-pane text-muted" id="contacts-vertical-link"
+												role="tabpanel">
+												Why delicious magazines are killing you. Why our world would end if
+												restaurants disappeared. Why restaurants are on crack about
+												restaurants. How restaurants are making the world a better place. 8
+												great articles about minute meals. Why our world would end if
+												healthy snacks disappeared. Why the world would end without mexican
+												food. The evolution of chef uniforms.
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Vertical Alignment -->
+
+				<!-- Tab Styles -->
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Center Aligned Nav
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-pills justify-content-center nav-style-2 mb-3" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#home-center" aria-selected="true">Home</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#about-center" aria-selected="false">About</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#services-center" aria-selected="false">Services</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#contacts-center" aria-selected="false">Contacts</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active text-muted" id="home-center" role="tabpanel">
+										How travel coupons make you a better lover. Why cultural solutions are the new
+										black. Why mom was right about travel insurances. How family trip ideas can help
+										you predict the future. <b>How carnival cruises make you a better lover</b>. Why
+										you'll never succeed at daily deals. 11 ways cheapest flights can find you the
+										love of your life. The complete beginner's guide to mission trips. If you read
+										one article about cultural notes read this one. Why you shouldn't eat vacation
+										package in bed.
+									</div>
+									<div class="tab-pane text-muted" id="about-center" role="tabpanel">
+										How hotel deals can help you live a better life. <b>How celebrity cruises</b>
+										aren't as bad as you think. How cultural solutions can help you predict the
+										future. How to cheat at dog friendly hotels and get away with it. 17 problems
+										with summer activities. How to cheat at travel agents and get away with it. How
+										not knowing family trip ideas makes you a rookie. What everyone is saying about
+										daily deals. How twitter can teach you about carnival cruises. How to start
+										using cultural solutions.
+									</div>
+									<div class="tab-pane text-muted" id="services-center" role="tabpanel">
+										Unbelievable healthy snack success stories. 12 facts about safe food handling
+										tips that will impress your friends. Restaurant weeks by the numbers. Will
+										mexican food ever rule the world? The 10 best thai restaurant youtube videos.
+										How restaurant weeks can make you sick. The complete beginner's guide to cooking
+										healthy food. Unbelievable food stamp success stories. How whole foods markets
+										are making the world a better place. 16 things that won't happen in dish
+										reviews.
+									</div>
+									<div class="tab-pane text-muted" id="contacts-center" role="tabpanel">
+										Why delicious magazines are killing you. Why our world would end if restaurants
+										disappeared. Why restaurants are on crack about restaurants. How restaurants are
+										making the world a better place. 8 great articles about minute meals. Why our
+										world would end if healthy snacks disappeared. Why the world would end without
+										mexican food. The evolution of chef uniforms. How not knowing food processors
+										makes you a rookie. Why whole foods markets beat peanut butter on pancakes.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Right Aligned Nav
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-pills justify-content-end nav-style-3 mb-3" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#home-right" aria-selected="true">Home</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#about-right" aria-selected="true">About</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#services-right" aria-selected="true">Services</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#contacts-right" aria-selected="true">Contacts</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane text-muted" id="home-right" role="tabpanel">
+										How travel coupons make you a better lover. Why cultural solutions are the new
+										black. Why mom was right about travel insurances. How family trip ideas can help
+										you predict the future. <b>How carnival cruises make you a better lover</b>. Why
+										you'll never succeed at daily deals. 11 ways cheapest flights can find you the
+										love of your life. The complete beginner's guide to mission trips. If you read
+										one article about cultural notes read this one. Why you shouldn't eat vacation
+										package in bed.
+									</div>
+									<div class="tab-pane show active text-muted" id="about-right" role="tabpanel">
+										How hotel deals can help you live a better life. <b>How celebrity cruises</b>
+										aren't as bad as you think. How cultural solutions can help you predict the
+										future. How to cheat at dog friendly hotels and get away with it. 17 problems
+										with summer activities. How to cheat at travel agents and get away with it. How
+										not knowing family trip ideas makes you a rookie. What everyone is saying about
+										daily deals. How twitter can teach you about carnival cruises. How to start
+										using cultural solutions.
+									</div>
+									<div class="tab-pane text-muted" id="services-right" role="tabpanel">
+										Unbelievable healthy snack success stories. 12 facts about safe food handling
+										tips that will impress your friends. Restaurant weeks by the numbers. Will
+										mexican food ever rule the world? The 10 best thai restaurant youtube videos.
+										How restaurant weeks can make you sick. The complete beginner's guide to cooking
+										healthy food. Unbelievable food stamp success stories. How whole foods markets
+										are making the world a better place. 16 things that won't happen in dish
+										reviews.
+									</div>
+									<div class="tab-pane text-muted" id="contacts-right" role="tabpanel">
+										Why delicious magazines are killing you. Why our world would end if restaurants
+										disappeared. Why restaurants are on crack about restaurants. How restaurants are
+										making the world a better place. 8 great articles about minute meals. Why our
+										world would end if healthy snacks disappeared. Why the world would end without
+										mexican food. The evolution of chef uniforms. How not knowing food processors
+										makes you a rookie. Why whole foods markets beat peanut butter on pancakes.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--/Tab Styles -->
+
+				<!-- Tab Styles -->
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header d-flex align-items-center flex-wrap justify-content-between">
+								<div class="card-title">
+									Header Tabs
+								</div>
+								<div>
+									<ul class="nav nav-tabs justify-content-end nav-tabs-header mb-0" role="tablist">
+										<li class="nav-item">
+											<a class="nav-link active" data-bs-toggle="tab" role="tab"
+												aria-current="page" href="#home-header" aria-selected="true">Home</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+												href="#about-header" aria-selected="true">About</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+												href="#services-header" aria-selected="true">Services</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="tab-content">
+									<div class="tab-pane show active text-muted" id="home-header" role="tabpanel">
+										<ul class="mb-0">
+											<li class="mb-2">
+												How hotel deals can help you live a better life. <b>How celebrity
+													cruises</b> aren't as bad as you think. How cultural solutions
+												can help you predict the future. How to cheat at dog friendly hotels
+												and get away with it. 17 problems with summer activities. How to
+												cheat at travel agents and get away with it. How not knowing family
+												trip ideas makes you a rookie. What everyone is saying about daily
+												deals.
+											</li>
+											<li>
+												How travel coupons make you a better lover. Why cultural solutions
+												are the new black. Why mom was header about travel insurances. How
+												family trip ideas can help you predict the future. <b>How carnival
+													cruises make you a better lover</b>. Why you'll never succeed at
+												daily deals. 11 ways cheapest flights can find you the love of your
+												life. The complete beginner's guide to mission trips.
+											</li>
+										</ul>
+									</div>
+									<div class="tab-pane text-muted" id="about-header" role="tabpanel">
+										<ul class="mb-0">
+											<li class="mb-2">
+												How travel coupons make you a better lover. Why cultural solutions
+												are the new black. Why mom was header about travel insurances. How
+												family trip ideas can help you predict the future. <b>How carnival
+													cruises make you a better lover</b>. Why you'll never succeed at
+												daily deals. 11 ways cheapest flights can find you the love of your
+												life. The complete beginner's guide to mission trips.
+											</li>
+											<li>
+												How hotel deals can help you live a better life. <b>How celebrity
+													cruises</b> aren't as bad as you think. How cultural solutions
+												can help you predict the future. How to cheat at dog friendly hotels
+												and get away with it. 17 problems with summer activities. How to
+												cheat at travel agents and get away with it. How not knowing family
+												trip ideas makes you a rookie. What everyone is saying about daily
+												deals.
+											</li>
+										</ul>
+									</div>
+									<div class="tab-pane text-muted" id="services-header" role="tabpanel">
+										<ul class="mb-0">
+											<li class="mb-2">
+												It is a long established fact that a reader will be distracted by the
+												readable content of a page when looking at its layout. The point of
+												using Lorem Ipsum is that it has a more-or-less normal distribution of
+												letters, as opposed to using 'Content here, content here', making it
+												look like readable English. Many desktop publishing packages and web
+												page editors now use Lorem Ipsum as their default model text.
+											</li>
+											<li>
+												How travel coupons make you a better lover. Why cultural solutions
+												are the new black. Why mom was header about travel insurances. How
+												family trip ideas can help you predict the future. <b>How carnival
+													cruises make you a better lover</b>. Why you'll never succeed at
+												daily deals. 11 ways cheapest flights can find you the love of your
+												life. The complete beginner's guide to mission trips.
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Footer Tabs
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="tab-content">
+									<div class="tab-pane show active text-muted" id="home-footer" role="tabpanel">
+										How travel coupons make you a better lover. Why cultural solutions are the new
+										black. Why mom was right about travel insurances. How family trip ideas can help
+										you predict the future. <b>How carnival cruises make you a better lover</b>. Why
+										you'll never succeed at daily deals. 11 ways cheapest flights can find you the
+										love of your life. The complete beginner's guide to mission trips. If you read
+										one article about cultural notes read this one. Why you shouldn't eat vacation
+										package in bed.
+									</div>
+									<div class="tab-pane text-muted" id="about-footer" role="tabpanel">
+										How hotel deals can help you live a better life. <b>How celebrity cruises</b>
+										aren't as bad as you think. How cultural solutions can help you predict the
+										future. How to cheat at dog friendly hotels and get away with it. 17 problems
+										with summer activities. How to cheat at travel agents and get away with it. How
+										not knowing family trip ideas makes you a rookie. What everyone is saying about
+										daily deals. How twitter can teach you about carnival cruises. How to start
+										using cultural solutions.
+									</div>
+									<div class="tab-pane text-muted" id="services-footer" role="tabpanel">
+										Unbelievable healthy snack success stories. 12 facts about safe food handling
+										tips that will impress your friends. Restaurant weeks by the numbers. Will
+										mexican food ever rule the world? The 10 best thai restaurant youtube videos.
+										How restaurant weeks can make you sick. The complete beginner's guide to cooking
+										healthy food. Unbelievable food stamp success stories. How whole foods markets
+										are making the world a better place. 16 things that won't happen in dish
+										reviews.
+									</div>
+								</div>
+							</div>
+							<div class="card-footer">
+								<ul class="nav nav-tabs justify-content-end nav-tabs-footer mb-0" role="tablist">
+									<li class="nav-item m-1">
+										<a class="nav-link active" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#home-footer" aria-selected="true">Home</a>
+									</li>
+									<li class="nav-item m-1">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#about-footer" aria-selected="true">About</a>
+									</li>
+									<li class="nav-item m-1">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#services-footer" aria-selected="true">Services</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Tab Styles -->
+
+				<!-- Tab Styles -->
+				<div class="row">
+					<div class="col-xxl-4 col-xl-12">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Tab Style-1
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs tab-style-1 d-sm-flex d-block" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" data-bs-toggle="tab" data-bs-target="#orders"
+											aria-current="page" href="#orders">Orders</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" data-bs-target="#accepted"
+											href="#accepted">Accepted</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" data-bs-target="#declined"
+											href="#declined">Declined</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane active" id="orders" role="tabpanel">
+										<div class="text-muted"><b>Lorem Ipsum is simply dummy text of the
+												printing</b> and typesetting industry. Lorem Ipsum has been the
+											industry's standard dummy text ever since the 1500s, when an unknown
+											printer took a galley of type and scrambled.</div>
+									</div>
+									<div class="tab-pane" id="accepted" role="tabpanel">
+										<div class="text-muted">Many desktop publishing packages and web page
+											editors now use Lorem Ipsum as their default model text, and a search
+											for <b>'lorem ipsum'</b> will uncover many web sites still in their
+											infancy. Various versions have evolved over the years.</div>
+									</div>
+									<div class="tab-pane" id="declined" role="tabpanel">
+										<div class="text-muted">There are many variations of passages of Lorem
+											Ipsum available, but the majority have suffered alteration in some form,
+											<b>by injected humour</b>, or randomised words which don't look even
+											slightly believable
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xxl-4 col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Tab Style-2
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs tab-style-2 nav-justified mb-3 d-sm-flex d-block" id="myTab1"
+									role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="order-tab" data-bs-toggle="tab"
+											data-bs-target="#order-tab-pane" type="button" role="tab"
+											aria-controls="home-tab-pane" aria-selected="true"><i
+												class="feather-gift me-1 align-middle"></i>Ordered</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="confirmed-tab" data-bs-toggle="tab"
+											data-bs-target="#confirm-tab-pane" type="button" role="tab"
+											aria-controls="profile-tab-pane" aria-selected="false"><i
+												class="feather-check me-1 align-middle"></i>Confirmed</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="shipped-tab" data-bs-toggle="tab"
+											data-bs-target="#shipped-tab-pane" type="button" role="tab"
+											aria-controls="contact-tab-pane" aria-selected="false"><i
+												class="feather-shopping-bag me-1 align-middle"></i>Shipped</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="delivered-tab" data-bs-toggle="tab"
+											data-bs-target="#delivered-tab-pane" type="button" role="tab"
+											aria-selected="false"><i
+												class="feather-truck me-1 align-middle"></i>Delivery</button>
+									</li>
+								</ul>
+								<div class="tab-content" id="myTabContent">
+									<div class="tab-pane fade text-muted" id="order-tab-pane" role="tabpanel"
+										aria-labelledby="home-tab-1" tabindex="0">
+										<ul class="ps-3 mb-0">
+											<li>Contrary to popular belief, Lorem Ipsum is not simply random text. It
+												has roots in a piece of classical Latin literature from 45 BC, making it
+												over 2000 years old. Richard McClintock.</li>
+										</ul>
+									</div>
+									<div class="tab-pane fade show active text-muted" id="confirm-tab-pane"
+										role="tabpanel" aria-labelledby="profile-tab-2" tabindex="0">
+										<ul class="ps-3 mb-0">
+											<li>As opposed to using 'Content here, content here', making it look like
+												readable English. Many desktop publishing packages and web page editors
+												now use Lorem Ipsum as their default model text, and a search.</li>
+										</ul>
+									</div>
+									<div class="tab-pane fade text-muted" id="shipped-tab-pane" role="tabpanel"
+										aria-labelledby="contact-tab" tabindex="0">
+										<ul class="ps-3 mb-0">
+											<li>but also the leap into electronic typesetting, remaining essentially
+												unchanged. It was popularised in the 1960s with the release of Letraset
+												sheets containing Lorem Ipsum passages, and more recently.</li>
+										</ul>
+									</div>
+									<div class="tab-pane fade text-muted" id="delivered-tab-pane" role="tabpanel"
+										tabindex="0">
+										<ul class="list-unstyled mb-0">
+											<li>A Latin professor at Hampden-Sydney College in Virginia, looked up one
+												of the more obscure Latin words, consectetur, from a Lorem Ipsum
+												passage, and going through the cites of the word in classical
+												literature.</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xxl-4 col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Tab-Style-3
+								</div>
+							</div>
+							<div class="card-body px-sm-4 px-2">
+								<ul class="nav nav-tabs justify-content-center mb-5 tab-style-3" id="myTab2"
+									role="tablist">
+									<li class="nav-item me-0" role="presentation">
+										<button class="nav-link active home py-1" id="home-tab-1" data-bs-toggle="tab"
+											data-bs-target="#home-tab-pane" type="button" role="tab"
+											aria-controls="home-tab-pane" aria-selected="true">Home</button>
+									</li>
+									<li class="nav-item me-0" role="presentation">
+										<button class="nav-link about py-1" id="profile-tab-2" data-bs-toggle="tab"
+											data-bs-target="#profile-tab-pane" type="button" role="tab"
+											aria-controls="profile-tab-pane" aria-selected="false">About</button>
+									</li>
+									<li class="nav-item me-0" role="presentation">
+										<button class="nav-link services py-1" id="contact-tab" data-bs-toggle="tab"
+											data-bs-target="#contact-tab-pane" type="button" role="tab"
+											aria-controls="contact-tab-pane" aria-selected="false">Services</button>
+									</li>
+								</ul>
+								<div class="tab-content" id="myTabContent1">
+									<div class="tab-pane fade show active text-muted" id="home-tab-pane" role="tabpanel"
+										aria-labelledby="home-tab-1" tabindex="0"><b>Lorem Ipsum is
+											simply dummy text of the printing</b> and typesetting industry. Lorem
+										Ipsum has been the industry's.</div>
+									<div class="tab-pane fade text-muted" id="profile-tab-pane" role="tabpanel"
+										aria-labelledby="profile-tab-2" tabindex="0">Many desktop
+										publishing packages as their default model text, and a search for <b>'lorem
+											ipsum'</b> will over the
+										years.</div>
+									<div class="tab-pane fade text-muted" id="contact-tab-pane" role="tabpanel"
+										aria-labelledby="contact-tab" tabindex="0">There, <b>by injected humour</b>, or
+										randomised
+										words which don't look even slightly believable.</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Tab Styles -->
+
+				<!--  Tab Styles -->
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Tab Style-4
+								</div>
+							</div>
+							<div class="card-body px-sm-4 px-2">
+								<nav>
+									<div class="nav nav-tabs nav-justified tab-style-4 d-flex" id="nav-tab"
+										role="tablist">
+										<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+											data-bs-target="#nav-home1" type="button" role="tab"
+											aria-selected="true">Home</button>
+										<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+											data-bs-target="#nav-profile1" type="button" role="tab"
+											aria-selected="false">Profile</button>
+										<button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
+											data-bs-target="#nav-contact1" type="button" role="tab"
+											aria-selected="false">Contact</button>
+									</div>
+								</nav>
+								<div class="tab-content" id="tab-style-4">
+									<div class="tab-pane show active" id="nav-home1" role="tabpanel"
+										aria-labelledby="nav-home-tab" tabindex="0">
+										<b>Lorem Ipsum is simply dummy</b> text of the printing and typesetting
+										industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+										1500s, when an unknown printer took a galley of type and scrambled it to make a
+										type specimen book. It has survived not only five centuries, but also the leap
+										into electronic typesetting, remaining essentially unchanged. It was popularised
+										in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+										passages, and more recently with desktop publishing software like Aldus
+										PageMaker including versions of Lorem Ipsum.
+									</div>
+									<div class="tab-pane" id="nav-profile1" role="tabpanel"
+										aria-labelledby="nav-profile-tab" tabindex="0">
+										It is a long established fact that a reader will be distracted by the readable
+										content of a page when looking at its layout. The point of using Lorem Ipsum is
+										that it has a more-or-less normal distribution of letters, as opposed to using
+										'Content here, content here', making it look like readable English. <b>Many
+											desktop publishing</b> packages and web page editors now use Lorem Ipsum as
+										their default model text, and a search for 'lorem ipsum' will uncover many web
+										sites still in their infancy. Various versions have evolved over the years,
+										sometimes by accident, sometimes on purpos, remaining essentially unchanged.
+									</div>
+									<div class="tab-pane" id="nav-contact1" role="tabpanel"
+										aria-labelledby="nav-contact-tab" tabindex="0">
+										There are many variations of passages of Lorem Ipsum available, but the majority
+										have suffered alteration in some form, by injected humour, or randomised words
+										which don't look even slightly believable. <b>If you are going</b> to use a
+										passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing
+										hidden in the middle of text. All the Lorem Ipsum generators on the Internet
+										tend to repeat predefined chunks as necessary, making this the first true
+										generator on the Internet. It uses a dictionary of over 200 Latin words,
+										combined with a handful of model sentence structures.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Tab Style-5
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-pills mb-3 nav-justified tab-style-5 d-sm-flex d-block"
+									id="pills-tab" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+											data-bs-target="#pills-home" type="button" role="tab"
+											aria-controls="pills-home" aria-selected="true">Home</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+											data-bs-target="#pills-profile" type="button" role="tab"
+											aria-controls="pills-profile" aria-selected="false">About</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
+											data-bs-target="#pills-contact" type="button" role="tab"
+											aria-controls="pills-contact" aria-selected="false">Services</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill"
+											data-bs-target="#pills-disabled" type="button" role="tab"
+											aria-controls="pills-disabled" aria-selected="false">Contacts</button>
+									</li>
+								</ul>
+								<div class="tab-content" id="pills-tabContent">
+									<div class="tab-pane show active text-muted" id="pills-home" role="tabpanel"
+										aria-labelledby="pills-home-tab" tabindex="0">
+										It is a long established fact that a reader will be distracted by the readable
+										content of a page when looking at its layout. The point of using Lorem Ipsum is
+										that it has a more-or-less normal distribution of letters, as opposed to using
+										'Content here, content here', making it look like readable English. <b>Many
+											desktop publishing</b> packages and web page editors now use Lorem Ipsum as
+										their default model text, and a search for 'lorem ipsum' will uncover many web
+										sites still in their infancy.
+									</div>
+									<div class="tab-pane text-muted" id="pills-profile" role="tabpanel"
+										aria-labelledby="pills-profile-tab" tabindex="0">
+										<b>Lorem Ipsum is simply dummy</b> text of the printing and typesetting
+										industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+										1500s, when an unknown printer took a galley of type and scrambled it to make a
+										type specimen book. It has survived not only five centuries, but also the leap
+										into electronic typesetting, remaining essentially unchanged. It was popularised
+										in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+										passages.
+									</div>
+									<div class="tab-pane text-muted" id="pills-contact" role="tabpanel"
+										aria-labelledby="pills-contact-tab" tabindex="0">
+										There are many variations of passages of Lorem Ipsum available, but the majority
+										have suffered alteration in some form, by injected humour, or randomised words
+										which don't look even slightly believable. <b>If you are going</b> to use a
+										passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing
+										hidden in the middle of text. All the Lorem Ipsum generators on the Internet
+										tend to repeat predefined chunks as necessary, making this the first true
+										generator on the Internet.
+									</div>
+									<div class="tab-pane text-muted" id="pills-disabled" role="tabpanel"
+										aria-labelledby="pills-disabled-tab" tabindex="0">
+										<b>Contrary to popular belief</b>, Contrary to popular belief, Lorem Ipsum is
+										not simply random text. It has roots in a piece of classical Latin literature
+										from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor
+										at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin
+										words, consectetur, from a Lorem Ipsum passage, and going through the cites of
+										the word in classical literature, discovered the undoubtable source. Lorem Ipsum
+										comes from sections.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Tab Styles -->
+
+				<!--  Tab Style-6 -->
+				<div class="row">
+					<div class="col-xl-4">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Tab Style-6
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs mb-3 tab-style-6" id="myTab-3" role="tablist">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="products-tab" data-bs-toggle="tab"
+											data-bs-target="#products-tab-pane" type="button" role="tab"
+											aria-controls="products-tab-pane" aria-selected="true"><i
+												class="feather-gift me-1 align-middle d-inline-block"></i>Products</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="sales-tab" data-bs-toggle="tab"
+											data-bs-target="#sales-tab-pane" type="button" role="tab"
+											aria-controls="sales-tab-pane" aria-selected="false"><i
+												class="feather-file me-1 align-middle d-inline-block"></i>Sales</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="profit-tab" data-bs-toggle="tab"
+											data-bs-target="#profit-tab-pane" type="button" role="tab"
+											aria-controls="profit-tab-pane" aria-selected="false"><i
+												class="feather-file-text me-1 align-middle d-inline-block"></i>Profit</button>
+									</li>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="expenses-tab" data-bs-toggle="tab"
+											data-bs-target="#expenses-tab-pane" type="button" role="tab"
+											aria-controls="expenses-tab-pane" aria-selected="false"><i
+												class="feather-file-minus me-1 align-middle d-inline-block"></i>Expenses</button>
+									</li>
+								</ul>
+								<div class="tab-content" id="myTabContent2">
+									<div class="tab-pane fade show active p-0 border-bottom-0" id="products-tab-pane"
+										role="tabpanel" aria-labelledby="products-tab" tabindex="0">
+										<div class="table-responsive">
+											<table class="table mb-0">
+												<thead>
+													<tr>
+														<th scope="col">Product</th>
+														<th scope="col">Name</th>
+														<th scope="col">Category</th>
+														<th scope="col">Price</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<th scope="row">
+															<span class="avatar avatar-sm">
+																<img src="assets/img/car/car-01.jpg" alt="img">
+															</span>
+														</th>
+														<td>Wrist Watch</td>
+														<td>Watch</td>
+														<td>$1,299.00</td>
+													</tr>
+													<tr>
+														<th scope="row">
+															<span class="avatar avatar-sm">
+																<img src="assets/img/car/car-02.jpg" alt="img">
+															</span>
+														</th>
+														<td>Camera</td>
+														<td>Gadgets</td>
+														<td>$7,249.29</td>
+													</tr>
+													<tr>
+														<th scope="row">
+															<span class="avatar avatar-sm">
+																<img src="assets/img/car/car-03.jpg" alt="img">
+															</span>
+														</th>
+														<td>Shoes</td>
+														<td>Footwear</td>
+														<td>$799.00</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="tab-pane fade" id="sales-tab-pane" role="tabpanel"
+										aria-labelledby="sales-tab" tabindex="0">
+										<ul class="list-unstyled mb-1">
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														Clothing
+													</div>
+													<div class="fs-14 fw-semibold">32,138</div>
+												</div>
+											</li>
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														Furniture
+													</div>
+													<div class="fs-14 fw-semibold">12,123</div>
+												</div>
+											</li>
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														electronics
+													</div>
+													<div class="fs-14 fw-semibold">9,238</div>
+												</div>
+											</li>
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														food Products
+													</div>
+													<div class="fs-14 fw-semibold">14,234</div>
+												</div>
+											</li>
+											<li class="mb-0">
+												<div class="d-flex justify-content-between">
+													<div>
+														Home Appliances
+													</div>
+													<div class="fs-14 fw-semibold">10,249</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<div class="tab-pane fade" id="profit-tab-pane" role="tabpanel"
+										aria-labelledby="profit-tab" tabindex="0">
+										<ul class="list-unstyled mb-0">
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														Clothing
+													</div>
+													<div class="fs-14 fw-semibold text-success"><i
+															class="ri-arrow-up-s-fill me-1 align-middle"></i>22.75%
+													</div>
+												</div>
+											</li>
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														electronics
+													</div>
+													<div class="fs-14 fw-semibold text-success"><i
+															class="ri-arrow-up-s-fill me-1 align-middle"></i>42.24%
+													</div>
+												</div>
+											</li>
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														Furniture
+													</div>
+													<div class="fs-14 fw-semibold text-success"><i
+															class="ri-arrow-up-s-fill me-1 align-middle"></i>15.23%
+													</div>
+												</div>
+											</li>
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														Home Appliances
+													</div>
+													<div class="fs-14 fw-semibold text-success"><i
+															class="ri-arrow-up-s-fill me-1 align-middle"></i>15.14%
+													</div>
+												</div>
+											</li>
+											<li class="mb-0">
+												<div class="d-flex justify-content-between">
+													<div>
+														food Products
+													</div>
+													<div class="fs-14 fw-semibold text-success"><i
+															class="ri-arrow-up-s-fill me-1 align-middle"></i>31.64%
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<div class="tab-pane fade" id="expenses-tab-pane" role="tabpanel"
+										aria-labelledby="expenses-tab" tabindex="0">
+										<ul class="list-unstyled mb-0">
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														Clothing
+													</div>
+													<div class="fs-14 fw-semibold text-danger">-$31,134</div>
+												</div>
+											</li>
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														electronics
+													</div>
+													<div class="fs-14 fw-semibold text-danger">-$15,256</div>
+												</div>
+											</li>
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														Furniture
+													</div>
+													<div class="fs-14 fw-semibold text-danger">-$24,156</div>
+												</div>
+											</li>
+											<li class="mb-3">
+												<div class="d-flex justify-content-between">
+													<div>
+														Home Appliances
+													</div>
+													<div class="fs-14 fw-semibold text-danger">-$18,245</div>
+												</div>
+											</li>
+											<li class="mb-0">
+												<div class="d-flex justify-content-between">
+													<div>
+														food Products
+													</div>
+													<div class="fs-14 fw-semibold text-danger">-$18,478</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-8">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Vertical Tab Style-1
+								</div>
+							</div>
+							<div class="card-body d-flex align-items-start">
+								<div class="row">
+									<div class="col-md-3">
+										<div class="nav flex-column nav-pills me-3 tab-style-7" id="v-pills-tab"
+											role="tablist" aria-orientation="vertical">
+											<button class="nav-link text-start active" id="main-profile-tab"
+												data-bs-toggle="pill" data-bs-target="#main-profile" type="button"
+												role="tab" aria-controls="main-profile" aria-selected="true"><i
+													class="feather-user me-1 align-middle d-inline-block"></i>Profile</button>
+											<button class="nav-link text-start" id="man-password-tab"
+												data-bs-toggle="pill" data-bs-target="#man-password" type="button"
+												role="tab" aria-controls="man-password" aria-selected="false"><i
+													class="feather-monitor me-1 align-middle d-inline-block"></i>Password</button>
+											<button class="nav-link text-start" id="main-team-tab" data-bs-toggle="pill"
+												data-bs-target="#main-team" type="button" role="tab"
+												aria-controls="main-team" aria-selected="false"><i
+													class="feather-users me-1 align-middle d-inline-block"></i>Team</button>
+											<button class="nav-link text-start" id="main-billing-tab"
+												data-bs-toggle="pill" data-bs-target="#main-billing" type="button"
+												role="tab" aria-controls="main-billing" aria-selected="false"><i
+													class="feather-file me-1 align-middle d-inline-block"></i>Billing</button>
+											<button class="nav-link text-start mb-1" id="main-email-tab"
+												data-bs-toggle="pill" data-bs-target="#main-email" type="button"
+												role="tab" aria-controls="main-email" aria-selected="false"><i
+													class="feather-mail me-1 align-middle d-inline-block"></i>Email</button>
+										</div>
+									</div>
+									<div class="col-md-8">
+										<div class="tab-content" id="v-pills-tabContent2">
+											<div class="tab-pane show active" id="main-profile" role="tabpanel"
+												tabindex="0">
+												<div class="d-sm-flex">
+													<div class="me-3">
+														<span class="avatar avatar-xxl">
+															<img src="assets/img/profiles/avatar-02.jpg" alt="img">
+														</span>
+													</div>
+													<div>
+														<div class="my-md-auto mt-4 ms-md-3">
+															<h5 class="font-weight-semibold mb-1 pb-0">Adam Smith</h5>
+															<p class="text-muted ms-0 mb-2 pb-2 ">
+																<span class="me-3"><i
+																		class="far fa-address-card me-2"></i>Ui/Ux
+																	Developer</span>
+																<span class="me-3"><i class="fa fa-taxi me-2"></i>West
+																	fransisco,Alabama</span>
+																<span><i class="far fa-flag me-2"></i>New Jersey</span>
+															</p>
+															<p class="text-muted ms-0 mb-2"><span><i
+																		class="fa fa-phone me-2"></i></span><span
+																	class="font-weight-semibold me-2">Phone:</span><span>+9412345
+																	6789</span> </p>
+															<p class="text-muted ms-0 mb-2"><span><i
+																		class="fa fa-envelope me-2"></i></span><span
+																	class="font-weight-semibold me-2">Email:</span><span>spruko.space@gmail.com</span>
+															</p>
+															<p class="text-muted ms-0 mb-2"><span><i
+																		class="fa fa-globe me-2"></i></span><span
+																	class="font-weight-semibold me-2">Website:</span><span>sprukotechnologies</span>
+															</p>
+															<p class="text-muted mb-0"><b>Lorem Ipsum</b> is simply
+																dummy text of the printing and typesetting industry.
+																Lorem
+																Ipsum has been standard.</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="tab-pane" id="man-password" role="tabpanel" tabindex="0">
+												<ul class="list-unstyled text-muted mb-0">
+													<li class="mb-2">Lorem Ipsum is simply dummy text of the printing
+														and typesetting industry. Lorem Ipsum has been the industry's
+														<b>standard dummy text ever since the 1500s</b>, when an unknown
+														printer took a galley of type and scrambled it to make a type
+														specimen book. It has survived not only five centuries, but also
+														the leap into electronic typesetting, remaining essentially
+														unchanged. It was popularised in the 1960s with the release of
+														Letraset sheets containing Lorem Ipsum passages, and more
+														recently with desktop publishing software like Aldus PageMaker
+														including versions of Lorem Ipsum.
+													</li>
+													<li class="mb-2">Contrary to popular belief, Lorem Ipsum is not
+														simply random text. It has roots in a piece of classical Latin
+														literature from 45 BC, making it over 2000 years old. Richard
+														McClintock, a Latin professor at Hampden-Sydney College in
+														Virginia,</li>
+													<li class="mb-0">There are many variations of passages of Lorem
+														Ipsum available, but the majority have suffered alteration in
+														some form.</li>
+												</ul>
+											</div>
+											<div class="tab-pane" id="main-team" role="tabpanel"
+												aria-labelledby="main-team-tab" tabindex="0">
+												<ul class="list-unstyled text-muted mb-0">
+													<li class="mb-2">Contrary to popular belief, Lorem Ipsum is not
+														simply random text. It has roots in a piece of classical Latin
+														literature from 45 BC, making it over 2000 years old. Richard
+														McClintock, a Latin professor at Hampden-Sydney College in
+														Virginia,</li>
+													<li class="mb-2">There are many variations of passages of Lorem
+														Ipsum available, but the majority have suffered alteration in
+														some form.
+													</li>
+													<li class="mb-0">Lorem Ipsum is simply dummy text of the printing
+														and typesetting industry. Lorem Ipsum has been the industry's
+														<b>standard dummy text ever since the 1500s</b>, when an unknown
+														printer took a galley of type and scrambled it to make a type
+														specimen book. It has survived not only five centuries, but also
+														the leap into electronic typesetting, remaining essentially
+														unchanged. It was popularised in the 1960s with the release of
+														Letraset sheets containing Lorem Ipsum passages, and more
+														recently with desktop publishing software like Aldus PageMaker
+														including versions of Lorem Ipsum.
+													</li>
+												</ul>
+											</div>
+											<div class="tab-pane" id="main-billing" role="tabpanel"
+												aria-labelledby="main-billing-tab" tabindex="0">
+												<ul class="list-unstyled text-muted mb-0">
+													<li class="mb-2">Contrary to popular belief, Lorem Ipsum is not
+														simply random text. It has roots in a piece of classical Latin
+														literature from 45 BC, making it over 2000 years old. Richard
+														McClintock, a Latin professor at Hampden-Sydney College in
+														Virginia,</li>
+													<li class="mb-2">Lorem Ipsum is simply dummy text of the printing
+														and typesetting industry. Lorem Ipsum has been the industry's
+														<b>standard dummy text ever since the 1500s</b>, when an unknown
+														printer took a galley of type and scrambled it to make a type
+														specimen book. It has survived not only five centuries, but also
+														the leap into electronic typesetting, remaining essentially
+														unchanged. It was popularised in the 1960s with the release of
+														Letraset sheets containing Lorem Ipsum passages, and more
+														recently with desktop publishing software like Aldus PageMaker
+														including versions of Lorem Ipsum.
+													</li>
+													<li class="mb-0">There are many variations of passages of Lorem
+														Ipsum available, but the majority have suffered alteration in
+														some form.</li>
+												</ul>
+											</div>
+											<div class="tab-pane" id="main-email" role="tabpanel"
+												aria-labelledby="main-email-tab" tabindex="0">
+												<ul class="list-unstyled text-muted mb-0">
+													<li class="mb-2">Lorem Ipsum is simply dummy text of the printing
+														and typesetting industry. Lorem Ipsum has been the industry's
+														<b>standard dummy text ever since the 1500s</b>, when an unknown
+														printer took a galley of type and scrambled it to make a type
+														specimen book. It has survived not only five centuries, but also
+														the leap into electronic typesetting, remaining essentially
+														unchanged. It was popularised in the 1960s with the release of
+														Letraset sheets containing Lorem Ipsum passages, and more
+														recently with desktop publishing software like Aldus PageMaker
+														including versions of Lorem Ipsum.
+													</li>
+													<li class="mb-0">How hotel deals can help you live a better life.
+														<b>How celebrity cruises</b> aren't as bad as you think. How
+														cultural solutions can help you predict the future. How to cheat
+														at dog friendly hotels and get away with it.
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- / Tab Style-6 -->
+
+				<!-- Vertical Tab Style-2 -->
+				<div class="row">
+					<div class="col-xxl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Vertical Tab Style-2
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-3">
+										<ul class="nav nav-tabs flex-column vertical-tabs-2" role="tablist">
+											<li class="nav-item">
+												<a class="nav-link active" data-bs-toggle="tab" role="tab"
+													aria-current="page" href="#home-vertical-custom"
+													aria-selected="true">
+													<p class="mb-1"><i class="feather-home"></i></p>
+													<p class="mb-0 text-break">Home</p>
+												</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+													href="#about-vertical-custom" aria-selected="true">
+													<p class="mb-1"><i class="feather-phone"></i></p>
+													<p class="mb-0 text-break">About</p>
+												</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link mb-0" data-bs-toggle="tab" role="tab"
+													aria-current="page" href="#services-vertical-custom"
+													aria-selected="true">
+													<p class="mb-1"><i class="feather-headphones"></i></p>
+													<p class="mb-0 text-break">Services</p>
+												</a>
+											</li>
+										</ul>
+									</div>
+									<div class="col-md-9">
+										<div class="tab-content">
+											<div class="tab-pane show active text-muted" id="home-vertical-custom"
+												role="tabpanel">
+												<ul class="mb-0">
+													<li class="mb-2">
+														How travel coupons make you a better lover. Why cultural
+														solutions are the new black. Why mom was right about travel
+														insurances. How family trip ideas can helpyou predict the
+														future. <b>How carnival cruises make you a better lover</b>. Why
+														you'll never succeed at daily deals.
+													<li>How hotel deals can help you live a better life. <b>How
+															celebrity cruises</b> aren't as bad as you think. How
+														cultural solutions can help you predict the future. How to cheat
+														at dog friendly hotels and get away with it.</li>
+												</ul>
+											</div>
+											<div class="tab-pane text-muted" id="about-vertical-custom" role="tabpanel">
+												<ul class="mb-0">
+													<li class="mb-2">Lorem Ipsum is simply dummy text of the printing
+														and typesetting industry. Lorem Ipsum has been the industry's
+														<b>standard dummy text ever since the 1500s</b>, when an unknown
+														printer took a galley of type and scrambled it to make a type
+														specimen book. It has survived not only five centuries, but also
+														the leap into electronic typesetting, remaining essentially
+														unchanged. It was popularised in the 1960s with the release of
+														Letraset sheets containing Lorem Ipsum passages, and more
+														recently with desktop publishing software like Aldus PageMaker
+														including versions of Lorem Ipsum
+													</li>
+													<li>How hotel deals can help you live a better life. <b>How
+															celebrity cruises</b> aren't as bad as you think. How
+														cultural solutions can help you predict the future. How to cheat
+														at dog friendly hotels and get away with it.</li>
+												</ul>
+											</div>
+											<div class="tab-pane text-muted" id="services-vertical-custom"
+												role="tabpanel">
+												<ul class="mb-0">
+													<li class="mb-2">
+														There are many variations of passages of Lorem Ipsum available,
+														but the majority have suffered alteration in some form, by
+														injected humour, or randomised words which don't look even
+														slightly believable. If you are going to use a passage of Lorem
+														Ipsum, you need to be sure there isn't anything embarrassing
+														hidden.
+													</li>
+													<li>
+														How hotel deals can help you live a better life. <b>How
+															celebrity cruises</b> aren't as bad as you think. How
+														cultural solutions can help you predict the future. How to cheat
+														at dog friendly hotels and get away with it.
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xxl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Vertical Tabs Style-3
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-4">
+										<ul class="nav nav-tabs flex-column vertical-tabs-3" role="tablist">
+											<li class="nav-item">
+												<a class="nav-link active text-break" data-bs-toggle="tab" role="tab"
+													aria-current="page" href="#employee-vertical" aria-selected="true">
+													<i
+														class="feather-user me-2 align-middle d-inline-block"></i>Employees
+												</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link text-break" data-bs-toggle="tab" role="tab"
+													aria-current="page" href="#customers-vertical" aria-selected="true">
+													<i
+														class="feather-users me-2 align-middle d-inline-block"></i>Customers
+												</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link text-break mb-0" data-bs-toggle="tab" role="tab"
+													aria-current="page" href="#products-vertical" aria-selected="true">
+													<i
+														class="feather-gift me-2 align-middle d-inline-block"></i>Products
+												</a>
+											</li>
+										</ul>
+									</div>
+									<div class="col-md-8">
+										<div class="tab-content">
+											<div class="tab-pane show active text-muted" id="employee-vertical"
+												role="tabpanel">
+												<ul class="mb-0">
+													<li class="mb-2">
+														How travel coupons make you a better lover. Why cultural
+														solutions are the new black. Why mom was right about travel
+														insurances. How family trip ideas can helpyou predict the
+														future. <b>How carnival cruises make you a better lover</b>. Why
+														you'll never succeed at daily deals.
+													</li>
+													<li>How hotel deals can help you live a better life. <b>How
+															celebrity cruises</b> aren't as bad as you think. How
+														cultural solutions can help you predict the future. How to cheat
+														at dog friendly hotels and get away with it.
+													</li>
+												</ul>
+											</div>
+											<div class="tab-pane text-muted" id="customers-vertical" role="tabpanel">
+												<ul class="mb-0">
+													<li class="mb-2">
+														The standard chunk of Lorem Ipsum used since the 1500s is
+														reproduced below for those interested. Sections 1.10.32 and
+														1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also
+														reproduced in their exact original form, accompanied by English
+														versions from the 1914 translation by H. Rackham,How hotel deals
+														can help you live a better life. <b>How celebrity
+															cruises</b>
+													</li>
+													<li>How hotel deals can help you live a better life. <b>How
+															celebrity cruises</b> aren't as bad as you think. How
+														cultural solutions can help you predict the future. How to cheat
+														at dog friendly hotels and get away with it.
+													</li>
+												</ul>
+											</div>
+											<div class="tab-pane text-muted" id="products-vertical" role="tabpanel">
+												<ul class="mb-0">
+													<li class="mb-2">
+														There are many variations of passages of Lorem Ipsum available,
+														but the majority have suffered alteration in some form, by
+														injected humour, or randomised words which don't look even
+														slightly believable. If you are going to use a passage of Lorem
+														Ipsum, you need to be sure there isn't anything embarrassing
+														hidden.
+													</li>
+													<li>How hotel deals can help you live a better life. <b>How
+															celebrity cruises</b> aren't as bad as you think. How
+														cultural solutions can help you predict the future. How to cheat
+														at dog friendly hotels and get away with it.</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Vertical Tab Style-2 -->
+
+				<!-- Tabs with dropdowns -->
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Tabs with dropdowns
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs mb-3" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" data-bs-toggle="tab" role="tab"
+											href="#hometab-dropdown" aria-selected="true">Home</a>
+									</li>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+											href="javascript:void(0);" role="button" aria-expanded="false">Company</a>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" data-bs-toggle="tab" role="tab"
+													href="#homeabout-dropdown" aria-selected="false">About</a></li>
+											<li><a class="dropdown-item" href="javascript:void(0);">Another action</a>
+											</li>
+											<li><a class="dropdown-item" href="javascript:void(0);">Something else
+													here</a>
+											</li>
+											<li>
+												<hr class="dropdown-divider">
+											</li>
+											<li><a class="dropdown-item" href="javascript:void(0);">Separated link</a>
+											</li>
+										</ul>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab"
+											href="#homeproducts-dropdown" aria-selected="false">Products</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link disabled">Services</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active text-muted" id="hometab-dropdown" role="tabpanel">
+										How travel coupons make you a better lover. Why cultural solutions are the new
+										black. Why mom was right about travel insurances. How family trip ideas can
+										helpyou predict the future. <b>How carnival cruises make you a better lover</b>.
+										Why you'll never succeed at daily deals. 11 ways cheapest flights can find you
+										the love of your life.</div>
+									<div class="tab-pane text-muted" id="homeabout-dropdown" role="tabpanel">
+										How hotel deals can help you live a better life. <b>How celebrity cruises</b>
+										aren't as bad as you think. How cultural solutions can help you predict the
+										future. How to cheat at dog friendly hotels and get away with it.
+									</div>
+									<div class="tab-pane text-muted" id="homeproducts-dropdown" role="tabpanel">Lorem
+										Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+										has been the industry's <b>standard dummy text ever since the 1500s</b>, when an
+										unknown printer took a galley of type and scrambled it to make a type specimen
+										book. It has survived not only five centuries, but also the leap into electronic
+										typesetting, remaining essentially unchanged. It was popularised in the 1960s
+										with the release of Letraset sheets containing Lorem Ipsum passages, and more
+										recently with desktop publishing software like Aldus PageMaker including
+										versions of Lorem Ipsum</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Pills with dropdowns
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-pills mb-3" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#pill-products" aria-selected="true">Products</a>
+									</li>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+											href="javascript:void(0);" role="button" aria-expanded="false">Cart</a>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" data-bs-toggle="tab" role="tab"
+													aria-current="page" href="#pill-wishlist"
+													aria-selected="false">Wishlist</a></li>
+											<li><a class="dropdown-item" href="javascript:void(0);">Liked</a></li>
+											<li><a class="dropdown-item" href="javascript:void(0);">Save For Later</a>
+											</li>
+											<li>
+												<hr class="dropdown-divider">
+											</li>
+											<li><a class="dropdown-item" href="javascript:void(0);">Recently Viewed</a>
+											</li>
+										</ul>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#pill-orders" aria-selected="false">Orders</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link disabled">Offers</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active text-muted" id="pill-products" role="tabpanel">
+										How travel coupons make you a better lover. Why cultural solutions are the new
+										black. Why mom was right about travel insurances. How family trip ideas can
+										helpyou predict the future. <b>How carnival cruises make you a better lover</b>.
+										Why you'll never succeed at daily deals. 11 ways cheapest flights can find you
+										the love of your life.
+									</div>
+									<div class="tab-pane text-muted" id="pill-wishlist" role="tabpanel">
+										How hotel deals can help you live a better life. <b>How celebrity cruises</b>
+										aren't as bad as you think. How cultural solutions can help you predict the
+										future. How to cheat at dog friendly hotels and get away with it.
+									</div>
+									<div class="tab-pane text-muted" id="pill-orders" role="tabpanel">Lorem Ipsum is
+										simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+										the industry's <b>standard dummy text ever since the 1500s</b>, when an unknown
+										printer took a galley of type and scrambled it to make a type specimen book. It
+										has survived not only five centuries, but also the leap into electronic
+										typesetting, remaining essentially unchanged. It was popularised in the 1960s
+										with the release of Letraset sheets containing Lorem Ipsum passages, and more
+										recently with desktop publishing software like Aldus PageMaker including
+										versions of Lorem Ipsum</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Tabs with dropdowns -->
+
+				<div class="row">
+
+					<!-- FIll Pills -->
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									FIll Pills
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-pills nav-fill mb-3" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#fill-pill-home" aria-selected="true">Home</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#fill-pill-about" aria-selected="false">Customer-ratings</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#fill-pill-services" aria-selected="false">Services</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link disabled">Disabled</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active text-muted" id="fill-pill-home" role="tabpanel">
+										How travel coupons make you a better lover. Why cultural solutions are the new
+										black. Why mom was right about travel insurances. How family trip ideas can
+										helpyou predict the future. <b>How carnival cruises make you a better lover</b>.
+										Why you'll never succeed at daily deals. 11 ways cheapest flights can find you
+										the love of your life. The complete beginner's guide to mission trips. If you
+										read one article about cultural notes read this one. Why you shouldn't eat
+										vacation package in bed.
+									</div>
+									<div class="tab-pane text-muted" id="fill-pill-about" role="tabpanel">
+										How hotel deals can help you live a better life. <b>How celebrity cruises</b>
+										aren't as bad as you think. How cultural solutions can help you predict the
+										future. How to cheat at dog friendly hotels and get away with it.
+									</div>
+									<div class="tab-pane text-muted" id="fill-pill-services" role="tabpanel">
+										Unbelievable healthy snack success stories. 12 facts about safe food handling
+										tips that will impress your friends. Restaurant weeks by the numbers. Will
+										mexican food ever rule the world? The 10 best thai restaurant youtube videos.
+										How restaurant weeks can make you sick.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /FIll Pills -->
+
+					<!-- Justified Pills -->
+					<div class="col-xl-6">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Justified Pills
+								</div>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-pills nav-justified mb-3 d-sm-flex d-block" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#justified-pill-home" aria-selected="true">Home</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#justified-pill-details" aria-selected="true">Company Details</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+											href="#justified-pill-products" aria-selected="true">Products</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link disabled">Disabled</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane show active text-muted" id="justified-pill-home"
+										role="tabpanel">
+										How travel coupons make you a better lover. Why cultural solutions are the new
+										black. Why mom was right about travel insurances. How family trip ideas can
+										helpyou predict the future. <b>How carnival cruises make you a better lover</b>.
+										Why you'll never succeed at daily deals. 11 ways cheapest flights can find you
+										the love of your life. The complete beginner's guide to mission trips. If you
+										read one article about cultural notes read this one. Why you shouldn't eat
+										vacation package in bed.
+									</div>
+									<div class="tab-pane text-muted" id="justified-pill-details" role="tabpanel">
+										How hotel deals can help you live a better life. <b>How celebrity cruises</b>
+										aren't as bad as you think. How cultural solutions can help you predict the
+										future. How to cheat at dog friendly hotels and get away with it.
+									</div>
+									<div class="tab-pane text-muted" id="justified-pill-products" role="tabpanel">
+										Unbelievable healthy snack success stories. 12 facts about safe food handling
+										tips that will impress your friends. Restaurant weeks by the numbers. Will
+										mexican food ever rule the world? The 10 best thai restaurant youtube videos.
+										How restaurant weeks can make you sick.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Justified Pills -->
+
+				<!--  Working with flex utilities -->
+				<div class="row">
+					<div class="col-xl-12">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-title">
+									Working with flex utilities
+								</div>
+							</div>
+							<div class="card-body">
+								<nav class="nav nav-pills flex-column flex-sm-row" role="tablist">
+									<a class="flex-sm-fill text-sm-center nav-link active" data-bs-toggle="tab"
+										role="tab" aria-current="page" href="#pill-flex-home"
+										aria-selected="true">Home</a>
+									<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab" role="tab"
+										aria-current="page" href="#pill-flex-big" aria-selected="false">More Data More
+										The Tab Size</a>
+									<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab" role="tab"
+										aria-current="page" href="#pill-flex-about" aria-selected="false">About</a>
+									<a class="flex-sm-fill text-sm-center nav-link disabled">Services</a>
+								</nav>
+								<div class="tab-content mt-3">
+									<div class="tab-pane show active text-muted" id="pill-flex-home" role="tabpanel">
+										How travel coupons make you a better lover. Why cultural solutions are the new
+										black. Why mom was right about travel insurances. How family trip ideas can
+										helpyou predict the future. <b>How carnival cruises make you a better lover</b>.
+										Why you'll never succeed at daily deals. 11 ways cheapest flights can find you
+										the love of your life. The complete beginner's guide to mission trips. If you
+										read one article about cultural notes read this one. Why you shouldn't eat
+										vacation package in bed.</div>
+									<div class="tab-pane text-muted" id="pill-flex-big" role="tabpanel">How hotel deals
+										can help you live a better life. <b>How celebrity cruises</b> aren't as bad as
+										you think. How cultural solutions can help you predict the future. How to cheat
+										at dog friendly hotels and get away with it. 17 problems with summer activities.
+										How to cheat at travel agents and get away with it. How not knowing family trip
+										ideas makes you a rookie. What everyone is saying about daily deals. How twitter
+										can teach you about carnival cruises. How to start using cultural solutions.
+									</div>
+									<div class="tab-pane text-muted" id="pill-flex-about" role="tabpanel"> Unbelievable
+										healthy snack success stories. 12 facts about safe food handling tips that will
+										impress your friends. Restaurant weeks by the numbers. Will mexican food ever
+										rule the world? The 10 best thai restaurant youtube videos. How restaurant weeks
+										can make you sick. The complete beginner's guide to cooking healthy food.
+										Unbelievable food stamp success stories. How whole foods markets are making the
+										world a better place. 16 things that won't happen in dish reviews.</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- / Working with flex utilities -->
+
+				<!-- Bottom Line Tabs -->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5 class="card-title">Bottom line tabs</h5>
+							</div>
+							<div class="card-body">
+								<ul class="nav nav-tabs nav-tabs-bottom tab-dark mb-3">
+									<li class="nav-item"><a class="nav-link active" href="#bottom-tabs1"
+											data-bs-toggle="tab">Home</a></li>
+									<li class="nav-item"><a class="nav-link" href="#bottom-tabs2"
+											data-bs-toggle="tab">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="#bottom-tabs3"
+											data-bs-toggle="tab">Messages</a></li>
+								</ul>
+
+								<div class="tab-content">
+									<div class="tab-pane show active" id="bottom-tabs1">
+										Tab content 1
+									</div>
+									<div class="tab-pane" id="bottom-tabs2">
+										Tab content 2
+									</div>
+									<div class="tab-pane" id="bottom-tabs3">
+										Tab content 3
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Bottom Line Tabs -->
+
+			</div>
+
+			<!-- Footer-->
+			<div class="footer d-sm-flex align-items-center justify-content-between bg-white p-3">
+				<p class="mb-0">
+                    <a href="javascript:void(0);">Privacy Policy</a>
+                    <a href="javascript:void(0);" class="ms-4">Terms of Use</a>
+                </p>
+				<p>&copy; 2025 Dreamsrent, Made with <span class="text-danger">❤</span> by <a href="javascript:void(0);" class="text-secondary">Dreams</a></p>
+			</div>
+			<!-- /Footer-->
+			
+		</div>
+		<!-- /Page Wrapper -->
+
+	</div>
+	<!-- /Main Wrapper -->
+
+	<!-- jQuery -->
+	<script src="assets/js/jquery-3.7.1.min.js"></script>
+
+	<!-- Feather Icon JS -->
+	<script src="assets/js/feather.min.js"></script>
+
+	<!-- Bootstrap Core JS -->
+	<script src="assets/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Slimscroll JS -->
+	<script src="assets/js/jquery.slimscroll.min.js"></script>
+
+	<!-- Select2 JS -->
+	<script src="assets/plugins/select2/js/select2.min.js"></script>
+
+	<!-- Custom JS -->
+	<script src="assets/js/script.js"></script>
+
+</body>
+
+</html>
