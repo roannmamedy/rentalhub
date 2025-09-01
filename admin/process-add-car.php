@@ -2,6 +2,19 @@
 session_start();
 require_once '../config/database.php';
 
+// Ensure schema compatibility (lightweight auto-migration)
+function ensure_column_exists(PDO $pdo, string $table, string $column, string $definition) {
+    try {
+        $check = $pdo->prepare("SHOW COLUMNS FROM `$table` LIKE :col");
+        $check->execute([':col' => $column]);
+        if ($check->rowCount() === 0) {
+            $pdo->exec("ALTER TABLE `$table` ADD `$column` $definition");
+        }
+    } catch (Throwable $e) {
+        // Silent fail to avoid breaking request; logs could be added in real app
+    }
+}
+
 // Function to sanitize input data
 function sanitize_input($data) {
     $data = trim($data);
@@ -38,11 +51,45 @@ function upload_file($file, $target_dir = '../uploads/cars/') {
     return false;
 }
 
+// Handle multiple uploads for gallery
+function upload_multiple_files($files, $target_dir = '../uploads/cars/') {
+    $paths = [];
+    if (!isset($files['name']) || !is_array($files['name'])) return $paths;
+    $count = count($files['name']);
+    for ($i = 0; $i < $count; $i++) {
+        if ($files['error'][$i] !== UPLOAD_ERR_OK) continue;
+        $one = [
+            'name' => $files['name'][$i],
+            'type' => $files['type'][$i],
+            'tmp_name' => $files['tmp_name'][$i],
+            'error' => $files['error'][$i],
+            'size' => $files['size'][$i],
+        ];
+        $p = upload_file($one, $target_dir);
+        if ($p) $paths[] = $p;
+    }
+    return $paths;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+    // Make sure new fields exist
+    ensure_column_exists($pdo, 'tblcars', 'description', 'TEXT NULL');
+        // Ensure car_images table exists for gallery uploads
+        try {
+            $pdo->exec("CREATE TABLE IF NOT EXISTS car_images (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                car_id INT NOT NULL,
+                image_path VARCHAR(255) NOT NULL,
+                is_featured TINYINT(1) NOT NULL DEFAULT 0,
+                created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (car_id) REFERENCES tblcars(id) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        } catch (Throwable $e) { /* ignore */ }
         // Basic Information
         $name = sanitize_input($_POST['name'] ?? '');
-        $permalink = sanitize_input($_POST['permalink'] ?? '');
+    // Permalink is currently commented out in form
+    $permalink = sanitize_input($_POST['permalink'] ?? '');
 
         // Handle featured image upload
         $featured_image = '';
@@ -51,6 +98,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($uploaded_file) {
                 $featured_image = $uploaded_file;
             }
+        }
+
+        // Handle gallery images upload
+        $gallery_paths = [];
+        if (isset($_FILES['gallery_images'])) {
+            $gallery_paths = upload_multiple_files($_FILES['gallery_images']);
         }
 
         // Car Details
@@ -67,33 +120,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $year_of_car = intval($_POST['year_of_car'] ?? 0);
         $transmission = sanitize_input($_POST['transmission'] ?? '');
         $mileage = sanitize_input($_POST['mileage'] ?? '');
-        $passengers = intval($_POST['passengers'] ?? 0);
+    $passengers = intval($_POST['passengers'] ?? 0);
         $seats = sanitize_input($_POST['seats'] ?? '');
         $doors = sanitize_input($_POST['doors'] ?? '');
         $air_bags = intval($_POST['air_bags'] ?? 0);
+    // New optional description field
+    $description = sanitize_input($_POST['description'] ?? '');
 
         // Pricing Information
         $daily_price = floatval($_POST['daily_price'] ?? 0);
-        $weekly_price = floatval($_POST['weekly_price'] ?? 0);
-        $monthly_price = floatval($_POST['monthly_price'] ?? 0);
-        $yearly_price = floatval($_POST['yearly_price'] ?? 0);
+    // Only daily price is required; others default to 0
+    $weekly_price = 0;
+    $monthly_price = 0;
+    $yearly_price = 0;
         $base_kilometers_per_day = intval($_POST['base_kilometers_per_day'] ?? 0);
         $kilometers_extra_price = floatval($_POST['kilometers_extra_price'] ?? 0);
         $unlimited_kilometers = isset($_POST['unlimited_kilometers']) ? 1 : 0;
 
-        // Status (default values)
-        $status = 'Active';
+    // Status from form (default Active)
+    $status = sanitize_input($_POST['status'] ?? 'Active');
         $is_featured = 0;
         $is_available = 1;
 
         // SEO Information
-        $meta_title = sanitize_input($_POST['meta_title'] ?? '');
-        $meta_keywords = sanitize_input($_POST['meta_keywords'] ?? '');
-        $meta_description = sanitize_input($_POST['meta_description'] ?? '');
+    // SEO currently disabled in UI; keep empty
+    $meta_title = '';
+    $meta_keywords = '';
+    $meta_description = '';
 
         // Video Information (default values)
-        $video_platform = '';
-        $video_link = '';
+    // Video currently disabled in UI; use NULLs so ENUM/VARCHAR columns don't warn
+    $video_platform = null;
+    $video_link = null;
+
+    // Insurance selection (dropdown)
+    $insurance_option = sanitize_input($_POST['insurance_option'] ?? 'none');
 
         // Handle new form fields
         $features_amenities = json_encode($_POST['features_amenities'] ?? []);
@@ -110,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             daily_price, weekly_price, monthly_price, yearly_price, base_kilometers_per_day,
             kilometers_extra_price, unlimited_kilometers, status, is_featured, is_available,
             meta_title, meta_keywords, meta_description, video_platform, video_link,
-            features_amenities, extra_services, created_at, updated_at
+            features_amenities, extra_services, description, created_at, updated_at
         ) VALUES (
             :name, :permalink, :featured_image, :car_type, :brand, :model, :category,
             :plate_number, :vin_number, :main_location, :fuel_type, :odometer, :color,
@@ -118,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             :daily_price, :weekly_price, :monthly_price, :yearly_price, :base_kilometers_per_day,
             :kilometers_extra_price, :unlimited_kilometers, :status, :is_featured, :is_available,
             :meta_title, :meta_keywords, :meta_description, :video_platform, :video_link,
-            :features_amenities, :extra_services, NOW(), NOW()
+            :features_amenities, :extra_services, :description, NOW(), NOW()
         )";
 
         $stmt = $pdo->prepare($sql);
@@ -157,14 +218,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':meta_title', $meta_title);
         $stmt->bindParam(':meta_keywords', $meta_keywords);
         $stmt->bindParam(':meta_description', $meta_description);
-        $stmt->bindParam(':video_platform', $video_platform);
-        $stmt->bindParam(':video_link', $video_link);
+        // Bind video fields as NULL when not provided
+        if ($video_platform === null) {
+            $stmt->bindValue(':video_platform', null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(':video_platform', $video_platform, PDO::PARAM_STR);
+        }
+        if ($video_link === null) {
+            $stmt->bindValue(':video_link', null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(':video_link', $video_link, PDO::PARAM_STR);
+        }
         $stmt->bindParam(':features_amenities', $features_amenities);
         $stmt->bindParam(':extra_services', $extra_services);
+    $stmt->bindParam(':description', $description);
 
         // Execute the statement
         if ($stmt->execute()) {
             $car_id = $pdo->lastInsertId();
+
+            // Insert gallery images if any
+            if (!empty($gallery_paths)) {
+                $img_sql = "INSERT INTO car_images (car_id, image_path, is_featured) VALUES (:car_id, :image_path, 0)";
+                $img_stmt = $pdo->prepare($img_sql);
+                foreach ($gallery_paths as $img) {
+                    $img_stmt->bindParam(':car_id', $car_id);
+                    $img_stmt->bindParam(':image_path', $img);
+                    $img_stmt->execute();
+                }
+            }
+
+            // Insert insurance row if selected
+            if (!empty($insurance_option) && $insurance_option !== 'none') {
+                $ins_price = 0.00;
+                switch ($insurance_option) {
+                    case 'Full Premium Insurance':
+                        $ins_price = 200.00; break;
+                    case 'Roadside Assistance':
+                        $ins_price = 250.00; break;
+                    case 'Liability Insurance':
+                        $ins_price = 150.00; break;
+                    case 'Personal Accident Insurance':
+                        $ins_price = 300.00; break;
+                }
+                $ins_sql = "INSERT INTO car_insurance (car_id, insurance_name, price, benefits) VALUES (:car_id, :insurance_name, :price, :benefits)";
+                $ins_stmt = $pdo->prepare($ins_sql);
+                $benefits = null; // could be extended later
+                $ins_stmt->bindParam(':car_id', $car_id);
+                $ins_stmt->bindParam(':insurance_name', $insurance_option);
+                $ins_stmt->bindParam(':price', $ins_price);
+                $ins_stmt->bindParam(':benefits', $benefits);
+                $ins_stmt->execute();
+            }
             
             // Insert damages if any
             if (!empty($_POST['damages'])) {
@@ -176,28 +281,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $damage_stmt->bindParam(':location', $damage['location']);
                     $damage_stmt->bindParam(':type', $damage['type']);
                     $damage_stmt->bindParam(':description', $damage['description']);
-                    $damage_stmt->bindParam(':date_added', $damage['date']);
+                    $date_added = date('Y-m-d');
+                    $damage_stmt->bindParam(':date_added', $date_added);
                     $damage_stmt->execute();
                 }
             }
             
-            // Insert FAQs if any
-            if (!empty($_POST['faqs'])) {
-                $faqs_data = json_decode($_POST['faqs'], true);
-                foreach ($faqs_data as $faq) {
-                    $faq_sql = "INSERT INTO car_faqs (car_id, question, answer) VALUES (:car_id, :question, :answer)";
-                    $faq_stmt = $pdo->prepare($faq_sql);
-                    $faq_stmt->bindParam(':car_id', $car_id);
-                    $faq_stmt->bindParam(':question', $faq['question']);
-                    $faq_stmt->bindParam(':answer', $faq['answer']);
-                    $faq_stmt->execute();
-                }
-            }
+            // FAQ disabled; ignore
             
             $_SESSION['success_message'] = "Car added successfully! Car ID: " . $car_id;
+            // Clear session-stored temp data
+            unset($_SESSION['damages']);
+            unset($_SESSION['faqs']);
             
             // Return JSON response for AJAX
             if (isset($_POST['ajax_request'])) {
+                header('Content-Type: application/json');
                 echo json_encode(['success' => true, 'message' => 'Car added successfully!', 'car_id' => $car_id]);
                 exit();
             } else {
@@ -209,6 +308,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Return JSON response for AJAX
             if (isset($_POST['ajax_request'])) {
+                header('Content-Type: application/json');
                 echo json_encode(['success' => false, 'message' => 'Error adding car to database.']);
                 exit();
             } else {
@@ -219,12 +319,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (PDOException $e) {
         $_SESSION['error_message'] = "Database error: " . $e->getMessage();
-        header("Location: add-car.php");
-        exit();
+        if (isset($_POST['ajax_request'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => $_SESSION['error_message']]);
+            exit();
+        } else {
+            header("Location: add-car.php");
+            exit();
+        }
     } catch (Exception $e) {
         $_SESSION['error_message'] = "Error: " . $e->getMessage();
-        header("Location: add-car.php");
-        exit();
+        if (isset($_POST['ajax_request'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => $_SESSION['error_message']]);
+            exit();
+        } else {
+            header("Location: add-car.php");
+            exit();
+        }
     }
 } else {
     // If not POST request, redirect to form

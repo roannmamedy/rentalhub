@@ -516,11 +516,13 @@ session_start();
 										<i class="ti ti-color-filter"></i><span>Maintenance</span>
 									</a>
 								</li>
+								<!-- Reviews menu item commented out per requirements
 								<li>
 									<a href="reviews.html">
 										<i class="ti ti-star"></i><span>Reviews</span>
 									</a>
 								</li>
+								-->
 							</ul>
 						</li>	
 						<li class="menu-title"><span>FINANCE & ACCOUNTS</span></li>					
@@ -1074,7 +1076,7 @@ session_start();
 							unset($_SESSION['error_message']);
 						}
 						?>
-							<form action="process-add-car.php" method="POST" enctype="multipart/form-data">	
+							<form id="addCarForm" action="process-add-car.php" method="POST" enctype="multipart/form-data">
 								<div class="bg-light p-20 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-3" style="background-color: #e9ecef !important;">
 										<h4 class="d-flex align-items-center"><i class="ti ti-info-circle text-secondary me-2"></i>Basic Info</h4>
 										
@@ -1092,11 +1094,11 @@ session_start();
 														<a href="javascript:void(0);" class="upload-img-trash trash-end btn btn-sm rounded-circle">
 															<i class="ti ti-trash fs-12"></i>
 														</a>
-													</div>   
+													</div>
 													<div>
 														<div class="drag-upload-btn btn btn-md btn-dark d-inline-flex align-items-center mb-2">
-															<i class="ti ti-photo me-1"></i>Change
-															<input type="file" class="form-control image-sign" multiple="">
+															<i class="ti ti-photo me-1"></i>Upload
+															<input type="file" name="featured_image" class="form-control image-sign" accept=".jpg,.jpeg,.png,.gif,.webp">
 														</div>
 														<p>Recommended size is 500px x 500px</p>
 													</div>
@@ -1104,6 +1106,26 @@ session_start();
 											</div>
 										</div>										
 									</div>	
+									<!-- Gallery Images -->
+									<div class="border-bottom mb-4 pb-4">                          
+										<div class="row row-gap-4">
+											<div class="col-xl-3">
+												<h6 class="mb-1">Gallery Images</h6>
+												<p>Upload additional images for the car</p>
+											</div>
+											<div class="col-xl-9">
+												<div class="d-flex align-items-center flex-wrap row-gap-3">
+													<div>
+														<div class="drag-upload-btn btn btn-md btn-dark d-inline-flex align-items-center mb-2">
+															<i class="ti ti-photo me-1"></i>Upload Gallery
+															<input type="file" name="gallery_images[]" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp" multiple>
+														</div>
+														<p>You can select multiple files. Max 5MB each.</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 									<div class="border-bottom mb-2 pb-2">								
 										<div class="row row-gap-4">
 											<div class="col-xl-3">
@@ -1115,10 +1137,16 @@ session_start();
 													<label class="form-label">Name <span class="text-danger">*</span></label>
 													<input type="text" name="name" class="form-control" required>
 												</div>
+												<!-- Permalink (commented out per requirements)
 												<div class="mb-3">
 													<label class="form-label">Permalink</label>
 													<input type="text" name="permalink" class="form-control" placeholder="https://www.example.com/cars/">
 													<p class="fs-13 fw-medium mt-1">Preview : <a href="javascript:void(0);" class="link-info">https://www.example.com/cars/</a></p>
+												</div>
+												-->
+												<div class="mb-3">
+													<label class="form-label">Description</label>
+													<textarea name="description" class="form-control" rows="4" placeholder="Describe this car"></textarea>
 												</div>
 												<div class="row">
 													<div class="col-lg-4 col-md-6">
@@ -1258,6 +1286,17 @@ session_start();
 																<option value="Manual">Manual</option>
 																<option value="Automatic">Automatic</option>
 																<option value="Semi Automatic">Semi Automatic</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-lg-4 col-md-6">
+														<div class="mb-3">
+															<label class="form-label">Status <span class="text-danger">*</span></label>
+															<select name="status" class="select" required>
+																<option value="Active" selected>Active</option>
+																<option value="Inactive">Inactive</option>
+																<option value="Maintenance">Maintenance</option>
+																<option value="Rented">Rented</option>
 															</select>
 														</div>
 													</div>
@@ -1653,9 +1692,9 @@ session_start();
 									</div>
 									</div>	
 									<div class="bg-light p-20 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-3" style="background-color: #e9ecef !important;">
-										<h4 class="d-flex align-items-center"><i class="ti ti-files text-secondary me-2"></i>Pricing & Tariff </h4>
-									</div>										
-									<div class="border-bottom mb-4 pb-2 unlimited-price">								
+										<h4 class="d-flex align-items-center"><i class="ti ti-files text-secondary me-2"></i>Pricing</h4>
+									</div>
+									<div class="border-bottom mb-4 pb-2 unlimited-price">
 										<div class="row row-gap-4">
 											<div class="col-xl-3">
 												<h6 class="mb-1">Pricing</h6>
@@ -1663,59 +1702,10 @@ session_start();
 											</div>
 											<div class="col-xl-9">
 												<div class="row">
-													<div class="col-lg-12">
-														<div class="mb-3">
-															<label class="form-label">Pricing Type <span class="text-danger">*</span></label>
-															<div class="d-flex align-items-center flex-wrap gap-3">
-																<div class="form-check mb-0">
-																	<input class="form-check-input pricing-type-checkbox" type="checkbox" name="pricing_types[]" value="daily" id="price" checked>
-																	<label class="form-check-label" for="price">
-																		Daily
-																	</label>
-																</div>
-																<div class="form-check mb-0">
-																	<input class="form-check-input pricing-type-checkbox" type="checkbox" name="pricing_types[]" value="weekly" id="price1" checked>
-																	<label class="form-check-label" for="price1">
-																		Weekly
-																	</label>
-																</div>
-																<div class="form-check mb-0">
-																	<input class="form-check-input pricing-type-checkbox" type="checkbox" name="pricing_types[]" value="monthly" id="price2" checked>
-																	<label class="form-check-label" for="price2">
-																		Monthly
-																	</label>
-																</div>
-																<div class="form-check mb-0">
-																	<input class="form-check-input pricing-type-checkbox" type="checkbox" name="pricing_types[]" value="yearly" id="price3" checked>
-																	<label class="form-check-label" for="price3">
-																		Yearly
-																	</label>
-																</div>
-															</div>															
-														</div>
-													</div>
 													<div class="col-lg-3 col-md-6">
 														<div class="mb-3">
-															<label class="form-label">Daily Price <span class="text-danger">*</span></label>
-															<input type="number" name="daily_price" class="form-control" step="0.01" min="0">
-														</div>
-													</div>
-													<div class="col-lg-3 col-md-6">
-														<div class="mb-3">
-															<label class="form-label">Weekly Price <span class="text-danger">*</span></label>
-															<input type="number" name="weekly_price" class="form-control" step="0.01" min="0">
-														</div>
-													</div>
-													<div class="col-lg-3 col-md-6">
-														<div class="mb-3">
-															<label class="form-label">Monthly Price <span class="text-danger">*</span></label>
-															<input type="number" name="monthly_price" class="form-control" step="0.01" min="0">
-														</div>
-													</div>
-													<div class="col-lg-3 col-md-6">
-														<div class="mb-3">
-															<label class="form-label">Yearly Price <span class="text-danger">*</span></label>
-															<input type="number" name="yearly_price" class="form-control" step="0.01" min="0">
+															<label class="form-label">Daily Price</label>
+															<input type="number" name="daily_price" class="form-control" step="0.01">
 														</div>
 													</div>
 													<div class="col-lg-6 col-md-6">
@@ -1744,48 +1734,22 @@ session_start();
 									</div>
 
 
-									<div class="border-bottom mb-2 pb-2">								
+									<div class="border-bottom mb-2 pb-2">
 										<div class="row row-gap-4">
 											<div class="col-xl-3">
 												<h6 class="mb-1">Insurance</h6>
-												<p>Add Insurance for Car</p>
+												<p>Select Insurance for Car</p>
 											</div>
 											<div class="col-xl-9">
-												<div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
-													<a href="javascript:void(0);" class="btn btn-dark btn-md d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#select_insurance"><i class="ti ti-plus me-1"></i>Select New Insurance</a>
-												</div>
-												<div class="empty-data bg-light text-center mb-3">
-													<p class="fw-medium">No Data Added</p>
-												</div>	
-												<div class="card bg-light mb-3">
-													<div class="card-body pb-3">
-														<div class="d-flex align-items-center justify-content-between flex-wrap bg-white gap-3 border br-5 p-20 mb-3">
-															<div>
-																<h6 class="fs-14 fw-semibold d-inline-flex align-items-center mb-1">Full Premium Insurance</h6>
-																<div class="d-flex align-items-center gap-2 flex-wrap">
-																	<p class="fs-13 fw-medium border-end pe-2 mb-0">Price : <span class="text-gray-9">$200</span></p>
-																	<p class="fs-13 fw-medium mb-0">Benefits : <span class="text-gray-9">04</span></p>
-																</div>
-															</div>
-															<div class="d-flex align-items-center icon-list">
-																<a href="javascript:void(0);" class="edit-icon me-2" data-bs-toggle="modal" data-bs-target="#edit_insurance"><i class="ti ti-edit"></i></a>
-																<a href="javascript:void(0);" class="trash-icon" data-bs-toggle="modal" data-bs-target="#delete_insurance"><i class="ti ti-trash"></i></a>
-															</div>
-														</div>
-														<div class="d-flex align-items-center justify-content-between flex-wrap bg-white gap-3 border br-5 p-20 mb-1">
-															<div>
-																<h6 class="fs-14 fw-semibold d-inline-flex align-items-center mb-1">Roadside Assistance </h6>
-																<div class="d-flex align-items-center gap-2 flex-wrap">
-																	<p class="fs-13 fw-medium border-end pe-2 mb-0">Price : <span class="text-gray-9">$250</span></p>
-																	<p class="fs-13 fw-medium mb-0">Benefits : <span class="text-gray-9">06</span></p>
-																</div>
-															</div>
-															<div class="d-flex align-items-center icon-list">
-																<a href="javascript:void(0);" class="edit-icon me-2" data-bs-toggle="modal" data-bs-target="#edit_insurance"><i class="ti ti-edit"></i></a>
-																<a href="javascript:void(0);" class="trash-icon" data-bs-toggle="modal" data-bs-target="#delete_insurance"><i class="ti ti-trash"></i></a>
-															</div>
-														</div>
-													</div>
+												<div class="mb-3">
+													<label class="form-label">Insurance Option</label>
+													<select name="insurance_option" class="select">
+														<option value="none" selected>None</option>
+														<option value="Full Premium Insurance">Full Premium Insurance ($200)</option>
+														<option value="Roadside Assistance">Roadside Assistance ($250)</option>
+														<option value="Liability Insurance">Liability Insurance ($150)</option>
+														<option value="Personal Accident Insurance">Personal Accident Insurance ($300)</option>
+													</select>
 												</div>
 											</div>
 										</div>
@@ -2003,10 +1967,10 @@ session_start();
 
 									<div class="bg-light p-20 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-3" style="background-color: #e9ecef !important;">
 										<h4 class="d-flex align-items-center"><i class="ti ti-id text-secondary me-2"></i>Damages</h4>
-									</div>	
+									</div>
 									<div class="border-bottom mb-2 pb-4">	
 										<div class="row row-gap-4">
-											<div class="col-xl-3">
+											<div class="col-xl-2">
 												<h6 class="mb-1">Damages</h6>
 												<p>Add Damages On Car</p>
 											</div>
@@ -2043,15 +2007,23 @@ session_start();
 															<!-- Damages will be added here dynamically -->
 																	</div>
 																</div>
-																		</div>
-																	</div>
-																</div>
-															</div>															
+															</div>
 														</div>
+													</div>
+												</div>
+												</div>
+												<!-- Submit actions for Add Car form -->
+												<div class="d-flex align-items-center justify-content-end pt-3 pb-2">
+													<a href="cars.html" class="btn btn-light d-flex align-items-center me-2"><i class="ti ti-chevron-left me-1"></i>Cancel</a>
+													<button type="submit" class="btn btn-primary d-flex align-items-center" id="saveCarBtn">Save Car<i class="ti ti-chevron-right ms-1"></i></button>
+												</div>
+												</form>
+												<!-- End of addCarForm -->
+												<!-- FAQ section commented out per requirements
 									<div class="bg-light p-20 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-3" style="background-color: #e9ecef !important;">
 										<h4 class="d-flex align-items-center"><i class="ti ti-question-mark text-secondary me-2"></i>FAQ</h4>
-									</div>	
-									<div class="border-bottom mb-2 pb-4">	
+									</div>
+									<div class="border-bottom mb-2 pb-4">
 										<div class="row row-gap-4">
 											<div class="col-xl-3">
 												<h6 class="mb-1">FAQ</h6>
@@ -2060,48 +2032,49 @@ session_start();
 											<div class="col-xl-9">
 												<a href="javascript:void(0);" class="btn btn-dark btn-md d-inline-flex align-items-center mb-3" data-bs-toggle="modal" data-bs-target="#add-faq"><i class="ti ti-plus me-1"></i>Add FAQ</a>
 												<div class="card border-0 bg-light mb-0">
-													<div class="card-body">														
+													<div class="card-body">
 														<h6 class="mb-3" id="faqCount">Total FAQ : 0</h6>
-														<div class="custom-accordion-icon" id="faqaccordion">
-															<!-- FAQs will be added here dynamically -->
-																	</div>
-																</div>
-															</div>
-											</div>
-										</div>
-									</div>
-									</div>
-								<form action="cars.html">	
-									<div class="bg-light p-20 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-3" style="background-color: #e9ecef !important;">
-										<h4 class="d-flex align-items-center"><i class="ti ti-question-mark text-secondary me-2"></i>SEO</h4>
-									</div>	
-									<div class="border-bottom mb-2 pb-2">	
-										<div class="row row-gap-4">
-											<div class="col-xl-3">
-												<h6 class="mb-1">SEO</h6>
-												<p>Add SEO Meta of the car</p>
-											</div>
-											<div class="col-xl-9">
-												<div class="mb-3">
-													<label class="form-label">Meta Title</label>
-													<input type="text" name="meta_title" class="form-control">
-												</div>
-												<div class="mb-3">
-													<label class="form-label">Keywords</label>
-													<input type="text" name="meta_keywords" class="form-control" placeholder="car, rental, vehicle, etc.">
-												</div>
-												<div class="mb-3">
-													<label class="form-label">Description</label>
-													<textarea name="meta_description" class="form-control" rows="3" placeholder="Brief description of the car for search engines"></textarea>
+														<div class="custom-accordion-icon" id="faqaccordion"></div>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-									<div class="d-flex align-items-center justify-content-end pt-3">
-										<a href="cars.html" class="btn btn-light d-flex align-items-center me-2"><i class="ti ti-chevron-left me-1"></i>Cancel</a>
-										<button type="submit" class="btn btn-primary d-flex align-items-center">Save Car<i class="ti ti-chevron-right ms-1"></i></button>
-									</div>
-								</form>
+									-->
+
+									<!-- SEO section commented out per requirements
+									<form action="cars.html">
+										<div class="bg-light p-20 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-3" style="background-color: #e9ecef !important;">
+											<h4 class="d-flex align-items-center"><i class="ti ti-question-mark text-secondary me-2"></i>SEO</h4>
+										</div>
+										<div class="border-bottom mb-2 pb-2">
+											<div class="row row-gap-4">
+												<div class="col-xl-3">
+													<h6 class="mb-1">SEO</h6>
+													<p>Add SEO Meta of the car</p>
+												</div>
+												<div class="col-xl-9">
+													<div class="mb-3">
+														<label class="form-label">Meta Title</label>
+														<input type="text" name="meta_title" class="form-control">
+													</div>
+													<div class="mb-3">
+														<label class="form-label">Keywords</label>
+														<input type="text" name="meta_keywords" class="form-control" placeholder="car, rental, vehicle, etc.">
+													</div>
+													<div class="mb-3">
+														<label class="form-label">Description</label>
+														<textarea name="meta_description" class="form-control" rows="3" placeholder="Brief description of the car for search engines"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="d-flex align-items-center justify-content-end pt-3">
+											<a href="cars.html" class="btn btn-light d-flex align-items-center me-2"><i class="ti ti-chevron-left me-1"></i>Cancel</a>
+											<button type="submit" class="btn btn-primary d-flex align-items-center">Save Car<i class="ti ti-chevron-right ms-1"></i></button>
+										</div>
+									</form>
+									-->
 						</div>
 					</div>
 				</div>
@@ -2944,14 +2917,11 @@ session_start();
 			addDamageToContainer(damage);
 		});
 		
-		// Load existing FAQs
-		existingFaqs.forEach(function(faq) {
-			addFaqToContainer(faq);
-		});
+	// FAQ UI commented out; skip rendering existing FAQs
 		
 		// Update counters
 		$('#damageCount').text('Total Damages : ' + damageCount);
-		$('#faqCount').text('Total FAQ : ' + faqCount);
+	// $('#faqCount').text('Total FAQ : ' + faqCount); // commented out with FAQ section
 		
 		// Handle Damage Form Submission
 		$('#addDamageForm').on('submit', function(e) {
@@ -2989,41 +2959,7 @@ session_start();
 			});
 		});
 		
-		// Handle FAQ Form Submission
-		$('#addFaqForm').on('submit', function(e) {
-			e.preventDefault();
-			
-			const formData = new FormData(this);
-			formData.append('action', 'add_faq');
-			
-			$.ajax({
-				url: 'process-damage-faq.php',
-				type: 'POST',
-				data: formData,
-				processData: false,
-				contentType: false,
-				success: function(response) {
-					if (response.success) {
-						// Add FAQ to the container
-						addFaqToContainer(response.faq);
-						faqCount++;
-						$('#faqCount').text('Total FAQ : ' + faqCount);
-						
-						// Reset form and close modal
-						$('#addFaqForm')[0].reset();
-						$('#add-faq').modal('hide');
-						
-						// Show success message
-						alert(response.message);
-					} else {
-						alert('Error: ' + response.message);
-					}
-				},
-				error: function() {
-					alert('Error occurred while adding FAQ');
-				}
-			});
-		});
+	// FAQ add handler commented out per requirements
 		
 		// Function to add damage to container
 		function addDamageToContainer(damage) {
@@ -3054,31 +2990,7 @@ session_start();
 		}
 		
 		// Function to add FAQ to container
-		function addFaqToContainer(faq) {
-			const faqId = 'faq-' + faq.id;
-			const faqHtml = `
-				<div class="accordion-item" data-faq-id="${faq.id}">
-					<h2 class="accordion-header">
-						<button class="accordion-button collapsed" type="button"
-							data-bs-toggle="collapse" data-bs-target="#${faqId}"
-							aria-expanded="false" aria-controls="${faqId}">
-							<span class="faq-icon"><i class="ti ti-grip-vertical"></i></span>${faq.question}
-						</button>
-					</h2>
-					<div id="${faqId}" class="accordion-collapse collapse" data-bs-parent="#faqaccordion">
-						<div class="accordion-body">
-							<p class="fs-13">${faq.answer}</p>
-							<div class="mt-2">
-								<a href="javascript:void(0);" class="btn btn-sm btn-outline-danger" onclick="deleteFaq('${faq.id}')">
-									<i class="ti ti-trash me-1"></i>Delete
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			`;
-			$('#faqaccordion').append(faqHtml);
-		}
+	// FAQ UI function commented out
 		
 		// Function to delete damage
 		window.deleteDamage = function(damageId) {
@@ -3116,34 +3028,7 @@ session_start();
 		}
 		
 		// Function to delete FAQ
-		window.deleteFaq = function(faqId) {
-			if (confirm('Are you sure you want to delete this FAQ?')) {
-				const formData = new FormData();
-				formData.append('action', 'delete_faq');
-				formData.append('faq_id', faqId);
-				
-				$.ajax({
-					url: 'process-damage-faq.php',
-					type: 'POST',
-					data: formData,
-					processData: false,
-					contentType: false,
-					success: function(response) {
-						if (response.success) {
-							$(`[data-faq-id="${faqId}"]`).remove();
-							faqCount--;
-							$('#faqCount').text('Total FAQ : ' + faqCount);
-							alert(response.message);
-						} else {
-							alert('Error: ' + response.message);
-						}
-					},
-					error: function() {
-						alert('Error occurred while deleting FAQ');
-					}
-				});
-			}
-		};
+	// window.deleteFaq = function(faqId) { /* commented out */ };
 		
 		// Handle confirm delete damage button click
 		$('#confirmDeleteDamage').on('click', function() {
@@ -3188,33 +3073,10 @@ session_start();
 			}
 		});
 
-		// Pricing Section Functionality
-		// Handle pricing type checkboxes
-		$('.pricing-type-checkbox').on('change', function() {
-			const pricingType = $(this).val();
-			const isChecked = $(this).is(':checked');
-			
-			// Show/hide corresponding price input fields
-			const $priceField = $(`input[name="${pricingType}_price"]`);
-			if (isChecked) {
-				$priceField.closest('.col-lg-3').show();
-				$priceField.prop('required', true);
-			} else {
-				$priceField.closest('.col-lg-3').hide();
-				$priceField.prop('required', false);
-			}
-		});
-
-		// Initialize pricing fields visibility on page load
-		$('.pricing-type-checkbox:checked').each(function() {
-			const pricingType = $(this).val();
-			const $priceField = $(`input[name="${pricingType}_price"]`);
-			$priceField.closest('.col-lg-3').show();
-			$priceField.prop('required', true);
-		});
+	// Pricing type checkboxes removed; only Daily Price is used
 
 		// Form Validation and Submission
-		$('form').on('submit', function(e) {
+	$('#addCarForm').on('submit', function(e) {
 			// Validate required fields
 			const requiredFields = $(this).find('[required]');
 			let isValid = true;
@@ -3227,27 +3089,6 @@ session_start();
 					$(this).removeClass('is-invalid');
 				}
 			});
-
-			// Validate at least one pricing type is selected
-			if ($('.pricing-type-checkbox:checked').length === 0) {
-				alert('Please select at least one pricing type.');
-				isValid = false;
-			}
-
-			// Validate at least one pricing field has a value
-			let hasPricingValue = false;
-			$('.pricing-type-checkbox:checked').each(function() {
-				const pricingType = $(this).val();
-				const priceValue = $(`input[name="${pricingType}_price"]`).val();
-				if (priceValue && parseFloat(priceValue) > 0) {
-					hasPricingValue = true;
-				}
-			});
-
-			if (!hasPricingValue) {
-				alert('Please enter at least one valid price.');
-				isValid = false;
-			}
 
 			if (!isValid) {
 				e.preventDefault();
@@ -3271,21 +3112,22 @@ session_start();
 			formData.append('extra_services', JSON.stringify(selectedServices));
 
 			// Add pricing types
-			const selectedPricingTypes = [];
-			$('.pricing-type-checkbox:checked').each(function() {
-				selectedPricingTypes.push($(this).val());
-			});
-			formData.append('pricing_types', JSON.stringify(selectedPricingTypes));
+			// pricing_types not used; ensure backend tolerates empty
+			formData.append('pricing_types', JSON.stringify(['daily']));
 
 			// Add damages and FAQs
 			formData.append('damages', JSON.stringify(existingDamages));
-			formData.append('faqs', JSON.stringify(existingFaqs));
+			// FAQ section commented out; still send empty array for backend compatibility
+			formData.append('faqs', JSON.stringify([]));
 			formData.append('ajax_request', '1');
 
 			// Submit form via AJAX
+			const $btn = $('#saveCarBtn');
+			$btn.prop('disabled', true);
 			$.ajax({
 				url: $(this).attr('action'),
 				type: 'POST',
+				dataType: 'json',
 				data: formData,
 				processData: false,
 				contentType: false,
@@ -3299,6 +3141,9 @@ session_start();
 				},
 				error: function() {
 					alert('Error occurred while saving the car.');
+				},
+				complete: function() {
+					$btn.prop('disabled', false);
 				}
 			});
 
@@ -3315,13 +3160,7 @@ session_start();
 			}
 		});
 
-		// Price field validation
-		$('input[name$="_price"]').on('input', function() {
-			const value = parseFloat($(this).val());
-			if (value < 0) {
-				$(this).val(0);
-			}
-		});
+	// No price validation enforced
 
 		// Initialize form state
 		$(document).ready(function() {
