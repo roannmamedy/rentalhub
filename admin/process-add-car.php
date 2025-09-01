@@ -156,9 +156,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Insurance selection (dropdown)
     $insurance_option = sanitize_input($_POST['insurance_option'] ?? 'none');
 
-        // Handle new form fields
-        $features_amenities = json_encode($_POST['features_amenities'] ?? []);
-        $extra_services = json_encode($_POST['extra_services'] ?? []);
+        // Handle new form fields (ensure encode-once behavior)
+        $features_amenities = '[]';
+        if (isset($_POST['features_amenities'])) {
+            $faRaw = $_POST['features_amenities'];
+            if (is_string($faRaw)) {
+                $fa = json_decode($faRaw, true);
+                if (!is_array($fa)) { $fa = []; }
+            } else if (is_array($faRaw)) {
+                $fa = $faRaw;
+            } else { $fa = []; }
+            $features_amenities = json_encode($fa);
+        }
+
+        $extra_services = '[]';
+        if (isset($_POST['extra_services'])) {
+            $esRaw = $_POST['extra_services'];
+            if (is_string($esRaw)) {
+                $es = json_decode($esRaw, true);
+                if (!is_array($es)) { $es = []; }
+            } else if (is_array($esRaw)) {
+                $es = $esRaw;
+            } else { $es = []; }
+            $extra_services = json_encode($es);
+        }
         $pricing_types = json_encode($_POST['pricing_types'] ?? []);
         $damages = json_encode($_POST['damages'] ?? []);
         $faqs = json_encode($_POST['faqs'] ?? []);
@@ -300,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['success' => true, 'message' => 'Car added successfully!', 'car_id' => $car_id]);
                 exit();
             } else {
-                header("Location: cars.html");
+                header("Location: cars.php");
                 exit();
             }
         } else {

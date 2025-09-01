@@ -467,7 +467,7 @@ session_start();
 						<li>
 							<ul>
 								<li class="active">
-									<a href="cars.html">
+									<a href="cars.php">
 										<i class="ti ti-car"></i><span>Cars</span>
 									</a>
 								</li>
@@ -1055,7 +1055,7 @@ session_start();
 		<div class="page-wrapper">
 			<div class="content me-0">
 				<div class="mb-3">
-					<a href="cars.html" class="d-inline-flex align-items-center fw-medium"><i class="ti ti-arrow-left me-1"></i>Back to List</a>
+					<a href="cars.php" class="d-inline-flex align-items-center fw-medium"><i class="ti ti-arrow-left me-1"></i>Back to List</a>
 				</div>
 				<div class="card mb-0">
 					<div class="card-body">
@@ -2014,7 +2014,7 @@ session_start();
 												</div>
 												<!-- Submit actions for Add Car form -->
 												<div class="d-flex align-items-center justify-content-end pt-3 pb-2">
-													<a href="cars.html" class="btn btn-light d-flex align-items-center me-2"><i class="ti ti-chevron-left me-1"></i>Cancel</a>
+													<a href="cars.php" class="btn btn-light d-flex align-items-center me-2"><i class="ti ti-chevron-left me-1"></i>Cancel</a>
 													<button type="submit" class="btn btn-primary d-flex align-items-center" id="saveCarBtn">Save Car<i class="ti ti-chevron-right ms-1"></i></button>
 												</div>
 												</form>
@@ -2043,7 +2043,7 @@ session_start();
 									-->
 
 									<!-- SEO section commented out per requirements
-									<form action="cars.html">
+									<form action="cars.php">
 										<div class="bg-light p-20 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-3" style="background-color: #e9ecef !important;">
 											<h4 class="d-flex align-items-center"><i class="ti ti-question-mark text-secondary me-2"></i>SEO</h4>
 										</div>
@@ -2070,7 +2070,7 @@ session_start();
 											</div>
 										</div>
 										<div class="d-flex align-items-center justify-content-end pt-3">
-											<a href="cars.html" class="btn btn-light d-flex align-items-center me-2"><i class="ti ti-chevron-left me-1"></i>Cancel</a>
+											<a href="cars.php" class="btn btn-light d-flex align-items-center me-2"><i class="ti ti-chevron-left me-1"></i>Cancel</a>
 											<button type="submit" class="btn btn-primary d-flex align-items-center">Save Car<i class="ti ti-chevron-right ms-1"></i></button>
 										</div>
 									</form>
@@ -3134,7 +3134,7 @@ session_start();
 				success: function(response) {
 					if (response.success) {
 						alert('Car added successfully!');
-						window.location.href = 'cars.html';
+						window.location.href = 'cars.php';
 					} else {
 						alert('Error: ' + response.message);
 					}
