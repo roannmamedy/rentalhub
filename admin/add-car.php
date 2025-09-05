@@ -3116,7 +3116,8 @@ session_start();
 			formData.append('pricing_types', JSON.stringify(['daily']));
 
 			// Add damages and FAQs
-			formData.append('damages', JSON.stringify(existingDamages));
+			// Don't send damages via JavaScript - let the backend use $_SESSION['damages']
+			// formData.append('damages', JSON.stringify(existingDamages));
 			// FAQ section commented out; still send empty array for backend compatibility
 			formData.append('faqs', JSON.stringify([]));
 			formData.append('ajax_request', '1');

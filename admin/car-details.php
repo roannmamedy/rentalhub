@@ -39,7 +39,11 @@ try {
 // Fetch damages
 $damages = [];
 try {
-  $d = $pdo->prepare('SELECT location, `type`, description, date_added FROM car_damages WHERE car_id = :id ORDER BY id DESC');
+  $sqlDamages = 'SELECT id, location, `type` AS damage_type, description, date_added
+                 FROM car_damages
+                 WHERE car_id = :id
+                 ORDER BY COALESCE(date_added, "0000-00-00") DESC, id DESC';
+  $d = $pdo->prepare($sqlDamages);
   $d->execute([':id' => $id]);
   $damages = $d->fetchAll(PDO::FETCH_ASSOC);
 } catch (Throwable $e) { /* ignore */ }
@@ -694,7 +698,7 @@ $extras = decode_array_field($car['extra_services'] ?? null);
                   <?php foreach ($damages as $dg): ?>
                     <tr>
                       <td><?= h($dg['location']) ?></td>
-                      <td><?= h($dg['type']) ?></td>
+                      <td><?= h($dg['damage_type']) ?></td>
                       <td><?= h($dg['description'] ?: '-') ?></td>
                       <td><?= h($dg['date_added']) ?></td>
                     </tr>

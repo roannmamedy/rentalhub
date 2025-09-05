@@ -292,9 +292,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $ins_stmt->execute();
             }
             
-            // Insert damages if any
-            if (!empty($_POST['damages'])) {
-                $damages_data = json_decode($_POST['damages'], true);
+            // Insert damages if any (from session)
+            $damages_data = isset($_SESSION['damages']) ? $_SESSION['damages'] : [];
+            
+            if (!empty($damages_data) && is_array($damages_data)) {
                 foreach ($damages_data as $damage) {
                     $damage_sql = "INSERT INTO car_damages (car_id, location, type, description, date_added) VALUES (:car_id, :location, :type, :description, :date_added)";
                     $damage_stmt = $pdo->prepare($damage_sql);
