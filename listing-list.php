@@ -215,11 +215,11 @@ if ($cars) {
                 <li class="active">
                   <a href="listing-list.php">Listing List</a>
                 </li>
+                <!-- <li>
+                  <a href="listing-map.php">Listing With Map</a>
+                </li> -->
                 <li>
-                  <a href="listing-map.html">Listing With Map</a>
-                </li>
-                <li>
-                  <a href="listing-details.html">Listing Details</a>
+                  <a href="listing-details.php">Listing Details</a>
                 </li>
               </ul>
             </li>

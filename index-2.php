@@ -73,8 +73,8 @@ try {
                             <a href="#">Listings <i class="fas fa-chevron-down"></i></a>
                             <ul class="submenu">
                                 <li><a href="listing-grid.php">Listing Grid</a></li>
-                                <li><a href="listing-list.html">Listing List</a></li>
-                                <li><a href="listing-map.html">Listing With Map</a></li>
+                                <li><a href="listing-list.php">Listing List</a></li>
+                                <!-- <li><a href="listing-map.html">Listing With Map</a></li> -->
                                 <li><a href="listing-grid.php">Listing Details</a></li>
                             </ul>
                         </li>

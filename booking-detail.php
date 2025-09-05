@@ -144,10 +144,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 							<li class="has-submenu">
 								<a href="#">Listings <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
-								    <li><a href="listing-grid.html">Listing Grid</a></li>
-								    <li><a href="listing-list.html">Listing List</a></li>
-									<li><a href="listing-map.html">Listing With Map</a></li>						
-								    <li><a href="listing-details.html">Listing Details</a></li>								
+								    <li><a href="listing-grid.php">Listing Grid</a></li>
+								    <li><a href="listing-list.php">Listing List</a></li>
+									<!-- <li><a href="listing-map.php">Listing With Map</a></li>						 -->
+								    <li><a href="listing-details.php">Listing Details</a></li>								
 								</ul>
 							</li>
 							<li class="has-submenu active">
