@@ -34,7 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!$terms) $errors[] = 'You must accept Terms & Conditions.';
 
   if (!$errors) {
-    $b['driver'] = compact('name','email','phone','license','country','city','pincode','company','address','notes');
+    $existingDriver = $b['driver'] ?? [];
+    $newFields = compact('name','email','phone','license','country','city','pincode','company','address','notes');
+    // Merge to keep previously captured fields like document_path, document_mime, type, etc.
+    $b['driver'] = array_merge($existingDriver, $newFields);
     set_booking_session($b);
     redirect_to('booking-payment.php');
   }

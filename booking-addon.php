@@ -43,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Driver details selection (self vs acting)
   $driverType = $_POST['driver_type'] ?? 'self';
   $driverInfo = null;
+  $driverProfile = $b['driver'] ?? [];
+  $uploadedPath = null; $uploadedMime = null; $maxBytes = 8 * 1024 * 1024; // 8MB
   if ($driverType === 'acting') {
     // In absence of a drivers table, use a fixed sample to match template
     $sel = $_POST['acting_driver_id'] ?? '1';
@@ -53,11 +55,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($drivers[$sel])) {
       $driverInfo = [ 'type' => 'acting', 'id' => $drivers[$sel]['id'], 'name' => $drivers[$sel]['name'], 'price' => $drivers[$sel]['price'], 'avatar' => $drivers[$sel]['avatar'] ];
     }
+    // Reset self driver profile if switching
+    $driverProfile = [ 'type' => 'acting', 'name' => $drivers[$sel]['name'] ?? null ];
   } else {
     $driverInfo = [ 'type' => 'self' ];
+    // Capture basic self-driver fields to help prefill later steps
+    $first = trim((string)($_POST['self_first_name'] ?? ''));
+    $last  = trim((string)($_POST['self_last_name'] ?? ''));
+    $age   = trim((string)($_POST['self_age'] ?? ''));
+    $phone = trim((string)($_POST['self_phone'] ?? ''));
+    $lic   = trim((string)($_POST['self_license'] ?? ''));
+    $driverProfile = array_merge($driverProfile, [
+      'type' => 'self',
+      'name' => trim($first . ' ' . $last) ?: ($driverProfile['name'] ?? null),
+      'age' => $age ?: ($driverProfile['age'] ?? null),
+      'phone' => $phone ?: ($driverProfile['phone'] ?? null),
+      'license' => $lic ?: ($driverProfile['license'] ?? null),
+    ]);
+
+    // Handle document upload if provided
+    if (!empty($_FILES['self_document']) && is_array($_FILES['self_document']) && is_uploaded_file($_FILES['self_document']['tmp_name'])) {
+      $f = $_FILES['self_document'];
+      if ((int)$f['error'] === UPLOAD_ERR_OK) {
+        if ((int)$f['size'] <= $maxBytes) {
+          $finfo = function_exists('finfo_open') ? finfo_open(FILEINFO_MIME_TYPE) : null;
+          $mime = $finfo ? finfo_file($finfo, $f['tmp_name']) : mime_content_type($f['tmp_name']);
+          if ($finfo) finfo_close($finfo);
+          $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/jpg' => 'jpg'];
+          if (isset($allowed[$mime])) {
+            $ext = $allowed[$mime];
+            $dir = __DIR__ . '/uploads/driver_docs';
+            if (!is_dir($dir)) @mkdir($dir, 0755, true);
+            $fname = uniqid('drv_', true) . '.' . $ext;
+            $destFs = rtrim($dir, '/').'/'.$fname;
+            if (@move_uploaded_file($f['tmp_name'], $destFs)) {
+              // public web path relative to project root
+              $uploadedPath = 'uploads/driver_docs/' . $fname;
+              $uploadedMime = $mime;
+              $driverProfile['document_path'] = $uploadedPath;
+              $driverProfile['document_mime'] = $uploadedMime;
+            }
+          } else {
+            $errors[] = 'Unsupported document type. Allowed: jpeg, jpg, png.';
+          }
+        } else {
+          $errors[] = 'Document exceeds 8 MB limit.';
+        }
+      } else {
+        $errors[] = 'Upload error. Please try again.';
+      }
+    }
   }
 
   $b['addons'] = [ 'extras' => $extras, 'insurance' => $chosenIns, 'driver' => $driverInfo ];
+  // Persist captured driver profile in booking session for later steps and saving
+  if (!empty($driverProfile)) {
+    $b['driver'] = array_merge(($b['driver'] ?? []), $driverProfile);
+  }
   calculate_totals($b);
   set_booking_session($b);
   redirect_to('booking-detail.php');
@@ -361,7 +415,7 @@ $extraLabels = [
           <div class="row">
             <div class="col-lg-8">
               <div class="booking-information-main">
-                <form method="post" action="">
+                <form method="post" action="" enctype="multipart/form-data">
                   <div class="booking-information-card">
                     <div class="booking-info-head justify-content-between">
                       <div class="d-flex align-items-center">
@@ -422,10 +476,10 @@ $extraLabels = [
                         </li>
                         <li>
                           <label class="booking_custom_check">
-                            <input type="radio" name="driver_type" value="acting" <?= $driverType==='acting'?'checked':'' ?>>
-                            <span class="booking_checkmark">
-                              <span class="checked-title">Driver</span>
-                            </span>
+                          <input type="radio" name="driver_type" value="acting" <?= $driverType==='acting'?'checked':'' ?> disabled>
+                          <span class="booking_checkmark">
+                            <span class="checked-title">Driver</span>
+                          </span>
                           </label>
                         </li>
                       </ul>
@@ -470,7 +524,7 @@ $extraLabels = [
                             <div class="input-block date-widget">	
                               <label class="form-label">Upload Document <span class="text-danger"> *</span></label>										
                               <div class="upload-div">
-                                <input type="file" name="self_document">
+                                <input type="file" name="self_document" accept="image/jpeg,image/png">
                                 <div class="upload-photo-drag">
                                   <span><i class="fa fa-upload me-2"></i> Upload Photo</span>
                                   <h6>or Drag Photos</h6>

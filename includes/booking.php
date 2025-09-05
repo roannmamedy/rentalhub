@@ -147,6 +147,7 @@ function ensure_booking_tables(PDO $pdo){
     customer_email VARCHAR(200) DEFAULT NULL,
     customer_phone VARCHAR(50) DEFAULT NULL,
     customer_license VARCHAR(100) DEFAULT NULL,
+  driver_document_path VARCHAR(512) DEFAULT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_bookings_car FOREIGN KEY (car_id) REFERENCES tblcars(id) ON DELETE RESTRICT
@@ -181,33 +182,67 @@ function create_booking(PDO $pdo, $booking){
     'insurance' => $addons['insurance'] ?? null,
   ]);
 
-  $stmt = $pdo->prepare("INSERT INTO bookings
-    (order_number, car_id, pickup_location, dropoff_location, pickup_datetime, dropoff_datetime, total_days,
-     base_amount, addons_amount, total_amount, insurance_name, insurance_price, addons_json, status, customer_name, customer_email, customer_phone, customer_license)
-     VALUES
-    (:order_number, :car_id, :pickup_location, :dropoff_location, :pickup_dt, :drop_dt, :days,
-     :base_amount, :addons_amount, :total_amount, :insurance_name, :insurance_price, :addons_json, :status, :cust_name, :cust_email, :cust_phone, :cust_license)");
+  $docPath = $booking['driver']['document_path'] ?? null;
+  try {
+    // Preferred insert including document path
+    $stmt = $pdo->prepare("INSERT INTO bookings
+      (order_number, car_id, pickup_location, dropoff_location, pickup_datetime, dropoff_datetime, total_days,
+       base_amount, addons_amount, total_amount, insurance_name, insurance_price, addons_json, status, customer_name, customer_email, customer_phone, customer_license, driver_document_path)
+       VALUES
+      (:order_number, :car_id, :pickup_location, :dropoff_location, :pickup_dt, :drop_dt, :days,
+       :base_amount, :addons_amount, :total_amount, :insurance_name, :insurance_price, :addons_json, :status, :cust_name, :cust_email, :cust_phone, :cust_license, :doc_path)");
 
-  $stmt->execute([
-    ':order_number' => $orderNo,
-    ':car_id' => (int)$booking['car']['id'],
-    ':pickup_location' => $it['pickup_location'] ?? null,
-    ':dropoff_location' => $it['dropoff_location'] ?? null,
-    ':pickup_dt' => $pickupDt,
-    ':drop_dt' => $dropDt,
-    ':days' => (int)$tot['days'],
-    ':base_amount' => (float)$tot['base'],
-    ':addons_amount' => (float)$tot['addons'],
-    ':total_amount' => (float)$tot['total'],
-    ':insurance_name' => $insName,
-    ':insurance_price' => $insPrice,
-    ':addons_json' => $addonsJson,
-    ':status' => 'pending',
-    ':cust_name' => $driver['name'] ?? null,
-    ':cust_email' => $driver['email'] ?? null,
-    ':cust_phone' => $driver['phone'] ?? null,
-    ':cust_license' => $driver['license'] ?? null,
-  ]);
+    $stmt->execute([
+      ':order_number' => $orderNo,
+      ':car_id' => (int)$booking['car']['id'],
+      ':pickup_location' => $it['pickup_location'] ?? null,
+      ':dropoff_location' => $it['dropoff_location'] ?? null,
+      ':pickup_dt' => $pickupDt,
+      ':drop_dt' => $dropDt,
+      ':days' => (int)$tot['days'],
+      ':base_amount' => (float)$tot['base'],
+      ':addons_amount' => (float)$tot['addons'],
+      ':total_amount' => (float)$tot['total'],
+      ':insurance_name' => $insName,
+      ':insurance_price' => $insPrice,
+      ':addons_json' => $addonsJson,
+      ':status' => 'pending',
+      ':cust_name' => $driver['name'] ?? null,
+      ':cust_email' => $driver['email'] ?? null,
+      ':cust_phone' => $driver['phone'] ?? null,
+      ':cust_license' => $driver['license'] ?? null,
+      ':doc_path' => $docPath,
+    ]);
+  } catch (Throwable $e) {
+    // Fallback for schema without driver_document_path
+    $stmt = $pdo->prepare("INSERT INTO bookings
+      (order_number, car_id, pickup_location, dropoff_location, pickup_datetime, dropoff_datetime, total_days,
+       base_amount, addons_amount, total_amount, insurance_name, insurance_price, addons_json, status, customer_name, customer_email, customer_phone, customer_license)
+       VALUES
+      (:order_number, :car_id, :pickup_location, :dropoff_location, :pickup_dt, :drop_dt, :days,
+       :base_amount, :addons_amount, :total_amount, :insurance_name, :insurance_price, :addons_json, :status, :cust_name, :cust_email, :cust_phone, :cust_license)");
+
+    $stmt->execute([
+      ':order_number' => $orderNo,
+      ':car_id' => (int)$booking['car']['id'],
+      ':pickup_location' => $it['pickup_location'] ?? null,
+      ':dropoff_location' => $it['dropoff_location'] ?? null,
+      ':pickup_dt' => $pickupDt,
+      ':drop_dt' => $dropDt,
+      ':days' => (int)$tot['days'],
+      ':base_amount' => (float)$tot['base'],
+      ':addons_amount' => (float)$tot['addons'],
+      ':total_amount' => (float)$tot['total'],
+      ':insurance_name' => $insName,
+      ':insurance_price' => $insPrice,
+      ':addons_json' => $addonsJson,
+      ':status' => 'pending',
+      ':cust_name' => $driver['name'] ?? null,
+      ':cust_email' => $driver['email'] ?? null,
+      ':cust_phone' => $driver['phone'] ?? null,
+      ':cust_license' => $driver['license'] ?? null,
+    ]);
+  }
 
   return [ 'id' => (int)$pdo->lastInsertId(), 'order_number' => $orderNo ];
 }

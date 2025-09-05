@@ -502,6 +502,23 @@ $car = $b['car'];
                       <h6>Transaction ID</h6>
                       <p><span>#<?= h($b['order']['order_number'] ?? '13245454455454') ?></span></p>
                     </li>
+                    <?php if ((($b['addons']['driver']['type'] ?? '') === 'acting')): ?>
+                      <li>
+                        <p>Acting Driver Assigned: <?= h($b['addons']['driver']['name'] ?? 'Driver') ?></p>
+                      </li>
+                    <?php else: ?>
+                      <?php if (!empty($b['driver']['document_path'])): ?>
+                        <li>
+                          <h6>Uploaded Document</h6>
+                          <?php $doc = $b['driver']['document_path']; $m = $b['driver']['document_mime'] ?? ''; ?>
+                          <?php if (strpos((string)$m, 'image/') === 0): ?>
+                            <img src="<?= h($doc) ?>" alt="Driver Document" style="max-width: 200px; border:1px solid #eee; padding:4px;" />
+                          <?php else: ?>
+                            <a href="<?= h($doc) ?>" target="_blank">View Document</a>
+                          <?php endif; ?>
+                        </li>
+                      <?php endif; ?>
+                    <?php endif; ?>
                   </ul>
                 </div>
               </div>
