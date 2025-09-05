@@ -613,8 +613,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="total-rate-card">
                   <div class="vehicle-total-price">
                     <h5>Estimated Total</h5>
-                    <?php $dailyBase = (float)($car['daily_price'] ?? 0); ?>
-                    <span>$<?= number_format($dailyBase,2) ?></span>
+                    <?php $estimatedTotal = (float)($b['totals']['total'] ?? 0); ?>
+                    <span>$<?= number_format($estimatedTotal, 2) ?></span>
                   </div>
                 </div>
               </div>
