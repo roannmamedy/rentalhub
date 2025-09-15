@@ -7,12 +7,22 @@ function h($v){return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');}
 // Fetch cars with basic aggregates
 $cars = [];
 try {
+  // Prefer excluding archived cars when column exists
+  $hasDeletedAt = false;
+  try {
+    $chk = $pdo->prepare("SHOW COLUMNS FROM tblcars LIKE 'deleted_at'");
+    $chk->execute();
+    $hasDeletedAt = $chk->rowCount() > 0;
+  } catch (Throwable $ie) { /* ignore */ }
+
+  $where = $hasDeletedAt ? "WHERE c.deleted_at IS NULL" : "";
   $sql = "SELECT c.id, c.name, c.car_type, c.featured_image, c.main_location, c.daily_price, c.status, c.created_at,
                    (SELECT COUNT(*) FROM car_damages d WHERE d.car_id = c.id) AS damage_count
             FROM tblcars c
+            $where
             ORDER BY c.created_at DESC, c.id DESC";
-    $stmt = $pdo->query($sql);
-    $cars = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $stmt = $pdo->query($sql);
+  $cars = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (Throwable $e) {
     $_SESSION['error_message'] = 'Failed to load cars: ' . $e->getMessage();
 }
@@ -569,6 +579,8 @@ try {
                       <a href="#" class="btn btn-white btn-sm" data-bs-toggle="dropdown"><i class="ti ti-dots"></i></a>
                       <div class="dropdown-menu dropdown-menu-end p-2">
                         <a class="dropdown-item" href="car-details.php?id=<?= (int)$c['id'] ?>">View</a>
+                        <a class="dropdown-item" href="edit-car.php?id=<?= (int)$c['id'] ?>">Edit</a>
+                        <a class="dropdown-item text-danger btn-delete-car" href="#" data-car-id="<?= (int)$c['id'] ?>" data-car-name="<?= h($c['name'] ?: 'Untitled') ?>">Delete</a>
                       </div>
                     </div>
                   </td>
@@ -596,5 +608,29 @@ try {
   <script src="assets/plugins/datatables/dataTables.bootstrap5.min.js"></script>
   <script src="assets/plugins/select2/js/select2.min.js"></script>
   <script src="assets/js/script.js"></script>
+  <script>
+    // Handle Delete Car clicks (AJAX + confirm)
+    document.addEventListener('click', function(e){
+      const a = e.target.closest('.btn-delete-car');
+      if(!a) return;
+      e.preventDefault();
+      const id = a.getAttribute('data-car-id');
+      const name = a.getAttribute('data-car-name') || ('#'+id);
+      if(!id) return;
+      if(!confirm(`Delete car "${name}"? This cannot be undone.`)) return;
+      fetch('delete-car.php', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new URLSearchParams({ id: id, ajax: '1' })
+      }).then(r=>r.json()).then(data=>{
+        if(data && data.success){
+          // simple refresh
+          window.location.reload();
+        }else{
+          alert((data && data.message) || 'Failed to delete car');
+        }
+      }).catch(()=> alert('Network error while deleting car'));
+    });
+  </script>
   </body>
   </html>

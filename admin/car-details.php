@@ -22,6 +22,12 @@ try {
     header('Location: cars.php');
     exit;
   }
+  // If archived (soft-deleted), send back to list
+  if (array_key_exists('deleted_at', $car) && !empty($car['deleted_at'])) {
+    $_SESSION['error_message'] = 'This car is archived.';
+    header('Location: cars.php');
+    exit;
+  }
 } catch (Throwable $e) {
   $_SESSION['error_message'] = 'Failed to load car: ' . $e->getMessage();
   header('Location: cars.php');
@@ -557,6 +563,12 @@ $extras = decode_array_field($car['extra_services'] ?? null);
           <div class="mb-2">
             <a href="cars.php" class="btn btn-light d-flex align-items-center"><i class="ti ti-chevron-left me-1"></i>Back to List</a>
           </div>
+          <div class="mb-2 ms-2">
+            <a href="edit-car.php?id=<?= (int)$car['id'] ?>" class="btn btn-primary d-flex align-items-center"><i class="ti ti-edit me-1"></i>Edit</a>
+          </div>
+          <div class="mb-2 ms-2">
+            <a href="#" class="btn btn-outline-danger d-flex align-items-center" id="btnDeleteCar" data-car-id="<?= (int)$car['id'] ?>" data-car-name="<?= h($car['name'] ?: 'Untitled') ?>"><i class="ti ti-trash me-1"></i>Delete</a>
+          </div>
         </div>
       </div>
 
@@ -728,5 +740,22 @@ $extras = decode_array_field($car['extra_services'] ?? null);
 <script src="assets/js/jquery.slimscroll.min.js"></script>
 <script src="assets/plugins/fancybox/jquery.fancybox.min.js"></script>
 <script src="assets/js/script.js"></script>
+<script>
+  // Wire delete button
+  document.getElementById('btnDeleteCar')?.addEventListener('click', function(e){
+    e.preventDefault();
+    const id = this.getAttribute('data-car-id');
+    const name = this.getAttribute('data-car-name') || ('#'+id);
+    if(!confirm(`Delete car "${name}"? This cannot be undone.`)) return;
+    fetch('delete-car.php', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new URLSearchParams({ id: id, ajax: '1' })
+    }).then(r=>r.json()).then(data=>{
+      if(data && data.success){ window.location.href = 'cars.php'; }
+      else{ alert((data && data.message) || 'Failed to delete car'); }
+    }).catch(()=> alert('Network error while deleting car'));
+  });
+</script>
 </body>
 </html>

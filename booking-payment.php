@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/booking.php';
+require_once __DIR__ . '/includes/email.php';
 
 if (empty($_SESSION['booking']['car'])) redirect_to('booking-checkout.php');
 if (empty($_SESSION['booking']['itinerary'])) redirect_to('booking-checkout.php');
@@ -10,45 +11,138 @@ $car = $b['car'];
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $method = $_POST['method'] ?? 'card';
-  // In real life, integrate gateway. For now, simulate success and persist booking.
-  $res = create_booking($pdo, $b);
-  // save payment row
-  try {
-    $stmt = $pdo->prepare("INSERT INTO booking_payments (booking_id, method, amount, status, transaction_ref) VALUES (:bid, :method, :amount, 'captured', :tx)");
-    $stmt->execute([
-      ':bid' => (int)$res['id'],
-      ':method' => $method,
-      ':amount' => (float)$b['totals']['total'],
-      ':tx' => strtoupper(bin2hex(random_bytes(6)))
-    ]);
-  } catch (Throwable $e) {
-    // ignore if table missing; ensure_booking_tables should have created it
-  }
-  $b['payment'] = [ 'method' => $method, 'status' => 'captured' ];
-  $b['order'] = $res;
-  set_booking_session($b);
-  redirect_to('booking-success.php?order=' . urlencode($res['order_number']));
+	$method = isset($_POST['method']) ? $_POST['method'] : 'card';
+	// Simulate successful payment and persist booking
+	$res = create_booking($pdo, $b);
+
+	// Save payment row
+	try {
+		$tx = strtoupper(bin2hex(random_bytes(6)));
+		$stmt = $pdo->prepare("INSERT INTO booking_payments (booking_id, method, amount, status, transaction_ref) VALUES (:bid, :method, :amount, 'captured', :tx)");
+		$stmt->execute([
+			':bid' => (int)$res['id'],
+			':method' => $method,
+			':amount' => (float)$b['totals']['total'],
+			':tx' => $tx
+		]);
+	} catch (Throwable $e) {
+		// ignore if table missing; ensure_booking_tables should have created it
+	}
+	// Mark booking as paid
+	try {
+		$ust = $pdo->prepare("UPDATE bookings SET status = 'paid' WHERE id = :id");
+		$ust->execute([':id' => (int)$res['id']]);
+	} catch (Throwable $e) { /* no-op */ }
+
+	$b['payment'] = [ 'method' => $method, 'status' => 'captured', 'transaction_ref' => isset($tx) ? $tx : null ];
+	$b['order'] = $res;
+	set_booking_session($b);
+
+	// Send booking confirmation email to customer
+	$custEmail = trim(isset($b['driver']['email']) ? $b['driver']['email'] : '');
+	if ($custEmail && filter_var($custEmail, FILTER_VALIDATE_EMAIL)) {
+		$custName = isset($b['driver']['name']) ? $b['driver']['name'] : 'Customer';
+		$orderNo = $res['order_number'];
+		$it = isset($b['itinerary']) ? $b['itinerary'] : [];
+		$pickup = (isset($it['pickup_date']) ? $it['pickup_date'] : '') . ' ' . (isset($it['pickup_time']) ? $it['pickup_time'] : '');
+		$drop    = (isset($it['dropoff_date']) ? $it['dropoff_date'] : '') . ' ' . (isset($it['dropoff_time']) ? $it['dropoff_time'] : '');
+		$carName = isset($b['car']['name']) ? $b['car']['name'] : 'Selected Vehicle';
+		$days  = (int)(isset($b['totals']['days']) ? $b['totals']['days'] : 1);
+		$base  = number_format((float)(isset($b['totals']['base']) ? $b['totals']['base'] : 0), 2);
+		$addonsAmt = number_format((float)(isset($b['totals']['addons']) ? $b['totals']['addons'] : 0), 2);
+		$total = number_format((float)(isset($b['totals']['total']) ? $b['totals']['total'] : 0), 2);
+		$extras = isset($b['addons']['extras']) ? $b['addons']['extras'] : [];
+		$insurance = isset($b['addons']['insurance']['name']) ? $b['addons']['insurance']['name'] : null;
+		$insurancePrice = isset($b['addons']['insurance']['price']) ? number_format((float)$b['addons']['insurance']['price'], 2) : null;
+		$pickupLoc = isset($it['pickup_location']) ? $it['pickup_location'] : '';
+		$dropLoc    = isset($it['dropoff_location']) ? $it['dropoff_location'] : '';
+		$paymentMethod = strtoupper($method);
+		$txRef = isset($tx) ? $tx : (isset($b['payment']['transaction_ref']) ? $b['payment']['transaction_ref'] : '');
+
+		$extrasList = '<em>None</em>';
+		if (!empty($extras)) {
+			$priceMap = get_extra_price_map();
+			$lis = [];
+			foreach ($extras as $e) {
+				$name = htmlspecialchars(ucwords(str_replace('_',' ', $e)), ENT_QUOTES, 'UTF-8');
+				$price = isset($priceMap[$e]) ? number_format((float)$priceMap[$e], 2) : number_format(0, 2);
+				$lis[] = '<li>' . $name . ' — $' . $price . '</li>';
+			}
+			$extrasList = '<ul style="margin:0; padding-left:18px">' . implode('', $lis) . '</ul>';
+		}
+		$insuranceLine = $insurance ? htmlspecialchars($insurance, ENT_QUOTES, 'UTF-8') . ($insurancePrice ? ' — $' . $insurancePrice : '') : 'None';
+
+		$html = '<div style="font-family:Arial,sans-serif; color:#111">'
+					. '<h2 style="margin-bottom:8px">Your Booking is Confirmed</h2>'
+					. '<p style="margin:0 0 12px">Hi ' . htmlspecialchars($custName, ENT_QUOTES, 'UTF-8') . ',</p>'
+					. '<p style="margin:0 0 12px">Thanks for booking with us. Here are your reservation details:</p>'
+					. '<table cellpadding="6" cellspacing="0" style="border-collapse:collapse; width:100%; max-width:640px">'
+					. '<tr><td style="border-bottom:1px solid #eee">Order No.</td><td style="border-bottom:1px solid #eee"><strong>' . htmlspecialchars($orderNo, ENT_QUOTES, 'UTF-8') . '</strong></td></tr>'
+					. '<tr><td style="border-bottom:1px solid #eee">Vehicle</td><td style="border-bottom:1px solid #eee">' . htmlspecialchars($carName, ENT_QUOTES, 'UTF-8') . '</td></tr>'
+					. '<tr><td style="border-bottom:1px solid #eee">Pickup</td><td style="border-bottom:1px solid #eee">' . htmlspecialchars($pickup, ENT_QUOTES, 'UTF-8') . ' — ' . htmlspecialchars($pickupLoc, ENT_QUOTES, 'UTF-8') . '</td></tr>'
+					. '<tr><td style="border-bottom:1px solid #eee">Return</td><td style="border-bottom:1px solid #eee">' . htmlspecialchars($drop, ENT_QUOTES, 'UTF-8') . ' — ' . htmlspecialchars($dropLoc, ENT_QUOTES, 'UTF-8') . '</td></tr>'
+					. '<tr><td style="border-bottom:1px solid #eee">Days</td><td style="border-bottom:1px solid #eee">' . (int)$days . '</td></tr>'
+					. '<tr><td style="border-bottom:1px solid #eee">Extras</td><td style="border-bottom:1px solid #eee">' . $extrasList . '</td></tr>'
+					. '<tr><td style="border-bottom:1px solid #eee">Insurance</td><td style="border-bottom:1px solid #eee">' . $insuranceLine . '</td></tr>'
+					. '<tr><td style="border-bottom:1px solid #eee">Base Amount</td><td style="border-bottom:1px solid #eee">$' . $base . '</td></tr>'
+					. '<tr><td style="border-bottom:1px solid #eee">Add-ons</td><td style="border-bottom:1px solid #eee">$' . $addonsAmt . '</td></tr>'
+					. '<tr><td style="border-bottom:1px solid #eee">Total Paid</td><td style="border-bottom:1px solid #eee"><strong>$' . $total . '</strong></td></tr>'
+					. '<tr><td style="border-bottom:1px solid #eee">Payment</td><td style="border-bottom:1px solid #eee">' . htmlspecialchars($paymentMethod, ENT_QUOTES, 'UTF-8') . ' — Ref: ' . htmlspecialchars($txRef, ENT_QUOTES, 'UTF-8') . '</td></tr>'
+					. '</table>'
+					. '<p style="margin:16px 0 0">We look forward to serving you.</p>'
+					. '<p style="margin:4px 0 0">— RentalHub</p>'
+					. '</div>';
+
+		$textExtras = 'None';
+		if (!empty($extras)) {
+			$names = [];
+			foreach ($extras as $e) { $names[] = ucwords(str_replace('_',' ', $e)); }
+			$textExtras = implode(', ', $names);
+		}
+		$text = "Your booking is confirmed\n"
+					. "Order No.: $orderNo\n"
+					. "Vehicle: $carName\n"
+					. "Pickup: $pickup — $pickupLoc\n"
+					. "Return: $drop — $dropLoc\n"
+					. "Days: $days\n"
+					. "Extras: " . $textExtras . "\n"
+					. "Insurance: " . ($insurance ? $insurance : 'None') . ($insurancePrice ? " ($$insurancePrice)" : '') . "\n"
+					. "Base: $$base\n"
+					. "Add-ons: $$addonsAmt\n"
+					. "Total Paid: \$$total\n"
+					. "Payment: $paymentMethod — Ref: $txRef\n";
+
+		// Capture the result of the send_mail function
+		$emailSent = send_mail($custEmail, 'Your Booking Confirmation - ' . $orderNo, $html, $text);
+
+		// Check if the email failed to send
+		if (!$emailSent) {
+			// If it fails, stop and show an error.
+			// The detailed error is in your server's PHP error log.
+			die("Error: The booking was saved, but the confirmation email could not be sent. Please check the server error logs.");
+		}
+	}
+
+	redirect_to('booking-success.php?order=' . urlencode($res['order_number']));
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-  <title>Checkout - <?= h($car['name']) ?></title>
-  <link rel="shortcut icon" href="assets/img/favicon.png">
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
-  <link rel="stylesheet" href="assets/plugins/boxicons/css/boxicons.min.css">
-  <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
-  <link rel="stylesheet" href="assets/plugins/aos/aos.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<title>Checkout - <?= h($car['name']) ?></title>
+	<link rel="shortcut icon" href="assets/img/favicon.png">
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+	<link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+	<link rel="stylesheet" href="assets/plugins/boxicons/css/boxicons.min.css">
+	<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="assets/plugins/aos/aos.css">
+	<link rel="stylesheet" href="assets/css/style.css">
 </head>
-<!-- Header -->
-		<header class="header">
+<header class="header">
 			<div class="container-fluid">
 				<nav class="navbar navbar-expand-lg header-nav">
 					<div class="navbar-header">
@@ -61,10 +155,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 						</a>
 						<a href="index.html" class="navbar-brand logo">
 							<img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-						</a>	
+						</a>
 						<a href="index.html" class="navbar-brand logo-small">
 							<img src="assets/img/logo-small.png" class="img-fluid" alt="Logo">
-						</a>						
+						</a>
 					</div>
 					<div class="main-menu-wrapper">
 						<div class="menu-header">
@@ -79,58 +173,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								<ul class="submenu mega-submenu">
 									<li>
 										<div class="megamenu-wrapper">
-                                            <div class="row">
-                                                <div class="col-lg-3">
-                                                    <div class="single-demo">
-                                                        <div class="demo-img">
-                                                            <a href="index.html">
+											<div class="row">
+												<div class="col-lg-3">
+													<div class="single-demo">
+														<div class="demo-img">
+															<a href="index.html">
 																<img src="assets/img/menu/home-01.svg" class="img-fluid " alt="img">
 															</a>
-                                                        </div>
-                                                        <div class="demo-info">
-                                                            <a href="index.html">Car Rental<span class="new">New</span> </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+														</div>
+														<div class="demo-info">
+															<a href="index.html">Car Rental<span class="new">New</span> </a>
+														</div>
+													</div>
+												</div>
 												<div class="col-lg-3">
-                                                    <div class="single-demo">
-                                                        <div class="demo-img">
-                                                            <a href="index-2.html">
+													<div class="single-demo">
+														<div class="demo-img">
+															<a href="index-2.html">
 																<img src="assets/img/menu/home-02.svg" class="img-fluid " alt="img">
 															</a>
-                                                        </div>
-                                                        <div class="demo-info">
-                                                            <a href="index-2.html">Car Rental 1<span class="hot">Hot</span> </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+														</div>
+														<div class="demo-info">
+															<a href="index-2.html">Car Rental 1<span class="hot">Hot</span> </a>
+														</div>
+													</div>
+												</div>
 												<div class="col-lg-3">
-                                                    <div class="single-demo">
-                                                        <div class="demo-img">
-                                                            <a href="index-3.html">
+													<div class="single-demo">
+														<div class="demo-img">
+															<a href="index-3.html">
 																<img src="assets/img/menu/home-03.svg" class="img-fluid " alt="img">
 															</a>
-                                                        </div>
-                                                        <div class="demo-info">
-                                                            <a href="index-3.html">Bike Rental<span class="new">New</span> </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+														</div>
+														<div class="demo-info">
+															<a href="index-3.html">Bike Rental<span class="new">New</span> </a>
+														</div>
+													</div>
+												</div>
 												<div class="col-lg-3">
-                                                    <div class="single-demo">
-                                                        <div class="demo-img">
-                                                            <a href="index-4.html">
+													<div class="single-demo">
+														<div class="demo-img">
+															<a href="index-4.html">
 																<img src="assets/img/menu/home-04.svg" class="img-fluid " alt="img">
 															</a>
-                                                        </div>
-                                                        <div class="demo-info">
-                                                            <a href="index-4.html">Yacht Rental<span class="new">New</span> </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-									</li>						
+														</div>
+														<div class="demo-info">
+															<a href="index-4.html">Yacht Rental<span class="new">New</span> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</li>
 								</ul>
 							</li>
 							<li class="has-submenu">
@@ -138,8 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								<ul class="submenu">
 								    <li><a href="listing-grid.php">Listing Grid</a></li>
 								    <li><a href="listing-list.php">Listing List</a></li>
-									<!-- <li><a href="listing-map.php">Listing With Map</a></li>						 -->
-								    <li><a href="listing-details.php">Listing Details</a></li>								
+								    <li><a href="listing-details.php">Listing Details</a></li> 								
 								</ul>
 							</li>
 							<li class="has-submenu active">
@@ -179,7 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 									<li><a href="terms-condition.html">Terms & Conditions</a></li>
 									<li><a href="privacy-policy.html">Privacy Policy</a></li>
 									<li><a href="maintenance.html">Maintenance</a></li>
-									<li><a href="coming-soon.html">Coming Soon</a></li>							
+									<li><a href="coming-soon.html">Coming Soon</a></li> 								
 								</ul>
 							</li>
 							<li class="has-submenu">
@@ -187,7 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								<ul class="submenu">
 								    <li><a href="blog-list.html">Blog List</a></li>
 									<li><a href="blog-grid.html">Blog Grid</a></li>
-									<li><a href="blog-details.html">Blog Details</a></li>																		
+									<li><a href="blog-details.html">Blog Details</a></li> 									
 								</ul>
 							</li>
 							<li class="has-submenu">
@@ -203,9 +296,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 											<li><a href="user-messages.html">Messages</a></li>
 											<li><a href="user-wallet.html">My Wallet</a></li>
 											<li><a href="user-payment.html">Payments</a></li>
-											<li><a href="user-settings.html">Settings</a></li>			
+											<li><a href="user-settings.html">Settings</a></li> 								
 										</ul>
-									</li>		
+									</li> 		
 									<li class="has-submenu">
 										<a href="javascript:void(0);">Admin Dashboard</a>
 										<ul class="submenu">
@@ -215,241 +308,237 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 											<li><a href="../template/admin/cars.html">Rentals</a></li>
 											<li><a href="../template/admin/invoices.html">Finance & Accounts</a></li>
 											<li><a href="../template/admin/coupons.html">Others</a></li>
-											<li><a href="../template/admin/pages.html">CMS</a></li>			
-											<li><a href="../template/admin/contact-messages.html">Support</a></li>			
-											<li><a href="../template/admin/users.html">User Management</a></li>			
-											<li><a href="../template/admin/earnings-report.html">Reports</a></li>			
-											<li><a href="../template/admin/profile-setting.html">Settings & Configuration</a></li>		
+											<li><a href="../template/admin/pages.html">CMS</a></li> 								
+											<li><a href="../template/admin/contact-messages.html">Support</a></li> 								
+											<li><a href="../template/admin/users.html">User Management</a></li> 								
+											<li><a href="../template/admin/earnings-report.html">Reports</a></li> 								
+											<li><a href="../template/admin/profile-setting.html">Settings & Configuration</a></li> 		
 										</ul>
-									</li>				
+									</li> 				
 								</ul>
-							</li>	
-							<li class="login-link">
-								<a href="register.html">Sign Up</a>
-							</li>
-							<li class="login-link">
-								<a href="login.html">Sign In</a>
-							</li>
-						</ul>
-					</div>
-					<ul class="nav header-navbar-rht">
-						<li class="nav-item">
-							<a class="nav-link header-login" href="login.html"><span><i class="fa-regular fa-user"></i></span>Sign In</a>
+						</li> 	
+						<li class="login-link">
+							<a href="register.html">Sign Up</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link header-reg" href="register.html"><span><i class="fa-solid fa-lock"></i></span>Sign Up</a>
+						<li class="login-link">
+							<a href="login.html">Sign In</a>
 						</li>
 					</ul>
-				</nav>
+				</div>
+				<ul class="nav header-navbar-rht">
+					<li class="nav-item">
+						<a class="nav-link header-login" href="login.html"><span><i class="fa-regular fa-user"></i></span>Sign In</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link header-reg" href="register.html"><span><i class="fa-solid fa-lock"></i></span>Sign Up</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<body>
+	<div class="main-wrapper">
+		<div class="breadcrumb-bar">
+			<div class="container">
+				<div class="row align-items-center text-center">
+					<div class="col-md-12 col-12">
+						<h2 class="breadcrumb-title">Checkout</h2>
+						<nav aria-label="breadcrumb" class="page-breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Checkout</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
 			</div>
-		</header>
-		<!-- /Header -->
-<body>
-  <div class="main-wrapper">
-    <div class="breadcrumb-bar">
-      <div class="container">
-        <div class="row align-items-center text-center">
-          <div class="col-md-12 col-12">
-            <h2 class="breadcrumb-title">Checkout</h2>
-            <nav aria-label="breadcrumb" class="page-breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="booking-new-module">
-      <div class="container">
-        <div class="booking-wizard-head">
-          <div class="row align-items-center">
-            <div class="col-xl-4 col-lg-3">
-              <div class="booking-head-title">
-                <h4>Reserve Your Car</h4>
-                <p>Complete the following steps</p>
-              </div>
-            </div>
-            <div class="col-xl-8 col-lg-9">
-              <div class="booking-wizard-lists">
-                <ul>
-                  <li class="active activated">
-                    <span><img src="assets/img/icons/booking-head-icon-01.svg" alt="Booking Icon"></span>
-                    <h6>Location & Time</h6>
-                  </li>
-                  <li class="active activated">
-                    <span><img src="assets/img/icons/booking-head-icon-02.svg" alt="Booking Icon"></span>
-                    <h6>Extra Services</h6>
-                  </li>
-                  <li class="active activated">
-                    <span><img src="assets/img/icons/booking-head-icon-03.svg" alt="Booking Icon"></span>
-                    <h6>Detail</h6>
-                  </li>
-                  <li class="active">
-                    <span><img src="assets/img/icons/booking-head-icon-04.svg" alt="Booking Icon"></span>
-                    <h6>Checkout</h6>
-                  </li>
-                  <li>
-                    <span><img src="assets/img/icons/booking-head-icon-05.svg" alt="Booking Icon"></span>
-                    <h6>Booking Confirmed</h6>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="booking-detail-info">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="booking-information-main">
-                <form method="post" action="">
-                  <div class="booking-information-card payment-info-card">
-                    <div class="booking-info-head">
-                      <div class="d-flex align-items-center">
-                        <span><i class="bx bx-money"></i></span>
-                        <h5>Payment</h5>
-                      </div>										
-                    </div>
-                    <div class="booking-info-body">
-                      <div class="payment-method-types">
-                        <h5>Choose your Payment Method</h5>
-                        <ul>
-                          <li>
-                            <label class="payment_custom_check">
-                              <input type="radio" name="method" value="card" checked>
-                              <span class="payment_checkmark">
-                                <span class="checked-title"><img src="assets/img/icons/payment-method-01.svg" alt="Img"></span>
-                              </span>							
-                            </label>
-                          </li>
-                          <li>
-                            <label class="payment_custom_check">
-                              <input type="radio" name="method" value="paypal">
-                              <span class="payment_checkmark">
-                                <span class="checked-title"><img src="assets/img/icons/payment-method-02.svg" alt="Img"></span>
-                              </span>							
-                            </label>
-                          </li>
-                          <li>
-                            <label class="payment_custom_check">
-                              <input type="radio" name="method" value="stripe">
-                              <span class="payment_checkmark">
-                                <span class="checked-title"><img src="assets/img/icons/payment-method-03.svg" alt="Img"></span>
-                              </span>							
-                            </label>
-                          </li>
-                          <li>
-                            <label class="payment_custom_check">
-                              <input type="radio" name="method" value="cash">
-                              <span class="payment_checkmark">
-                                <span class="checked-title"><img src="assets/img/icons/payment-method-04.svg" alt="Img"></span>
-                              </span>							
-                            </label>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="payment-method-types payments-cards-types">
-                        <div class="row">
-                          <div class="col-lg-7">
-                            <ul>
-                              <li>
-                                <label class="payment_custom_check">
-                                  <input type="radio" name="payment_card" id="debit_card" checked>
-                                  <span class="payment_checkmark">
-                                    <span class="checked-title"><img src="assets/img/icons/payment-card-01.svg" alt="Img"></span>
-                                    <small>Debit card <span>523************14</span></small>
-                                  </span>							
-                                </label>
-                              </li>
-                              <li>
-                                <label class="payment_custom_check">
-                                  <input type="radio" name="payment_card" id="credit_card">
-                                  <span class="payment_checkmark">
-                                    <span class="checked-title"><img src="assets/img/icons/payment-card-02.svg" alt="Img"></span>
-                                    <small>Credit card <span>654************12</span></small>
-                                  </span>							
-                                </label>
-                              </li>
-                              <li>
-                                <label class="payment_custom_check">
-                                  <input type="radio" name="payment_card" id="add_new_card">
-                                  <span class="payment_checkmark">
-                                    <span class="checked-title">Add New Card</span>
-                                  </span>							
-                                </label>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div class="add-new-cards" id="card-hide">
-                          <h5 class="title-head">Add new Card</h5>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <div class="input-block">	
-                                <label class="form-label">Card Number <span class="text-danger"> *</span></label>											
-                                <input type="text" class="form-control" placeholder="Enter Card Number">
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="input-block">	
-                                <label class="form-label">Name on Card <span class="text-danger"> *</span></label>											
-                                <input type="text" class="form-control" placeholder="Enter name on card">
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="input-block">	
-                                <label class="form-label">CVV <span class="text-danger"> *</span></label>											
-                                <div class="group-img">
-                                  <input type="text" class="form-control" placeholder="Enter CVV Number">
-                                  <span class="input-cal-icon"><i class="bx bx-lock"></i></span>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="input-block date-widget">	
-                                <label class="form-label">Expiry Date <span class="text-danger"> *</span></label>											
-                                <div class="group-img">
-                                  <input type="text" class="form-control datetimepicker" placeholder="Choose Date">
-                                  <span class="input-cal-icon"><i class="bx bx-calendar"></i></span>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-12">
-                              <div class="input-block m-0">
-                                <label class="custom_check d-inline-flex location-check m-0"><span>Save this account for future transaction</span>
-                                  <input type="checkbox" name="save_card">
-                                  <span class="checkmark"></span>
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>										
-                    </div>
-                  </div>
+		</div>
+		<div class="booking-new-module">
+			<div class="container">
+				<div class="booking-wizard-head">
+					<div class="row align-items-center">
+						<div class="col-xl-4 col-lg-3">
+							<div class="booking-head-title">
+								<h4>Reserve Your Car</h4>
+								<p>Complete the following steps</p>
+							</div>
+						</div>
+						<div class="col-xl-8 col-lg-9">
+							<div class="booking-wizard-lists">
+								<ul>
+									<li class="active activated">
+										<span><img src="assets/img/icons/booking-head-icon-01.svg" alt="Booking Icon"></span>
+										<h6>Location & Time</h6>
+									</li>
+									<li class="active activated">
+										<span><img src="assets/img/icons/booking-head-icon-02.svg" alt="Booking Icon"></span>
+										<h6>Extra Services</h6>
+									</li>
+									<li class="active activated">
+										<span><img src="assets/img/icons/booking-head-icon-03.svg" alt="Booking Icon"></span>
+										<h6>Detail</h6>
+									</li>
+									<li class="active">
+										<span><img src="assets/img/icons/booking-head-icon-04.svg" alt="Booking Icon"></span>
+										<h6>Checkout</h6>
+									</li>
+									<li>
+										<span><img src="assets/img/icons/booking-head-icon-05.svg" alt="Booking Icon"></span>
+										<h6>Booking Confirmed</h6>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="booking-detail-info">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="booking-information-main">
+								<form method="post" action="">
+									<div class="booking-information-card payment-info-card">
+										<div class="booking-info-head">
+											<div class="d-flex align-items-center">
+												<span><i class="bx bx-money"></i></span>
+												<h5>Payment</h5>
+											</div>
+										</div>
+										<div class="booking-info-body">
+											<div class="payment-method-types">
+												<h5>Choose your Payment Method</h5>
+												<ul>
+													<li>
+														<label class="payment_custom_check">
+															<input type="radio" name="method" value="card" checked>
+															<span class="payment_checkmark">
+																<span class="checked-title"><img src="assets/img/icons/payment-method-01.svg" alt="Img"></span>
+															</span>
+														</label>
+													</li>
+													<li>
+														<label class="payment_custom_check">
+															<input type="radio" name="method" value="paypal">
+															<span class="payment_checkmark">
+																<span class="checked-title"><img src="assets/img/icons/payment-method-02.svg" alt="Img"></span>
+															</span>
+														</label>
+													</li>
+													<li>
+														<label class="payment_custom_check">
+															<input type="radio" name="method" value="stripe">
+															<span class="payment_checkmark">
+																<span class="checked-title"><img src="assets/img/icons/payment-method-03.svg" alt="Img"></span>
+															</span>
+														</label>
+													</li>
+													<li>
+														<label class="payment_custom_check">
+															<input type="radio" name="method" value="cash">
+															<span class="payment_checkmark">
+																<span class="checked-title"><img src="assets/img/icons/payment-method-04.svg" alt="Img"></span>
+															</span>
+														</label>
+													</li>
+												</ul>
+											</div>
+											<div class="payment-method-types payments-cards-types">
+												<div class="row">
+													<div class="col-lg-7">
+														<ul>
+															<li>
+																<label class="payment_custom_check">
+																	<input type="radio" name="payment_card" id="debit_card" checked>
+																	<span class="payment_checkmark">
+																		<span class="checked-title"><img src="assets/img/icons/payment-card-01.svg" alt="Img"></span>
+																		<small>Debit card <span>523************14</span></small>
+																	</span>
+																</label>
+															</li>
+															<li>
+																<label class="payment_custom_check">
+																	<input type="radio" name="payment_card" id="credit_card">
+																	<span class="payment_checkmark">
+																		<span class="checked-title"><img src="assets/img/icons/payment-card-02.svg" alt="Img"></span>
+																		<small>Credit card <span>654************12</span></small>
+																	</span>
+																</label>
+															</li>
+															<li>
+																<label class="payment_custom_check">
+																	<input type="radio" name="payment_card" id="add_new_card">
+																	<span class="payment_checkmark">
+																		<span class="checked-title">Add New Card</span>
+																	</span>
+																</label>
+															</li>
+														</ul>
+													</div>
+												</div>
+												<div class="add-new-cards" id="card-hide">
+													<h5 class="title-head">Add new Card</h5>
+													<div class="row">
+														<div class="col-md-6">
+															<div class="input-block">
+																<label class="form-label">Card Number <span class="text-danger"> *</span></label>
+																<input type="text" class="form-control" placeholder="Enter Card Number">
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div class="input-block">
+																<label class="form-label">Name on Card <span class="text-danger"> *</span></label>
+																<input type="text" class="form-control" placeholder="Enter name on card">
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div class="input-block">
+																<label class="form-label">CVV <span class="text-danger"> *</span></label>
+																<div class="group-img">
+																	<input type="text" class="form-control" placeholder="Enter CVV Number">
+																	<span class="input-cal-icon"><i class="bx bx-lock"></i></span>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div class="input-block date-widget">
+																<label class="form-label">Expiry Date <span class="text-danger"> *</span></label>
+																<div class="group-img">
+																	<input type="text" class="form-control datetimepicker" placeholder="Choose Date">
+																	<span class="input-cal-icon"><i class="bx bx-calendar"></i></span>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-12">
+															<div class="input-block m-0">
+																<label class="custom_check d-inline-flex location-check m-0"><span>Save this account for future transaction</span>
+																	<input type="checkbox" name="save_card">
+																	<span class="checkmark"></span>
+																</label>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 
-                  <div class="booking-info-btns d-flex justify-content-end">
-                    <a href="booking-detail.php" class="btn btn-secondary">Back to billing info</a>
-                    <button class="btn btn-primary continue-book-btn" type="submit">Pay $<?= number_format((float)$b['totals']['total'],2) ?> & Place Reservation</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-     <!-- Footer -->
-		<footer class="footer">	
-			<!-- Footer Top -->	
+									<div class="booking-info-btns d-flex justify-content-end">
+										<a href="booking-detail.php" class="btn btn-secondary">Back to billing info</a>
+										<button class="btn btn-primary continue-book-btn" type="submit">Pay $<?= number_format((float)$b['totals']['total'],2) ?> & Place Reservation</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		 <footer class="footer">
 			<div class="footer-top aos" data-aos="fade-down">
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-7">
 							<div class="row">
 								<div class="col-lg-4 col-md-6">
-									<!-- Footer Widget -->
 									<div class="footer-widget footer-menu">
 										<h5 class="footer-title">About Company</h5>
 										<ul>
@@ -467,13 +556,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 											</li>
 											<li>
 												<a href="javascript:void(0)">Dreamsrental Category</a>
-											</li>										
+											</li>
 										</ul>
 									</div>
-									<!-- /Footer Widget -->
-								</div>
+									</div>
 								<div class="col-lg-4 col-md-6">
-									<!-- Footer Widget -->
 									<div class="footer-widget footer-menu">
 										<h5 class="footer-title">Vehicles Type</h5>
 										<ul>
@@ -491,13 +578,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 											</li>
 											<li>
 												<a href="javascript:void(0)">Crossovers</a>
-											</li>								
+											</li>
 										</ul>
 									</div>
-									<!-- /Footer Widget -->
-								</div>
+									</div>
 								<div class="col-lg-4 col-md-6">
-									<!-- Footer Widget -->
 									<div class="footer-widget footer-menu">
 										<h5 class="footer-title">Quick links</h5>
 										<ul>
@@ -515,18 +600,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 											</li>
 											<li>
 												<a href="javascript:void(0)">Financial Services</a>
-											</li>								
+											</li>
 										</ul>
 									</div>
-									<!-- /Footer Widget -->
-								</div>
+									</div>
 							</div>
 						</div>
 						<div class="col-lg-5">
 							<div class="footer-contact footer-widget">
 								<h5 class="footer-title">Contact Info</h5>
-								<div class="footer-contact-info">									
-									<div class="footer-address">											
+								<div class="footer-contact-info">
+									<div class="footer-address">
 										<span><i class="feather-phone-call"></i></span>
 										<div class="addr-info">
 											<a href="tel:+1(888)7601940">+ 1 (888) 760 1940</a>
@@ -540,12 +624,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 									</div>
 									<div class="update-form">
 										<form action="booking-payment.html">
-											<span><i class="feather-mail"></i></span> 
+											<span><i class="feather-mail"></i></span>
 											<input type="email" class="form-control" placeholder="Enter You Email Here">
 											<button type="submit" class="btn btn-subscribe"><span><i class="feather-send"></i></span></button>
 										</form>
 									</div>
-								</div>								
+								</div>
+
 								<div class="footer-social-widget">
 									<ul class="nav-social">
 										<li>
@@ -567,15 +652,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								</div>
 							</div>
 						</div>
-					</div>					
+					</div>
 				</div>
 			</div>
-			<!-- /Footer Top -->
-
-			<!-- Footer Bottom -->
 			<div class="footer-bottom">
 				<div class="container">
-					<!-- Copyright -->
 					<div class="copyright">
 						<div class="row align-items-center">
 							<div class="col-md-6">
@@ -584,46 +665,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								</div>
 							</div>
 							<div class="col-md-6">
-								<!-- Copyright Menu -->
 								<div class="copyright-menu">
 									<div class="vistors-details">
-										<ul class="d-flex">											
-											<li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/paypal.svg" alt="Paypal"></a></li>											
+										<ul class="d-flex">
+											<li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/paypal.svg" alt="Paypal"></a></li>
 											<li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/visa.svg" alt="Visa"></a></li>
 											<li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/master.svg" alt="Master"></a></li>
 											<li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/applegpay.svg" alt="applegpay"></a></li>
-										</ul>										   								
+										</ul>
 									</div>
 								</div>
-								<!-- /Copyright Menu -->
-							</div>
+								</div>
 						</div>
 					</div>
-					<!-- /Copyright -->
-				</div>
+					</div>
 			</div>
-			<!-- /Footer Bottom -->			
-		</footer>
-		<!-- /Footer -->
-				
-	</div>
+			</footer>
+		</div>
 
-    <!-- scrollToTop start -->
-	<div class="progress-wrap active-progress">
+		<div class="progress-wrap active-progress">
 		<svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
 		<path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" style="transition: stroke-dashoffset 10ms linear 0s; stroke-dasharray: 307.919px, 307.919px; stroke-dashoffset: 228.265px;"></path>
 		</svg>
 	</div>
-	<!-- scrollToTop end -->
-  </div>
-  <script src="assets/js/jquery-3.7.1.min.js"></script>
-  <script src="assets/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/plugins/moment/moment.min.js"></script>
-  <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
-  <script src="assets/plugins/aos/aos.js"></script>
-  <script>AOS.init();</script>
-  <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
-  <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
-  <script src="assets/js/script.js"></script>
+	</div>
+	<script src="assets/js/jquery-3.7.1.min.js"></script>
+	<script src="assets/js/bootstrap.bundle.min.js"></script>
+	<script src="assets/plugins/moment/moment.min.js"></script>
+	<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="assets/plugins/aos/aos.js"></script>
+	<script>AOS.init();</script>
+	<script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
+	<script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+	<script src="assets/js/script.js"></script>
 </body>
 </html>
