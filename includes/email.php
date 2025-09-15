@@ -11,7 +11,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 if (!function_exists('send_mail')) {
     /**
-     * Sends a multipart/alternative email using SMTP.
+     * Sends a multipart/alternative email using SMTP. 
      *
      * @param string $to The recipient's email address.
      * @param string $subject The email subject.
