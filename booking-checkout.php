@@ -79,8 +79,18 @@ $labels = [ 'daily' => 'Daily', 'weekly' => 'Weekly', 'monthly' => 'Monthly', 'y
 $bookingTypeSel = $b['itinerary']['booking_type'] ?? 'daily';
 if (!in_array($bookingTypeSel, ['daily','weekly','monthly','yearly'], true)) $bookingTypeSel = 'daily';
 $daysPreview = (int)($b['totals']['days'] ?? 1); if ($daysPreview < 1) $daysPreview = 1;
-// Estimated Total should start from the car's daily price as base
-$estimatedBase = (float)($car['daily_price'] ?? 0);
+// Estimated base uses selected booking type and current days
+function estimate_base_amount($rates, $bookingTypeSel, $days){
+  $days = max(1,(int)$days);
+  switch ($bookingTypeSel){
+    case 'weekly':  return ($rates['weekly']  ?? 0)  > 0 ? ceil($days/7)   * (float)$rates['weekly']  : (float)($rates['daily'] ?? 0) * $days;
+    case 'monthly': return ($rates['monthly'] ?? 0)  > 0 ? ceil($days/30)  * (float)$rates['monthly'] : (float)($rates['daily'] ?? 0) * $days;
+    case 'yearly':  return ($rates['yearly']  ?? 0)  > 0 ? ceil($days/365) * (float)$rates['yearly']  : (float)($rates['daily'] ?? 0) * $days;
+    case 'daily':
+    default:        return (float)($rates['daily'] ?? 0) * $days;
+  }
+}
+$estimatedBase = estimate_base_amount($rates, $bookingTypeSel, $daysPreview);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,81 +109,80 @@ $estimatedBase = (float)($car['daily_price'] ?? 0);
 </head>
 <body>
   <div class="main-wrapper">
-    <!-- Header -->
-		<header class="header">
-			<div class="container-fluid">
-				<nav class="navbar navbar-expand-lg header-nav">
-					<div class="navbar-header">
-						<a id="mobile_btn" href="javascript:void(0);">
-							<span class="bar-icon">
-								<span></span>
-								<span></span>
-								<span></span>
-							</span>
-						</a>
-						<a href="index.html" class="navbar-brand logo">
-							<img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-						</a>	
-						<a href="index.html" class="navbar-brand logo-small">
-							<img src="assets/img/logo-small.png" class="img-fluid" alt="Logo">
-						</a>						
-					</div>
-					<div class="main-menu-wrapper">
-						<div class="menu-header">
-							<a href="index.html" class="menu-logo">
-								<img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
-							</a>
-							<a id="menu_close" class="menu-close" href="javascript:void(0);"> <i class="fas fa-times"></i></a>
-						</div>
-						<ul class="main-nav">
-							<li class="has-submenu megamenu">
-								<a href="index.html">Home <i class="fas fa-chevron-down"></i></a>
-								<ul class="submenu mega-submenu">
-									<li>
-										<div class="megamenu-wrapper">
+    <header class="header">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg header-nav">
+          <div class="navbar-header">
+            <a id="mobile_btn" href="javascript:void(0);">
+              <span class="bar-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </a>
+            <a href="index.html" class="navbar-brand logo">
+              <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
+            </a>  
+            <a href="index.html" class="navbar-brand logo-small">
+              <img src="assets/img/logo-small.png" class="img-fluid" alt="Logo">
+            </a>            
+          </div>
+          <div class="main-menu-wrapper">
+            <div class="menu-header">
+              <a href="index.html" class="menu-logo">
+                <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
+              </a>
+              <a id="menu_close" class="menu-close" href="javascript:void(0);"> <i class="fas fa-times"></i></a>
+            </div>
+            <ul class="main-nav">
+              <li class="has-submenu megamenu">
+                <a href="index.html">Home <i class="fas fa-chevron-down"></i></a>
+                <ul class="submenu mega-submenu">
+                  <li>
+                    <div class="megamenu-wrapper">
                                             <div class="row">
                                                 <div class="col-lg-3">
                                                     <div class="single-demo">
                                                         <div class="demo-img">
                                                             <a href="index.html">
-																<img src="assets/img/menu/home-01.svg" class="img-fluid " alt="img">
-															</a>
+                                <img src="assets/img/menu/home-01.svg" class="img-fluid " alt="img">
+                              </a>
                                                         </div>
                                                         <div class="demo-info">
                                                             <a href="index.html">Car Rental<span class="new">New</span> </a>
                                                         </div>
                                                     </div>
                                                 </div>
-												<div class="col-lg-3">
+                        <div class="col-lg-3">
                                                     <div class="single-demo">
                                                         <div class="demo-img">
                                                             <a href="index-2.html">
-																<img src="assets/img/menu/home-02.svg" class="img-fluid " alt="img">
-															</a>
+                                <img src="assets/img/menu/home-02.svg" class="img-fluid " alt="img">
+                              </a>
                                                         </div>
                                                         <div class="demo-info">
                                                             <a href="index-2.html">Car Rental 1<span class="hot">Hot</span> </a>
                                                         </div>
                                                     </div>
                                                 </div>
-												<div class="col-lg-3">
+                        <div class="col-lg-3">
                                                     <div class="single-demo">
                                                         <div class="demo-img">
                                                             <a href="index-3.html">
-																<img src="assets/img/menu/home-03.svg" class="img-fluid " alt="img">
-															</a>
+                                <img src="assets/img/menu/home-03.svg" class="img-fluid " alt="img">
+                              </a>
                                                         </div>
                                                         <div class="demo-info">
                                                             <a href="index-3.html">Bike Rental<span class="new">New</span> </a>
                                                         </div>
                                                     </div>
                                                 </div>
-												<div class="col-lg-3">
+                        <div class="col-lg-3">
                                                     <div class="single-demo">
                                                         <div class="demo-img">
                                                             <a href="index-4.html">
-																<img src="assets/img/menu/home-04.svg" class="img-fluid " alt="img">
-															</a>
+                                <img src="assets/img/menu/home-04.svg" class="img-fluid " alt="img">
+                              </a>
                                                         </div>
                                                         <div class="demo-info">
                                                             <a href="index-4.html">Yacht Rental<span class="new">New</span> </a>
@@ -182,121 +191,118 @@ $estimatedBase = (float)($car['daily_price'] ?? 0);
                                                 </div>
                                             </div>
                                         </div>
-									</li>						
-								</ul>
-							</li>
-							<li class="has-submenu">
-								<a href="#">Listings <i class="fas fa-chevron-down"></i></a>
-								<ul class="submenu">
-								    <li><a href="listing-grid.php">Listing Grid</a></li>
-								    <li><a href="listing-list.php">Listing List</a></li>
-									<!-- <li><a href="listing-map.php">Listing With Map</a></li>						 -->
-								    <li><a href="listing-details.php">Listing Details</a></li>								
-								</ul>
-							</li>
-							<li class="has-submenu active">
-								<a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-								<ul class="submenu">
-								    <li ><a href="about-us.html">About Us</a></li>
-								    <li><a href="contact-us.html">Contact</a></li>
-									<li class="has-submenu">
-										<a href="javascript:void(0);">Authentication</a>
-										<ul class="submenu">
-											<li><a href="register.html">Sign Up</a></li>
-											<li><a href="login.html">Sign In</a></li>
-											<li><a href="forgot-password.html">Forgot Password</a></li>
-											<li><a href="reset-password.html">Reset Password</a></li>
-										</ul>
-									</li>
-									<li class="has-submenu active">
-										<a href="javascript:void(0);">Booking</a>
-										<ul class="submenu">
-											<li class="active"><a href="booking-checkout.html">Booking Checkout</a></li>
-											<li><a href="booking.html">Booking</a></li>
-											<li><a href="invoice-details.html">Invoice Details</a></li>
-										</ul>
-									</li>
-									<li class="has-submenu">
-										<a href="javascript:void(0);">Error Page</a>
-										<ul class="submenu">
-											<li><a href="error-404.html">404 Error</a></li>
-											<li><a href="error-500.html">500 Error</a></li>
-										</ul>
-									</li>
-								    <li><a href="pricing.html">Pricing</a></li>
-								    <li><a href="faq.html">FAQ</a></li>
-								    <li><a href="gallery.html">Gallery</a></li>
-								    <li><a href="our-team.html">Our Team</a></li>
-								    <li><a href="testimonial.html">Testimonials</a></li>
-									<li><a href="terms-condition.html">Terms & Conditions</a></li>
-									<li><a href="privacy-policy.html">Privacy Policy</a></li>
-									<li><a href="maintenance.html">Maintenance</a></li>
-									<li><a href="coming-soon.html">Coming Soon</a></li>							
-								</ul>
-							</li>
-							<li class="has-submenu">
-								<a href="#">Blog <i class="fas fa-chevron-down"></i></a>
-								<ul class="submenu">
-								    <li><a href="blog-list.html">Blog List</a></li>
-									<li><a href="blog-grid.html">Blog Grid</a></li>
-									<li><a href="blog-details.html">Blog Details</a></li>																		
-								</ul>
-							</li>
-							<li class="has-submenu">
-								<a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
-								<ul class="submenu">
-									<li class="has-submenu">
-										<a href="javascript:void(0);">User Dashboard</a>
-										<ul class="submenu">
-											<li><a href="user-dashboard.html">Dashboard</a></li>
-											<li><a href="user-bookings.html">My Bookings</a></li>
-											<li><a href="user-reviews.html">Reviews</a></li>
-											<li><a href="user-wishlist.html">Wishlist</a></li>
-											<li><a href="user-messages.html">Messages</a></li>
-											<li><a href="user-wallet.html">My Wallet</a></li>
-											<li><a href="user-payment.html">Payments</a></li>
-											<li><a href="user-settings.html">Settings</a></li>			
-										</ul>
-									</li>		
-									<li class="has-submenu">
-										<a href="javascript:void(0);">Admin Dashboard</a>
-										<ul class="submenu">
-											<li><a href="../template/admin/index.html">Dashboard</a></li>
-											<li><a href="../template/admin/reservations.html">Bookings</a></li>
-											<li><a href="../template/admin/customers.html">Manage</a></li>
-											<li><a href="../template/admin/cars.html">Rentals</a></li>
-											<li><a href="../template/admin/invoices.html">Finance & Accounts</a></li>
-											<li><a href="../template/admin/coupons.html">Others</a></li>
-											<li><a href="../template/admin/pages.html">CMS</a></li>			
-											<li><a href="../template/admin/contact-messages.html">Support</a></li>			
-											<li><a href="../template/admin/users.html">User Management</a></li>			
-											<li><a href="../template/admin/earnings-report.html">Reports</a></li>			
-											<li><a href="../template/admin/profile-setting.html">Settings & Configuration</a></li>		
-										</ul>
-									</li>				
-								</ul>
-							</li>	
-							<li class="login-link">
-								<a href="register.html">Sign Up</a>
-							</li>
-							<li class="login-link">
-								<a href="login.html">Sign In</a>
-							</li>
-						</ul>
-					</div>
-					<ul class="nav header-navbar-rht">
-						<li class="nav-item">
-							<a class="nav-link header-login" href="login.html"><span><i class="fa-regular fa-user"></i></span>Sign In</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link header-reg" href="register.html"><span><i class="fa-solid fa-lock"></i></span>Sign Up</a>
-						</li>
-					</ul>
-				</nav>
-			</div>
-		</header>
-		<!-- /Header -->
-
+                  </li>           
+                </ul>
+              </li>
+              <li class="has-submenu">
+                <a href="#">Listings <i class="fas fa-chevron-down"></i></a>
+                <ul class="submenu">
+                    <li><a href="listing-grid.php">Listing Grid</a></li>
+                    <li><a href="listing-list.php">Listing List</a></li>
+                  <li><a href="listing-details.php">Listing Details</a></li>                
+                </ul>
+              </li>
+              <li class="has-submenu active">
+                <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
+                <ul class="submenu">
+                    <li ><a href="about-us.html">About Us</a></li>
+                    <li><a href="contact-us.html">Contact</a></li>
+                  <li class="has-submenu">
+                    <a href="javascript:void(0);">Authentication</a>
+                    <ul class="submenu">
+                      <li><a href="register.html">Sign Up</a></li>
+                      <li><a href="login.html">Sign In</a></li>
+                      <li><a href="forgot-password.html">Forgot Password</a></li>
+                      <li><a href="reset-password.html">Reset Password</a></li>
+                    </ul>
+                  </li>
+                  <li class="has-submenu active">
+                    <a href="javascript:void(0);">Booking</a>
+                    <ul class="submenu">
+                      <li class="active"><a href="booking-checkout.html">Booking Checkout</a></li>
+                      <li><a href="booking.html">Booking</a></li>
+                      <li><a href="invoice-details.html">Invoice Details</a></li>
+                    </ul>
+                  </li>
+                  <li class="has-submenu">
+                    <a href="javascript:void(0);">Error Page</a>
+                    <ul class="submenu">
+                      <li><a href="error-404.html">404 Error</a></li>
+                      <li><a href="error-500.html">500 Error</a></li>
+                    </ul>
+                  </li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="our-team.html">Our Team</a></li>
+                    <li><a href="testimonial.html">Testimonials</a></li>
+                  <li><a href="terms-condition.html">Terms & Conditions</a></li>
+                  <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                  <li><a href="maintenance.html">Maintenance</a></li>
+                  <li><a href="coming-soon.html">Coming Soon</a></li>             
+                </ul>
+              </li>
+              <li class="has-submenu">
+                <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
+                <ul class="submenu">
+                    <li><a href="blog-list.html">Blog List</a></li>
+                  <li><a href="blog-grid.html">Blog Grid</a></li>
+                  <li><a href="blog-details.html">Blog Details</a></li>                                   
+                </ul>
+              </li>
+              <li class="has-submenu">
+                <a href="#">Dashboard <i class="fas fa-chevron-down"></i></a>
+                <ul class="submenu">
+                  <li class="has-submenu">
+                    <a href="javascript:void(0);">User Dashboard</a>
+                    <ul class="submenu">
+                      <li><a href="user-dashboard.html">Dashboard</a></li>
+                      <li><a href="user-bookings.html">My Bookings</a></li>
+                      <li><a href="user-reviews.html">Reviews</a></li>
+                      <li><a href="user-wishlist.html">Wishlist</a></li>
+                      <li><a href="user-messages.html">Messages</a></li>
+                      <li><a href="user-wallet.html">My Wallet</a></li>
+                      <li><a href="user-payment.html">Payments</a></li>
+                      <li><a href="user-settings.html">Settings</a></li>      
+                    </ul>
+                  </li>   
+                  <li class="has-submenu">
+                    <a href="javascript:void(0);">Admin Dashboard</a>
+                    <ul class="submenu">
+                      <li><a href="../template/admin/index.html">Dashboard</a></li>
+                      <li><a href="../template/admin/reservations.html">Bookings</a></li>
+                      <li><a href="../template/admin/customers.html">Manage</a></li>
+                      <li><a href="../template/admin/cars.html">Rentals</a></li>
+                      <li><a href="../template/admin/invoices.html">Finance & Accounts</a></li>
+                      <li><a href="../template/admin/coupons.html">Others</a></li>
+                      <li><a href="../template/admin/pages.html">CMS</a></li>     
+                      <li><a href="../template/admin/contact-messages.html">Support</a></li>      
+                      <li><a href="../template/admin/users.html">User Management</a></li>     
+                      <li><a href="../template/admin/earnings-report.html">Reports</a></li>     
+                      <li><a href="../template/admin/profile-setting.html">Settings & Configuration</a></li>    
+                    </ul>
+                  </li>       
+                </ul>
+              </li> 
+              <li class="login-link">
+                <a href="register.html">Sign Up</a>
+              </li>
+              <li class="login-link">
+                <a href="login.html">Sign In</a>
+              </li>
+            </ul>
+          </div>
+          <ul class="nav header-navbar-rht">
+            <li class="nav-item">
+              <a class="nav-link header-login" href="login.html"><span><i class="fa-regular fa-user"></i></span>Sign In</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link header-reg" href="register.html"><span><i class="fa-solid fa-lock"></i></span>Sign Up</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
     <div class="breadcrumb-bar">
       <div class="container">
         <div class="row align-items-center text-center">
@@ -534,7 +540,7 @@ $estimatedBase = (float)($car['daily_price'] ?? 0);
                         <div class="booking-vehicle-rates">
                           <ul>
                             <li class="d-flex justify-content-between"><span>Rate (<?= h(ucfirst($bookingTypeSel)) ?>)</span> <strong>$<span id="js-rate-val"><?php
-                              $rateVal = $rates[$bookingTypeSel] ?? 0; echo number_format((float)$rateVal,2);
+                              $rateVal = $rates[$bookingTypeSel] ?? ($rates['daily'] ?? 0); echo number_format((float)$rateVal,2);
                             ?></span></strong></li>
                             <li class="d-flex justify-content-between"><span>Days</span> <strong><span id="js-days"><?= (int)$daysPreview ?></span></strong></li>
                             <li class="d-flex justify-content-between"><span>Base</span> <strong>$<span id="js-base"><?= number_format($estimatedBase,2) ?></span></strong></li>
@@ -581,181 +587,161 @@ $estimatedBase = (float)($car['daily_price'] ?? 0);
         </div>
       </div>
     </div>
- <!-- Footer -->
-		<footer class="footer">	
-			<!-- Footer Top -->	
-			<div class="footer-top aos" data-aos="fade-down">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-7">
-							<div class="row">
-								<div class="col-lg-4 col-md-6">
-									<!-- Footer Widget -->
-									<div class="footer-widget footer-menu">
-										<h5 class="footer-title">About Company</h5>
-										<ul>
-											<li>
-												<a href="about.html">Our Company</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Shop Toyota</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Dreamsrentals USA</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Dreamsrentals Worldwide</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Dreamsrental Category</a>
-											</li>										
-										</ul>
-									</div>
-									<!-- /Footer Widget -->
-								</div>
-								<div class="col-lg-4 col-md-6">
-									<!-- Footer Widget -->
-									<div class="footer-widget footer-menu">
-										<h5 class="footer-title">Vehicles Type</h5>
-										<ul>
-											<li>
-												<a href="javascript:void(0)">All  Vehicles</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">SUVs</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Trucks</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Cars</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Crossovers</a>
-											</li>								
-										</ul>
-									</div>
-									<!-- /Footer Widget -->
-								</div>
-								<div class="col-lg-4 col-md-6">
-									<!-- Footer Widget -->
-									<div class="footer-widget footer-menu">
-										<h5 class="footer-title">Quick links</h5>
-										<ul>
-											<li>
-												<a href="javascript:void(0)">My Account</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Champaigns</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Dreamsrental Dealers</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Deals and Incentive</a>
-											</li>
-											<li>
-												<a href="javascript:void(0)">Financial Services</a>
-											</li>								
-										</ul>
-									</div>
-									<!-- /Footer Widget -->
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-5">
-							<div class="footer-contact footer-widget">
-								<h5 class="footer-title">Contact Info</h5>
-								<div class="footer-contact-info">									
-									<div class="footer-address">											
-										<span><i class="feather-phone-call"></i></span>
-										<div class="addr-info">
-											<a href="tel:+1(888)7601940">+ 1 (888) 760 1940</a>
-										</div>
-									</div>
-									<div class="footer-address">
-										<span><i class="feather-mail"></i></span>
-										<div class="addr-info">
-											<a href="mailto:support@example.com">support@example.com</a>
-										</div>
-									</div>
-									<div class="update-form">
-										<form action="booking-payment.html">
-											<span><i class="feather-mail"></i></span> 
-											<input type="email" class="form-control" placeholder="Enter You Email Here">
-											<button type="submit" class="btn btn-subscribe"><span><i class="feather-send"></i></span></button>
-										</form>
-									</div>
-								</div>								
-								<div class="footer-social-widget">
-									<ul class="nav-social">
-										<li>
-											<a href="javascript:void(0)"><i class="fa-brands fa-facebook-f fa-facebook fi-icon"></i></a>
-										</li>
-										<li>
-											<a href="javascript:void(0)"><i class="fab fa-instagram fi-icon"></i></a>
-										</li>
-										<li>
-											<a href="javascript:void(0)"><i class="fab fa-behance fi-icon"></i></a>
-										</li>
-										<li>
-											<a href="javascript:void(0)"><i class="fab fa-twitter fi-icon"></i> </a>
-										</li>
-										<li>
-											<a href="javascript:void(0)"><i class="fab fa-linkedin fi-icon"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>					
-				</div>
-			</div>
-			<!-- /Footer Top -->
+ <footer class="footer"> 
+      <div class="footer-top aos" data-aos="fade-down">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-7">
+              <div class="row">
+                <div class="col-lg-4 col-md-6">
+                  <div class="footer-widget footer-menu">
+                    <h5 class="footer-title">About Company</h5>
+                    <ul>
+                      <li>
+                        <a href="about.html">Our Company</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Shop Toyota</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Dreamsrentals USA</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Dreamsrentals Worldwide</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Dreamsrental Category</a>
+                      </li>                   
+                    </ul>
+                  </div>
+                  </div>
+                <div class="col-lg-4 col-md-6">
+                  <div class="footer-widget footer-menu">
+                    <h5 class="footer-title">Vehicles Type</h5>
+                    <ul>
+                      <li>
+                        <a href="javascript:void(0)">All  Vehicles</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">SUVs</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Trucks</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Cars</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Crossovers</a>
+                      </li>               
+                    </ul>
+                  </div>
+                  </div>
+                <div class="col-lg-4 col-md-6">
+                  <div class="footer-widget footer-menu">
+                    <h5 class="footer-title">Quick links</h5>
+                    <ul>
+                      <li>
+                        <a href="javascript:void(0)">My Account</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Champaigns</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Dreamsrental Dealers</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Deals and Incentive</a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0)">Financial Services</a>
+                      </li>               
+                    </ul>
+                  </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="footer-contact footer-widget">
+                <h5 class="footer-title">Contact Info</h5>
+                <div class="footer-contact-info">                 
+                  <div class="footer-address">                      
+                    <span><i class="feather-phone-call"></i></span>
+                    <div class="addr-info">
+                      <a href="tel:+1(888)7601940">+ 1 (888) 760 1940</a>
+                    </div>
+                  </div>
+                  <div class="footer-address">
+                    <span><i class="feather-mail"></i></span>
+                    <div class="addr-info">
+                      <a href="mailto:support@example.com">support@example.com</a>
+                    </div>
+                  </div>
+                  <div class="update-form">
+                    <form action="booking-payment.html">
+                      <span><i class="feather-mail"></i></span> 
+                      <input type="email" class="form-control" placeholder="Enter You Email Here">
+                      <button type="submit" class="btn btn-subscribe"><span><i class="feather-send"></i></span></button>
+                    </form>
+                  </div>
+                </div>                
+                <div class="footer-social-widget">
+                  <ul class="nav-social">
+                    <li>
+                      <a href="javascript:void(0)"><i class="fa-brands fa-facebook-f fa-facebook fi-icon"></i></a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)"><i class="fab fa-instagram fi-icon"></i></a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)"><i class="fab fa-behance fi-icon"></i></a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)"><i class="fab fa-twitter fi-icon"></i> </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)"><i class="fab fa-linkedin fi-icon"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="copyright">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <div class="copyright-text">
+                  <p>© 2024 Dreams Rent. All Rights Reserved.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="copyright-menu">
+                  <div class="vistors-details">
+                    <ul class="d-flex">                     
+                      <li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/paypal.svg" alt="Paypal"></a></li>                      
+                      <li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/visa.svg" alt="Visa"></a></li>
+                      <li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/master.svg" alt="Master"></a></li>
+                      <li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/applegpay.svg" alt="applegpay"></a></li>
+                    </ul>                                     
+                  </div>
+                </div>
+                </div>
+            </div>
+          </div>
+          </div>
+      </div>
+      </footer>
+    </div>
 
-			<!-- Footer Bottom -->
-			<div class="footer-bottom">
-				<div class="container">
-					<!-- Copyright -->
-					<div class="copyright">
-						<div class="row align-items-center">
-							<div class="col-md-6">
-								<div class="copyright-text">
-									<p>© 2024 Dreams Rent. All Rights Reserved.</p>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<!-- Copyright Menu -->
-								<div class="copyright-menu">
-									<div class="vistors-details">
-										<ul class="d-flex">											
-											<li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/paypal.svg" alt="Paypal"></a></li>											
-											<li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/visa.svg" alt="Visa"></a></li>
-											<li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/master.svg" alt="Master"></a></li>
-											<li><a href="javascript:void(0)"><img class="img-fluid" src="assets/img/icons/applegpay.svg" alt="applegpay"></a></li>
-										</ul>										   								
-									</div>
-								</div>
-								<!-- /Copyright Menu -->
-							</div>
-						</div>
-					</div>
-					<!-- /Copyright -->
-				</div>
-			</div>
-			<!-- /Footer Bottom -->			
-		</footer>
-		<!-- /Footer -->
-				
-	</div>
-
-    <!-- scrollToTop start -->
-	<div class="progress-wrap active-progress">
-		<svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
-		<path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" style="transition: stroke-dashoffset 10ms linear 0s; stroke-dasharray: 307.919px, 307.919px; stroke-dashoffset: 228.265px;"></path>
-		</svg>
-	</div>
-	<!-- scrollToTop end -->
+    <div class="progress-wrap active-progress">
+    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+    <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" style="transition: stroke-dashoffset 10ms linear 0s; stroke-dasharray: 307.919px, 307.919px; stroke-dashoffset: 228.265px;"></path>
+    </svg>
+  </div>
   </div>
   <script src="assets/js/jquery-3.7.1.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
@@ -767,29 +753,98 @@ $estimatedBase = (float)($car['daily_price'] ?? 0);
   <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
   <script src="assets/js/script.js"></script>
   <script>
-    (function(){
-      const rates = <?= json_encode($rates) ?>;
-      const radios = document.querySelectorAll('input[name="booking_type"]');
-      const daysEl = document.getElementById('js-days');
-      const rateEl = document.getElementById('js-rate-val');
-      const baseEl = document.getElementById('js-base');
-  const totalEl = document.getElementById('js-total');
-  // On checkout, we only show base amount; add-ons are not chosen yet.
-      function days(){ return parseInt(daysEl?.textContent || '<?= (int)$daysPreview ?>',10)||1; }
-  function base(){ return (rates.daily||0); }
-      function fmt(n){ return (Number(n)||0).toFixed(2); }
-      function update(){
-        const sel = document.querySelector('input[name="booking_type"]:checked');
-        const t = sel ? sel.value : 'daily';
-  const rv = rates.daily; // show daily rate only for Estimated Total base
-  const b = base();
-        if (rateEl) rateEl.textContent = fmt(rv);
-        if (baseEl) baseEl.textContent = fmt(b);
-        if (totalEl) totalEl.textContent = fmt(b);
+  // Wait for the document to be fully loaded before running scripts
+  $(document).ready(function() {
+    // Store car rental rates passed from PHP
+    const rates = <?= json_encode($rates) ?>;
+
+    // Get references to the DOM elements we'll be updating
+    const rateEl = $('#js-rate-val');
+    const daysEl = $('#js-days');
+    const baseEl = $('#js-base');
+    const totalEl = $('#js-total');
+    
+    // Get references to the input fields
+    const pickupDateInput = $('input[name="pickup_date"]');
+    const pickupTimeInput = $('input[name="pickup_time"]');
+    const dropoffDateInput = $('input[name="dropoff_date"]');
+    const dropoffTimeInput = $('input[name="dropoff_time"]');
+    const bookingTypeRadios = $('input[name="booking_type"]');
+
+    // Helper function to format numbers as currency (e.g., 1200 -> "1200.00")
+    function formatCurrency(num) {
+      return (Number(num) || 0).toFixed(2);
+    }
+
+    // Function to calculate the number of rental days using moment.js
+    function calculateDays() {
+      const startDateTimeStr = pickupDateInput.val() + ' ' + pickupTimeInput.val();
+      const endDateTimeStr = dropoffDateInput.val() + ' ' + dropoffTimeInput.val();
+      
+      // Use Moment.js (already included in your project) for reliable date handling.
+      // NOTE: We assume the date format is 'DD-MM-YYYY' and time is 'HH:mm'. 
+      // If your 'script.js' configures a different format, adjust it here.
+      const startMoment = moment(startDateTimeStr, 'DD-MM-YYYY HH:mm');
+      const endMoment = moment(endDateTimeStr, 'DD-MM-YYYY HH:mm');
+
+      // If dates are invalid or end is before start, default to 1 day.
+      if (!startMoment.isValid() || !endMoment.isValid() || endMoment.isSameOrBefore(startMoment)) {
+        return 1;
       }
-      radios.forEach(r=>r.addEventListener('change', update));
-      update();
-    })();
-  </script>
+
+      // Calculate duration in milliseconds, convert to days, and round up.
+      // Any fraction of a day counts as a full day.
+      const durationMs = endMoment.diff(startMoment);
+      const days = Math.ceil(durationMs / (1000 * 60 * 60 * 24));
+      
+      return Math.max(1, days); // Ensure the result is at least 1.
+    }
+
+    // Function to estimate the base rental cost based on booking type and days
+    function estimateBase(bookingType, days) {
+      days = Math.max(1, parseInt(days, 10));
+      switch (bookingType) {
+        case 'weekly':
+          return (rates.weekly > 0 ? Math.ceil(days / 7) * rates.weekly : (rates.daily || 0) * days);
+        case 'monthly':
+          return (rates.monthly > 0 ? Math.ceil(days / 30) * rates.monthly : (rates.daily || 0) * days);
+        case 'yearly':
+          return (rates.yearly > 0 ? Math.ceil(days / 365) * rates.yearly : (rates.daily || 0) * days);
+        case 'daily':
+        default:
+          return (rates.daily || 0) * days;
+      }
+    }
+
+    // This is the main function that recalculates and updates the summary box.
+    function updateSummary() {
+      const selectedBookingType = $('input[name="booking_type"]:checked').val() || 'daily';
+      const days = calculateDays();
+      
+      const currentRate = rates[selectedBookingType] || rates.daily || 0;
+      const baseAmount = estimateBase(selectedBookingType, days);
+      const totalAmount = baseAmount; // This can be updated later to include add-ons
+
+      // Update the summary values on the page
+      rateEl.text(formatCurrency(currentRate));
+      daysEl.text(days);
+      baseEl.text(formatCurrency(baseAmount));
+      totalEl.text(formatCurrency(totalAmount));
+    }
+
+    // --- EVENT LISTENERS ---
+    
+    // When the booking type (daily, weekly) is changed.
+    bookingTypeRadios.on('change', updateSummary);
+
+    // The bootstrap-datetimepicker plugin fires a custom 'dp.change' event.
+    // We listen for this instead of the standard 'change' event.
+    const allDateTimeInputs = 'input[name="pickup_date"], input[name="pickup_time"], input[name="dropoff_date"], input[name="dropoff_time"]';
+    $(allDateTimeInputs).on('dp.change', updateSummary);
+
+    // Run once on page load to set the initial values.
+    updateSummary();
+  });
+</script>
 </body>
 </html>

@@ -96,9 +96,41 @@ function calculate_totals(&$booking){
   $days = max(1, $days);
   $car = $booking['car'] ?? null;
   $it  = $booking['itinerary'] ?? [];
+  $bt = strtolower($it['booking_type'] ?? 'daily');
 
-  // Base is always the car's daily price (not multiplied by days)
-  $base = $car ? (float)($car['daily_price'] ?? 0.0) : 0.0;
+  // Compute base according to booking type and days
+  $daily   = $car ? (float)($car['daily_price']   ?? 0.0) : 0.0;
+  $weekly  = $car ? (float)($car['weekly_price']  ?? 0.0) : 0.0;
+  $monthly = $car ? (float)($car['monthly_price'] ?? 0.0) : 0.0;
+  $yearly  = $car ? (float)($car['yearly_price']  ?? 0.0) : 0.0;
+
+  $base = 0.0;
+  switch ($bt) {
+    case 'weekly':
+      if ($weekly > 0) {
+        $base = ceil($days / 7) * $weekly;
+      } else {
+        $base = $daily * $days;
+      }
+      break;
+    case 'monthly':
+      if ($monthly > 0) {
+        $base = ceil($days / 30) * $monthly;
+      } else {
+        $base = $daily * $days;
+      }
+      break;
+    case 'yearly':
+      if ($yearly > 0) {
+        $base = ceil($days / 365) * $yearly;
+      } else {
+        $base = $daily * $days;
+      }
+      break;
+    case 'daily':
+    default:
+      $base = $daily * $days;
+  }
   // Addons
   $addonsTotal = 0.0;
   $map = get_extra_price_map();
