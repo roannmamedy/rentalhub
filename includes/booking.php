@@ -279,4 +279,111 @@ function create_booking(PDO $pdo, $booking){
   return [ 'id' => (int)$pdo->lastInsertId(), 'order_number' => $orderNo ];
 }
 
+/**
+ * Ensure customers table exists (for accounts created during booking)
+ */
+function ensure_customers_table(PDO $pdo){
+  $pdo->exec("CREATE TABLE IF NOT EXISTS customers (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    country VARCHAR(100) DEFAULT NULL,
+    city VARCHAR(100) DEFAULT NULL,
+    pincode VARCHAR(20) DEFAULT NULL,
+    company VARCHAR(255) DEFAULT NULL,
+    address VARCHAR(255) DEFAULT NULL,
+    notes TEXT DEFAULT NULL,
+    driver_type ENUM('self','acting') DEFAULT 'self',
+    license VARCHAR(100) DEFAULT NULL,
+    document_path VARCHAR(500) DEFAULT NULL,
+    document_mime VARCHAR(100) DEFAULT NULL,
+    password_hash VARCHAR(255) DEFAULT NULL,
+    status ENUM('pending','active','disabled') NOT NULL DEFAULT 'pending',
+    email_verified_at TIMESTAMP NULL DEFAULT NULL,
+    terms_accepted TINYINT(1) NOT NULL DEFAULT 0,
+    terms_accepted_at TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_customers_email (email),
+    KEY idx_customers_phone (phone),
+    KEY idx_customers_status (status),
+    KEY idx_customers_created_at (created_at)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+}
+
+/**
+ * Create or update a customer by email. Returns the customer id.
+ */
+function upsert_customer(PDO $pdo, array $data){
+  ensure_customers_table($pdo);
+  // Normalize
+  $data = array_merge([
+    'first_name' => null,
+    'last_name' => null,
+    'email' => null,
+    'phone' => null,
+    'country' => null,
+    'city' => null,
+    'pincode' => null,
+    'company' => null,
+    'address' => null,
+    'notes' => null,
+    'driver_type' => 'self',
+    'license' => null,
+    'document_path' => null,
+    'document_mime' => null,
+    'terms_accepted' => 0,
+  ], $data);
+
+  $sql = "INSERT INTO customers
+    (first_name, last_name, email, phone, country, city, pincode, company, address, notes, driver_type, license, document_path, document_mime, status, terms_accepted, terms_accepted_at)
+    VALUES
+    (:first_name, :last_name, :email, :phone, :country, :city, :pincode, :company, :address, :notes, :driver_type, :license, :document_path, :document_mime, 'pending', :terms_accepted, CASE WHEN :terms_accepted = 1 THEN CURRENT_TIMESTAMP ELSE NULL END)
+    ON DUPLICATE KEY UPDATE
+      first_name = VALUES(first_name),
+      last_name = VALUES(last_name),
+      phone = VALUES(phone),
+      country = VALUES(country),
+      city = VALUES(city),
+      pincode = VALUES(pincode),
+      company = VALUES(company),
+      address = VALUES(address),
+      notes = VALUES(notes),
+      driver_type = VALUES(driver_type),
+      license = VALUES(license),
+      document_path = COALESCE(VALUES(document_path), document_path),
+      document_mime = COALESCE(VALUES(document_mime), document_mime),
+      terms_accepted = GREATEST(terms_accepted, VALUES(terms_accepted)),
+      terms_accepted_at = COALESCE(terms_accepted_at, VALUES(terms_accepted_at)),
+      updated_at = CURRENT_TIMESTAMP";
+
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([
+    ':first_name' => (string)$data['first_name'],
+    ':last_name' => (string)$data['last_name'],
+    ':email' => (string)$data['email'],
+    ':phone' => (string)$data['phone'],
+    ':country' => $data['country'],
+    ':city' => $data['city'],
+    ':pincode' => $data['pincode'],
+    ':company' => $data['company'],
+    ':address' => $data['address'],
+    ':notes' => $data['notes'],
+    ':driver_type' => $data['driver_type'] ?: 'self',
+    ':license' => $data['license'],
+    ':document_path' => $data['document_path'],
+    ':document_mime' => $data['document_mime'],
+    ':terms_accepted' => !empty($data['terms_accepted']) ? 1 : 0,
+  ]);
+
+  // Get id reliably
+  $sel = $pdo->prepare("SELECT id FROM customers WHERE email = :email LIMIT 1");
+  $sel->execute([':email' => (string)$data['email']]);
+  $row = $sel->fetch(PDO::FETCH_ASSOC);
+  return $row ? (int)$row['id'] : 0;
+}
+
 ?>

@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // license is optional in this UI; keep if previously set
   $license = trim($_POST['license'] ?? ($b['driver']['license'] ?? ''));
 
+
   if ($first_name === '' || $last_name === '') $errors[] = 'Full name is required.';
   if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Valid email is required.';
   if ($phone === '') $errors[] = 'Phone is required.';
@@ -35,9 +36,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if (!$errors) {
     $existingDriver = $b['driver'] ?? [];
+    // Document upload managed in booking-addon step; keep existing document info only
     $newFields = compact('name','email','phone','license','country','city','pincode','company','address','notes');
     // Merge to keep previously captured fields like document_path, document_mime, type, etc.
     $b['driver'] = array_merge($existingDriver, $newFields);
+    // Persist customer account (create/update by email)
+    try {
+      $parts = explode(' ', trim($name), 2);
+      $fn = $first_name ?: ($parts[0] ?? '');
+      $ln = $last_name ?: (isset($parts[1]) ? $parts[1] : '');
+      $custData = [
+        'first_name' => $fn,
+        'last_name' => $ln,
+        'email' => $email,
+        'phone' => $phone,
+        'country' => $country,
+        'city' => $city,
+        'pincode' => $pincode,
+        'company' => $company,
+        'address' => $address,
+        'notes' => $notes,
+        'driver_type' => $b['driver']['type'] ?? 'self',
+        'license' => $license,
+        'terms_accepted' => $terms ? 1 : 0,
+      ];
+      if (!empty($b['driver']['document_path'])) {
+        $custData['document_path'] = $b['driver']['document_path'];
+      }
+      if (!empty($b['driver']['document_mime'])) {
+        $custData['document_mime'] = $b['driver']['document_mime'];
+      }
+      upsert_customer($pdo, $custData);
+    } catch (Throwable $e) {
+      // Non-fatal: keep booking flow even if account save fails
+      // Optionally log $e->getMessage()
+    }
     set_booking_session($b);
     redirect_to('booking-payment.php');
   }
@@ -315,7 +348,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="col-lg-8">
               <div class="booking-information-main">
                 <?php if ($errors): ?><div class="alert alert-danger"><?php foreach($errors as $e) echo '<div>'.h($e).'</div>'; ?></div><?php endif; ?>
-                <form method="post" action="">
+                <form method="post" action="" enctype="multipart/form-data">
                   <div class="booking-information-card">
                     <div class="booking-info-head justify-content-between">
                       <div class="d-flex align-items-center">
@@ -398,6 +431,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <textarea class="form-control" name="notes" placeholder="Enter Additional Information" rows="5"><?= h($b['driver']['notes'] ?? '') ?></textarea>
                           </div>
                         </div>
+                        
                         <div class="col-md-12">
                           <div class="input-block m-0">
                             <label class="custom_check d-inline-flex location-check m-0"><span>I have Read and Accept Terms & Conditions</span> <span class="text-danger"> *</span>

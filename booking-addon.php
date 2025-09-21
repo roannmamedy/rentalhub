@@ -73,19 +73,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       'license' => $lic ?: ($driverProfile['license'] ?? null),
     ]);
 
+    // Handle removal of existing self document if requested
+    if (!empty($_POST['remove_self_document']) && $_POST['remove_self_document'] == '1') {
+      if (!empty($driverProfile['document_path'])) {
+        @unlink(__DIR__ . '/' . ltrim($driverProfile['document_path'], '/'));
+      }
+      unset($driverProfile['document_path'], $driverProfile['document_mime']);
+    }
+
     // Handle document upload if provided
     if (!empty($_FILES['self_document']) && is_array($_FILES['self_document']) && is_uploaded_file($_FILES['self_document']['tmp_name'])) {
       $f = $_FILES['self_document'];
       if ((int)$f['error'] === UPLOAD_ERR_OK) {
         if ((int)$f['size'] <= $maxBytes) {
           $finfo = function_exists('finfo_open') ? finfo_open(FILEINFO_MIME_TYPE) : null;
-          $mime = $finfo ? finfo_file($finfo, $f['tmp_name']) : mime_content_type($f['tmp_name']);
+          $mime = $finfo ? finfo_file($finfo, $f['tmp_name']) : (function_exists('mime_content_type') ? mime_content_type($f['tmp_name']) : 'application/octet-stream');
           if ($finfo) finfo_close($finfo);
-          $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/jpg' => 'jpg'];
+          $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/jpg' => 'jpg', 'application/pdf' => 'pdf'];
+          // Fallback: if mime is unknown but filename ends with allowed extension, accept
+          if ($mime === 'application/octet-stream') {
+            $name = isset($f['name']) ? strtolower($f['name']) : '';
+            if (preg_match('/\.(jpe?g)$/', $name)) $mime = 'image/jpeg';
+            elseif (preg_match('/\.(png)$/', $name)) $mime = 'image/png';
+            elseif (preg_match('/\.(pdf)$/', $name)) $mime = 'application/pdf';
+          }
           if (isset($allowed[$mime])) {
             $ext = $allowed[$mime];
             $dir = __DIR__ . '/uploads/driver_docs';
-            if (!is_dir($dir)) @mkdir($dir, 0755, true);
+            if (!is_dir($dir)) {
+              if (!@mkdir($dir, 0755, true)) {
+                $errors[] = 'Failed to create upload folder.';
+              }
+            }
+            if (!is_writable($dir)) {
+              @chmod($dir, 0755);
+            }
             $fname = uniqid('drv_', true) . '.' . $ext;
             $destFs = rtrim($dir, '/').'/'.$fname;
             if (@move_uploaded_file($f['tmp_name'], $destFs)) {
@@ -96,13 +118,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               $driverProfile['document_mime'] = $uploadedMime;
             }
           } else {
-            $errors[] = 'Unsupported document type. Allowed: jpeg, jpg, png.';
+            $errors[] = 'Unsupported document type. Allowed: jpeg, jpg, png, pdf.';
           }
         } else {
           $errors[] = 'Document exceeds 8 MB limit.';
         }
       } else {
-        $errors[] = 'Upload error. Please try again.';
+        $errors[] = 'Upload error (code '.(int)$f['error'].'). Please try again.';
       }
     }
   }
@@ -114,7 +136,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
   calculate_totals($b);
   set_booking_session($b);
-  redirect_to('booking-detail.php');
+  if (!$errors) {
+    redirect_to('booking-detail.php');
+  }
 }
 
 // Map extras to readable names
@@ -415,6 +439,7 @@ $extraLabels = [
           <div class="row">
             <div class="col-lg-8">
               <div class="booking-information-main">
+                <?php if ($errors): ?><div class="alert alert-danger"><?php foreach($errors as $e) echo '<div>'.h($e).'</div>'; ?></div><?php endif; ?>
                 <form method="post" action="" enctype="multipart/form-data">
                   <div class="booking-information-card">
                     <div class="booking-info-head justify-content-between">
@@ -524,7 +549,7 @@ $extraLabels = [
                             <div class="input-block date-widget">	
                               <label class="form-label">Upload Document <span class="text-danger"> *</span></label>										
                               <div class="upload-div">
-                                <input type="file" name="self_document" accept="image/jpeg,image/png">
+                                <input type="file" id="self_document" name="self_document" accept="image/jpeg,image/png,application/pdf">
                                 <div class="upload-photo-drag">
                                   <span><i class="fa fa-upload me-2"></i> Upload Photo</span>
                                   <h6>or Drag Photos</h6>
@@ -532,9 +557,93 @@ $extraLabels = [
                               </div>
                               <div class="upload-list">
                                 <ul>
-                                  <li>The maximum photo size is 8 MB. Formats: jpeg, jpg, png. Put the main picture first</li>
+                                  <li>The maximum file size is 8 MB. Formats: jpeg, jpg, png, pdf.</li>
                                 </ul>
                               </div>
+                              <!-- Existing uploaded file indicator -->
+                              <?php if (!empty($b['driver']['document_path'])): ?>
+                              <div class="uploaded-doc-chip d-inline-flex align-items-center p-2 border rounded mt-2">
+                                <i class="bx bx-file"></i>
+                                <a href="<?php echo h($b['driver']['document_path']); ?>" target="_blank" rel="noopener" class="ms-2 text-decoration-underline"><?php echo h(basename($b['driver']['document_path'])); ?></a>
+                                <button type="button" class="btn btn-link text-danger p-0 ms-2 js-remove-self-doc" title="Remove" aria-label="Remove"><i class="bx bx-x"></i></button>
+                              </div>
+                              <?php endif; ?>
+                              <input type="hidden" name="remove_self_document" id="js-remove-self-document" value="0">
+                              <script>
+                                (function(){
+                                  function ensureTempChip(filename){
+                                    var existing = document.querySelector('.uploaded-doc-chip');
+                                    if (!filename){ if (existing && existing.dataset.temp==='1') existing.remove(); return; }
+                                    if (existing && existing.dataset.temp==='1') {
+                                      var link = existing.querySelector('a');
+                                      if (link) { link.textContent = filename; link.removeAttribute('href'); }
+                                      return;
+                                    }
+                                    var chip = document.createElement('div');
+                                    chip.className = 'uploaded-doc-chip d-inline-flex align-items-center p-2 border rounded mt-2';
+                                    chip.dataset.temp = '1';
+                                    chip.innerHTML = '<i class="bx bx-file"></i>'+
+                                      '<a class="ms-2 text-decoration-underline">'+ filename +'</a>'+
+                                      '<button type="button" class="btn btn-link text-danger p-0 ms-2 js-remove-self-doc" title="Remove" aria-label="Remove"><i class="bx bx-x"></i></button>';
+                                    var holder = document.querySelector('.upload-div');
+                                    if (holder) holder.parentNode.insertBefore(chip, holder.nextSibling);
+                                  }
+                                  document.addEventListener('DOMContentLoaded', function(){
+                                    var input = document.getElementById('self_document');
+                                    var rmBtns = document.querySelectorAll('.js-remove-self-doc');
+                                    var hid = document.getElementById('js-remove-self-document');
+                                    // When user selects a file, show chip and reset removal flag
+                                    if (input){
+                                      input.addEventListener('change', function(){
+                                        if (hid) hid.value = '0';
+                                        if (this.files && this.files.length){
+                                          ensureTempChip(this.files[0].name);
+                                        } else {
+                                          ensureTempChip('');
+                                        }
+                                      });
+                                    }
+                                    // Remove clicks (works for existing and temp chips)
+                                    function onRemove(ev){
+                                      ev.preventDefault();
+                                      // If we have a persisted doc (chip without data-temp), flag removal
+                                      var chip = this.closest('.uploaded-doc-chip');
+                                      if (chip && chip.dataset.temp !== '1'){
+                                        if (hid) hid.value = '1';
+                                      }
+                                      // Clear input selection if any
+                                      if (input) input.value = '';
+                                      if (chip) chip.remove();
+                                    }
+                                    rmBtns.forEach(function(btn){ btn.addEventListener('click', onRemove); });
+                                    document.addEventListener('click', function(e){
+                                      if (e.target && e.target.classList.contains('js-remove-self-doc')) onRemove.call(e.target, e);
+                                    });
+                                  });
+                                })();
+                              </script>
+                              <?php if (!empty($b['driver']['document_path'])): ?>
+                              <div class="uploaded-doc-chip d-inline-flex align-items-center p-2 border rounded mt-2">
+                                <i class="bx bx-file"></i>
+                                <span class="ms-2"><?php echo h(basename($b['driver']['document_path'])); ?></span>
+                                <button type="button" class="btn btn-link text-danger p-0 ms-2 js-remove-self-doc" title="Remove" aria-label="Remove"><i class="bx bx-x"></i></button>
+                              </div>
+                              <input type="hidden" name="remove_self_document" id="js-remove-self-document" value="0">
+                              <script>
+                                (function(){
+                                  document.addEventListener('DOMContentLoaded', function(){
+                                    var btn = document.querySelector('.js-remove-self-doc');
+                                    if (!btn) return;
+                                    btn.addEventListener('click', function(){
+                                      var hid = document.getElementById('js-remove-self-document');
+                                      if (hid) hid.value = '1';
+                                      var chip = this.closest('.uploaded-doc-chip');
+                                      if (chip) chip.remove();
+                                    });
+                                  });
+                                })();
+                              </script>
+                              <?php endif; ?>
                             </div>
                           </div>
                           <div class="col-md-12">
