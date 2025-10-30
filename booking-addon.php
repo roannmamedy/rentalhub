@@ -454,7 +454,7 @@ $extraLabels = [
                         <div class="col-md-12">
                           <?php $selectedExtras = $b['addons']['extras'] ?? []; ?>
                           <?php if (!$availableExtras): ?>
-                            <p class="text-muted mb-0">No extra services available for this car.</p>
+                            <p class="text-black mb-0">No extra services available for this car.</p>
                           <?php else: ?>
                             <ul class="adons-lists" id="js-extras-list">
                               <?php foreach ($availableExtras as $ekey): if ($ekey === 'insurance') continue; $price = isset($priceMap[$ekey]) ? (float)$priceMap[$ekey] : 5.00; $checked = in_array($ekey, $selectedExtras, true); $icon = $extraIcons[$ekey] ?? 'ti ti-plus'; $label = $extraLabels[$ekey] ?? pretty_name($ekey); ?>
@@ -464,7 +464,7 @@ $extraLabels = [
                                       <span class="adon-icon"><i class="<?= h($icon) ?>"></i></span>
                                       <div class="adon-name">
                                         <h6><?= h($label) ?></h6>
-                                        <small class="text-muted">Optional add-on</small>
+                                        <small class="text-black">Optional add-on</small>
                                       </div>
                                     </div>
                                     <span class="adon-price">$<?= number_format($price,2) ?></span>
@@ -691,7 +691,7 @@ $extraLabels = [
                     </div>
                     <div class="booking-info-body">
                       <?php if (!$insurancePlans): ?>
-                        <p class="text-muted mb-0">No insurance plans.</p>
+                        <p class="text-black mb-0">No insurance plans.</p>
                       <?php else: ?>
                         <?php $selId = $b['addons']['insurance']['id'] ?? ''; ?>
                         <?php foreach ($insurancePlans as $ins): ?>

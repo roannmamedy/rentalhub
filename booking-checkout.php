@@ -742,7 +742,6 @@ $estimatedBase = estimate_base_amount($rates, $bookingTypeSel, $daysPreview);
     <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" style="transition: stroke-dashoffset 10ms linear 0s; stroke-dasharray: 307.919px, 307.919px; stroke-dashoffset: 228.265px;"></path>
     </svg>
   </div>
-  </div>
   <script src="assets/js/jquery-3.7.1.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="assets/plugins/aos/aos.js"></script>
@@ -780,39 +779,26 @@ $estimatedBase = estimate_base_amount($rates, $bookingTypeSel, $daysPreview);
     function calculateDays() {
       const startDateTimeStr = pickupDateInput.val() + ' ' + pickupTimeInput.val();
       const endDateTimeStr = dropoffDateInput.val() + ' ' + dropoffTimeInput.val();
-      
-      // Use Moment.js (already included in your project) for reliable date handling.
-      // NOTE: We assume the date format is 'DD-MM-YYYY' and time is 'HH:mm'. 
-      // If your 'script.js' configures a different format, adjust it here.
       const startMoment = moment(startDateTimeStr, 'DD-MM-YYYY HH:mm');
       const endMoment = moment(endDateTimeStr, 'DD-MM-YYYY HH:mm');
 
-      // If dates are invalid or end is before start, default to 1 day.
       if (!startMoment.isValid() || !endMoment.isValid() || endMoment.isSameOrBefore(startMoment)) {
         return 1;
       }
-
-      // Calculate duration in milliseconds, convert to days, and round up.
-      // Any fraction of a day counts as a full day.
       const durationMs = endMoment.diff(startMoment);
       const days = Math.ceil(durationMs / (1000 * 60 * 60 * 24));
-      
-      return Math.max(1, days); // Ensure the result is at least 1.
+      return Math.max(1, days);
     }
 
     // Function to estimate the base rental cost based on booking type and days
     function estimateBase(bookingType, days) {
       days = Math.max(1, parseInt(days, 10));
       switch (bookingType) {
-        case 'weekly':
-          return (rates.weekly > 0 ? Math.ceil(days / 7) * rates.weekly : (rates.daily || 0) * days);
-        case 'monthly':
-          return (rates.monthly > 0 ? Math.ceil(days / 30) * rates.monthly : (rates.daily || 0) * days);
-        case 'yearly':
-          return (rates.yearly > 0 ? Math.ceil(days / 365) * rates.yearly : (rates.daily || 0) * days);
+        case 'weekly':  return (rates.weekly  > 0 ? Math.ceil(days / 7)   * rates.weekly  : (rates.daily || 0) * days);
+        case 'monthly': return (rates.monthly > 0 ? Math.ceil(days / 30)  * rates.monthly : (rates.daily || 0) * days);
+        case 'yearly':  return (rates.yearly  > 0 ? Math.ceil(days / 365) * rates.yearly  : (rates.daily || 0) * days);
         case 'daily':
-        default:
-          return (rates.daily || 0) * days;
+        default:        return (rates.daily || 0) * days;
       }
     }
 
@@ -820,25 +806,73 @@ $estimatedBase = estimate_base_amount($rates, $bookingTypeSel, $daysPreview);
     function updateSummary() {
       const selectedBookingType = $('input[name="booking_type"]:checked').val() || 'daily';
       const days = calculateDays();
-      
       const currentRate = rates[selectedBookingType] || rates.daily || 0;
       const baseAmount = estimateBase(selectedBookingType, days);
-      const totalAmount = baseAmount; // This can be updated later to include add-ons
+      const totalAmount = baseAmount; // Add-ons can be added later
 
-      // Update the summary values on the page
       rateEl.text(formatCurrency(currentRate));
       daysEl.text(days);
       baseEl.text(formatCurrency(baseAmount));
       totalEl.text(formatCurrency(totalAmount));
     }
 
-    // --- EVENT LISTENERS ---
-    
-    // When the booking type (daily, weekly) is changed.
-    bookingTypeRadios.on('change', updateSummary);
+    // --- NEW: Same location autofill + section toggle ---
 
-    // The bootstrap-datetimepicker plugin fires a custom 'dp.change' event.
-    // We listen for this instead of the standard 'change' event.
+    // Delivery fields
+    const $deliverySame = $('input[name="return_same_location"]');
+    const $deliveryLoc = $('input[name="delivery_location"]');
+    const $deliveryReturnLoc = $('input[name="delivery_return_location"]');
+
+    // Pickup fields
+    const $pickupSame = $('input[name="pickup_return_same_location"]');
+    const $pickupLoc = $('input[name="pickup_location"]');
+    const $pickupReturnLoc = $('input[name="pickup_return_location"]');
+
+    function syncSame(checked, $from, $to) {
+      if (checked) {
+        $to.val($from.val()).prop('readonly', true).addClass('bg-light');
+      } else {
+        $to.prop('readonly', false).removeClass('bg-light');
+      }
+    }
+
+    // Bind delivery
+    $deliverySame.on('change', function() {
+      syncSame(this.checked, $deliveryLoc, $deliveryReturnLoc);
+    });
+    $deliveryLoc.on('input', function() {
+      if ($deliverySame.is(':checked')) $deliveryReturnLoc.val($deliveryLoc.val());
+    });
+
+    // Bind pickup
+    $pickupSame.on('change', function() {
+      syncSame(this.checked, $pickupLoc, $pickupReturnLoc);
+    });
+    $pickupLoc.on('input', function() {
+      if ($pickupSame.is(':checked')) $pickupReturnLoc.val($pickupLoc.val());
+    });
+
+    // Initialize state on load
+    syncSame($deliverySame.is(':checked'), $deliveryLoc, $deliveryReturnLoc);
+    syncSame($pickupSame.is(':checked'), $pickupLoc, $pickupReturnLoc);
+
+    // Toggle Delivery vs Pickup sections
+    const $rentTypeRadios = $('input[name="rent_type"]');
+    function updateRentViews() {
+      const v = $rentTypeRadios.filter(':checked').val() || 'delivery';
+      if (v === 'delivery') {
+        $('.delivery-location').show();
+        $('.pickup-location').hide();
+      } else {
+        $('.delivery-location').hide();
+        $('.pickup-location').show();
+      }
+    }
+    $rentTypeRadios.on('change', updateRentViews);
+    updateRentViews();
+
+    // --- EVENT LISTENERS for totals ---
+    bookingTypeRadios.on('change', updateSummary);
     const allDateTimeInputs = 'input[name="pickup_date"], input[name="pickup_time"], input[name="dropoff_date"], input[name="dropoff_time"]';
     $(allDateTimeInputs).on('dp.change', updateSummary);
 
