@@ -121,7 +121,7 @@ try {
                 <div class="row align-items-center">
                     <div class="col-lg-6" data-aos="fade-down">
                         <p class="explore-text"><span><i class="fa-solid fa-thumbs-up me-2"></i></span>100% Trusted car rental platform in the World</p>
-                        <h1><span>Find Your Best</span><br>Dream Car for Rental</h1>
+                        <h1 class="text-white"><span>Find Your Best</span><br>Dream Car for Rental</h1>
                         <p class="text-white">Experience the ultimate in comfort, performance, and sophistication with our luxury car rentals.</p>
                         <div class="view-all">
                             <a href="listing-grid.php" class="btn btn-view d-inline-flex align-items-center">View all Cars <span><i class="feather-arrow-right ms-2"></i></span></a>
