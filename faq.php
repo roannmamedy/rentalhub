@@ -31,6 +31,7 @@
 	<div class="main-wrapper">
 	
 		<!-- Header -->
+    <!-- Header (kept as in HTML, but link to PHP) -->
     <header class="header">
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg header-nav">
@@ -38,37 +39,74 @@
                     <a id="mobile_btn" href="javascript:void(0);">
                         <span class="bar-icon"><span></span><span></span><span></span></span>
                     </a>
-                    <a href="index-2.php" class="navbar-brand logo">
+                    <a href="home.php" class="navbar-brand logo">
                         <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
                     </a>
-                    <a href="index-2.php" class="navbar-brand logo-small">
+                    <a href="home.php" class="navbar-brand logo-small">
                         <img src="assets/img/logo-small.png" class="img-fluid" alt="Logo">
                     </a>
                 </div>
                 <div class="main-menu-wrapper">
                     <div class="menu-header">
-                        <a href="index-2.php" class="menu-logo">
+                        <a href="home.php" class="menu-logo">
                             <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
                         </a>
                         <a id="menu_close" class="menu-close" href="javascript:void(0);"> <i class="fas fa-times"></i></a>
                     </div>
                     <ul class="main-nav">
-                        <li class="has-submenu megamenu active">
-                            <a href="index-2.php">Home <i class="fas fa-chevron-down"></i></a>
-                            <ul class="submenu mega-submenu"><li><div class="megamenu-wrapper"><div class="row"></div></div></li></ul>
+                        <li class="has-submenu">
+                            <a href="home.php">Home </a>
                         </li>
                         <li class="has-submenu">
-                            <a href="#">Listings <i class="fas fa-chevron-down"></i></a>
+                            <a>Listings <i class="fas fa-chevron-down"></i></a>
                             <ul class="submenu">
                                 <li><a href="listing-grid.php">Listing Grid</a></li>
                                 <li><a href="listing-list.php">Listing List</a></li>
-                                <!-- <li><a href="listing-map.html">Listing With Map</a></li> -->
-                                <li><a href="listing-grid.php">Listing Details</a></li>
                             </ul>
                         </li>
-                        <li class="has-submenu"><a href="#">Pages <i class="fas fa-chevron-down"></i></a><ul class="submenu"></ul></li>
-                        <li class="has-submenu"><a href="#">Blog <i class="fas fa-chevron-down"></i></a><ul class="submenu"></ul></li>
-                        <li class="has-submenu"><a href="#">Dashboard <i class="fas fa-chevron-down"></i></a></li>
+						<li class="has-submenu active">
+								<a>Pages <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+								    <!-- <li ><a href="about-us.html">About Us</a></li>
+								    <li><a href="contact-us.html">Contact</a></li>
+									<li class="has-submenu">
+										<a href="javascript:void(0);">Authentication</a>
+										<ul class="submenu">
+											<li><a href="register.html">Sign Up</a></li>
+											<li><a href="login.html">Sign In</a></li>
+											<li><a href="forgot-password.html">Forgot Password</a></li>
+											<li><a href="reset-password.html">Reset Password</a></li>
+										</ul>
+									</li>
+									<li class="has-submenu">
+										<a href="javascript:void(0);">Booking</a>
+										<ul class="submenu">
+											<li><a href="booking-checkout.html">Booking Checkout</a></li>
+											<li><a href="booking.html">Booking</a></li>
+											<li><a href="invoice-details.html">Invoice Details</a></li>
+										</ul>
+									</li>
+									<li class="has-submenu">
+										<a href="javascript:void(0);">Error Page</a>
+										<ul class="submenu">
+											<li><a href="error-404.html">404 Error</a></li>
+											<li><a href="error-500.html">500 Error</a></li>
+										</ul>
+									</li>
+								    <li><a href="pricing.html">Pricing</a></li> -->
+								    <li class="active"><a href="faq.php">FAQ</a></li>
+								    <!-- <li><a href="gallery.html">Gallery</a></li>
+								    <li><a href="our-team.html">Our Team</a></li>
+								    <li><a href="testimonial.html">Testimonials</a></li>
+									<li><a href="terms-condition.html">Terms & Conditions</a></li>
+									<li><a href="privacy-policy.html">Privacy Policy</a></li>
+									<li><a href="maintenance.html">Maintenance</a></li>
+									<li><a href="coming-soon.html">Coming Soon</a></li> -->
+								</ul>
+							</li>
+                        <!-- <li class="has-submenu"><a href="#">Pages <i class="fas fa-chevron-down"></i></a><ul class="submenu"></ul></li> -->
+                        <!-- <li class="has-submenu"><a href="#">Blog <i class="fas fa-chevron-down"></i></a><ul class="submenu"></ul></li>
+                        <li class="has-submenu"><a href="#">Dashboard <i class="fas fa-chevron-down"></i></a></li> -->
                         <li class="login-link"><a href="register.html">Sign Up</a></li>
                         <li class="login-link"><a href="login.html">Sign In</a></li>
                     </ul>
@@ -215,9 +253,9 @@
 		<!-- /FAQ -->	
 
          <!-- Footer -->
-		<footer class="footer">	
+		 <footer class="footer">	
 			<!-- Footer Top -->	
-			<div class="footer-top aos" data-aos="fade-down">
+			<div class="footer-top aos">
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-7">
@@ -276,20 +314,20 @@
 										<h5 class="footer-title">Quick links</h5>
 										<ul>
 											<li>
-												<a href="javascript:void(0)">My Account</a>
+												<a href="home.php">Home</a>
 											</li>
 											<li>
-												<a href="javascript:void(0)">Champaigns</a>
+												<a href="listing-grid.php">Listing Grid</a>
 											</li>
 											<li>
-												<a href="javascript:void(0)">Dreamsrental Dealers</a>
+												<a href="listing-list.php">Listing List</a>
 											</li>
 											<li>
-												<a href="javascript:void(0)">Deals and Incentive</a>
+												<a href="faq.php">FAQ</a>
 											</li>
-											<li>
+											<!-- <li>
 												<a href="javascript:void(0)">Financial Services</a>
-											</li>								
+											</li>								 -->
 										</ul>
 									</div>
 									<!-- /Footer Widget -->
